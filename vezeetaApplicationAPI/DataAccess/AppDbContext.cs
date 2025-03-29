@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 using vezeetaApplicationAPI.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace vezeetaApplicationAPI.DataAccess
 {
 
 
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser>(options)
     {
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
@@ -22,6 +23,7 @@ namespace vezeetaApplicationAPI.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Doctor>()
                 .HasOne(d => d.Specialties)
                 .WithMany(s => s.Doctors)
@@ -51,10 +53,6 @@ namespace vezeetaApplicationAPI.DataAccess
                 .HasOne(r => r.Doctor)
                 .WithMany(d => d.Reviews)
                 .HasForeignKey(r => r.Doctor_ID);
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=.;Database=VezeetaDB;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
 

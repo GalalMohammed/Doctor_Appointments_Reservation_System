@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLLServices.csproj" />
-    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\vezeetaApplicationAPI\vezeetaApplicationAPI.csproj" />
   </ItemGroup>
 
 </Project>

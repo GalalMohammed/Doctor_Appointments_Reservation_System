@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <Folder Include="Managers\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Managers\" />
-    <Folder Include="Utils\" />
+    <ProjectReference Include="..\vezeetaApplicationAPI\vezeetaApplicationAPI.csproj" />
   </ItemGroup>
 
 </Project>

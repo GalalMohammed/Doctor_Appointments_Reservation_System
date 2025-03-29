@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC.ViewModels;
 
 namespace MVC.Controllers
 {
@@ -10,16 +11,42 @@ namespace MVC.Controllers
         }
         public IActionResult ConfirmEmail(string? token)
         {
+            // =============== Function Skeleton ===============
             //if (token != null)
             //{
             //    int? id = GetIdFromToken(token);
             //    if (id != null)
             //    {
             //        SaveToDb(id);
-            //        return View();
+            return View();
             //    }
             //}
-            return View("CustomError");
+            //return View("CustomError");
+        }
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginUser)
+        {
+            // =============== Function Skeleton ===============
+            //if (ModelState.IsValid)
+            //{
+            //    var appUser = await userManager.FindByNameAsync(loginUser.Username);
+            //    if (appUser != null)
+            //    {
+            //        bool correctPassword = await userManager.CheckPasswordAsync(appUser, loginUser.Password);
+            //        if (correctPassword)
+            //        {
+            //            await signInManager.SignInAsync(appUser, loginUser.RememberMe);
+            //            return RedirectToAction("Index", "Customer");
+            //        }
+            //    }
+            //}
+            ModelState.AddModelError("", "Invalid username or password");
+            return View(loginUser);
         }
     }
 }

@@ -18,5 +18,4 @@ let handler = setInterval(() => {
     }
     else
         redirectLink === null || redirectLink === void 0 ? void 0 : redirectLink.click();
-    console.log(durationBar);
 }, 1000);

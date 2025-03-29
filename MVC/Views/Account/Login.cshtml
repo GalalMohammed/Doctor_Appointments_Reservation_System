@@ -1,0 +1,39 @@
+﻿@using MVC.ViewModels
+@model LoginViewModel
+
+@{
+	ViewData["title"] = "Login";
+}
+
+<form method="post" class="form-container p-4 rounded-4 shadow-sm position-absolute top-50 start-50 translate-middle d-flex flex-column justify-content-between align-items-center">
+	<h1 class="login-title">Login</h1>
+	<div class="w-100 d-flex justify-content-evenly align-items-center">
+		<a href="#"><i class="fab fa-facebook-f login-social-icon d-flex justify-content-center align-items-center"></i></a>
+		<a href="#"><i class="fab fa-google-plus-g login-social-icon d-flex justify-content-center align-items-center"></i></a>
+		<a href="#"><i class="fab fa-linkedin-in login-social-icon d-flex justify-content-center align-items-center"></i></a>
+	</div>
+	<div class="w-100 d-flex input-div flex-column justify-content-between">
+		<div class="text-center text-muted separation-div">
+			<span class="p-1 bg-white">or use your account</span>
+		</div>
+		<div>
+			<label asp-for="Email" class="my-1"></label>
+			<input asp-for="Email" class="form-input rounded-1" />
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+		<div>
+			<label asp-for="Password" class="my-1"></label>
+			<input asp-for="Password" type="password" class="form-input rounded-1" />
+			<span asp-validation-for="Password" class="text-danger"></span>
+		</div>
+	</div>
+	<div asp-validation-summary="ModelOnly" id="validation-summary" class="text-danger"></div>
+	<a asp-controller="account" asp-action="ForgotPassword" class="text-muted align-self-end">Forgot Password?</a>
+	<input type="submit" class="btn login-submit w-50" value="Login" />
+</form>
+
+<script src="~/js/login.js"></script>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

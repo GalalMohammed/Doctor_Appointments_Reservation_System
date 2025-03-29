@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\ts\confirm-email.ts" />
+    <Content Remove="wwwroot\ts\login.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\ts\confirm-email.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\login.ts" />
   </ItemGroup>
 
 </Project>

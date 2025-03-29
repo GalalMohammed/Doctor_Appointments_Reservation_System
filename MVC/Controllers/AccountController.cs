@@ -18,10 +18,10 @@ namespace MVC.Controllers
             //    if (id != null)
             //    {
             //        SaveToDb(id);
-            return View();
+            //        return View();
             //    }
             //}
-            //return View("CustomError");
+            return View("CustomError");
         }
         public IActionResult Login()
         {

@@ -12,5 +12,6 @@ namespace MVC.ViewModels
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public City City { get; set; }
+        public DateOnly BirthDate { get; set; }
     }
 }

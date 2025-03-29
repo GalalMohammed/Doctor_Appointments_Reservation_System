@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["title"] = "Email Confirmation";
+}
+
+<div class="container-md confirm-div w-50 rounded-4 lh-lg shadow-sm position-absolute top-50 start-50 translate-middle text-center d-flex flex-column justify-content-between align-items-center">
+    <h1>Email Confirmed!</h1>
+    <p>Thank you for verifying your email address. You will be redirected to your dashboard after <span id="confirm-duration"></span>s</p>
+    <dotlottie-player src="https://lottie.host/f8c4d5d0-52cc-402b-8d8d-42cf7b5d5be5/LHNK3uiG7G.lottie" background="transparent" speed="0.65" style="width: 150px; height: 150px" autoplay></dotlottie-player>
+    <div id="confirm-bar" class="w-50 position-relative rounded-1">
+        <div id="confirm-bar-movable" class="position-absolute h-100 top-0 start-0 rounded-1"></div>
+    </div>
+</div>
+
+<a id="confirm-redirect" asp-controller="Home" asp-action="Index" class="d-none"></a>
+<script src="https://unpkg.com/@@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+<script src="~/js/confirm-email.js"></script>

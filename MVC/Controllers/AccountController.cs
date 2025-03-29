@@ -8,5 +8,18 @@ namespace MVC.Controllers
         {
             return View();
         }
+        public IActionResult ConfirmEmail(string? token)
+        {
+            //if (token != null)
+            //{
+            //    int? id = GetIdFromToken(token);
+            //    if (id != null)
+            //    {
+            //        SaveToDb(id);
+            //        return View();
+            //    }
+            //}
+            return View("CustomError");
+        }
     }
 }

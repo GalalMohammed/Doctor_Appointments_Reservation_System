@@ -4,7 +4,12 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <CETCompat>false</CETCompat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\ts\confirm-email.ts" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ViewModels\" />
@@ -23,6 +28,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLLServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\ts\confirm-email.ts" />
   </ItemGroup>
 
 </Project>

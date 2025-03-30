@@ -27,7 +27,6 @@ namespace vezeetaApplicationAPI.Models
         [Required(ErrorMessage = "Reservation Date is required")]
         [Display(Name = "Max Reservations")]
         public int MaxReservation { get; set; }
-        
         public Doctor? Doctor { get; set; }
         public ICollection<Appointment>? Appointments { get; set; }
     }

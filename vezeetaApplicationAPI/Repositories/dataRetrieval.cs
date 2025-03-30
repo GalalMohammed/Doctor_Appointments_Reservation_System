@@ -15,7 +15,7 @@ namespace vezeetaApplicationAPI.Repository
         {
             _Context = context;
         }
-        public List<Models.Specialties> GetSpecialties()
+        public List<Models.Specialty> GetSpecialties()
         {
             return _Context.Specialties.ToList();
         }

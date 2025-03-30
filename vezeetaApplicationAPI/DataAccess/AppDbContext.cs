@@ -16,7 +16,7 @@ namespace vezeetaApplicationAPI.DataAccess
     {
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<Specialties> Specialties { get; set; }
+        public DbSet<Specialty> Specialties { get; set; }
         public DbSet<DoctorReservation> DoctorReservations { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -24,15 +24,27 @@ namespace vezeetaApplicationAPI.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Patient>( builder =>
+            {
+                builder.HasOne(p => p.AppUser)
+                    .WithOne()
+                    .HasForeignKey<Patient>(p => p.AppUserID);
+            });
+            modelBuilder.Entity<Doctor>( builder =>
+            {
+                builder.HasOne(d => d.AppUser)
+                    .WithOne()
+                    .HasForeignKey<Doctor>(d => d.AppUserID);
+            });
             modelBuilder.Entity<Doctor>()
-                .HasOne(d => d.Specialties)
+                .HasOne(d => d.Specialty)
                 .WithMany(s => s.Doctors)
-                .HasForeignKey(d => d.Specialties_ID);
+                .HasForeignKey(d => d.SpecialtyID);
 
             modelBuilder.Entity<DoctorReservation>()
                 .HasOne(dr => dr.Doctor)
                 .WithMany(d => d.DoctorReservations)
-                .HasForeignKey(dr => dr.Doctor_ID);
+                .HasForeignKey(dr => dr.DoctorID);
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.DoctorReservation)
@@ -47,12 +59,12 @@ namespace vezeetaApplicationAPI.DataAccess
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Patient)
                 .WithMany(p => p.Reviews)
-                .HasForeignKey(r => r.Patient_ID);
+                .HasForeignKey(r => r.PatientID);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Doctor)
                 .WithMany(d => d.Reviews)
-                .HasForeignKey(r => r.Doctor_ID);
+                .HasForeignKey(r => r.DoctorID);
         }
     }
 

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLLServices", "BLL\BLLServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLConsoleApp", "PLConsoleApp\PLConsoleApp.csproj", "{839BD230-3BDC-401C-B622-B94CFB5A0A29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vezeetaApplicationAPI", "vezeetaApplicationAPI\vezeetaApplicationAPI.csproj", "{576AE8CD-FDB9-DAC8-7FDC-463C1EAA95A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "vezeetaApplicationAPI\DAL.csproj", "{576AE8CD-FDB9-DAC8-7FDC-463C1EAA95A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

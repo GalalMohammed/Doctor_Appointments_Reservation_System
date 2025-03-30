@@ -10,14 +10,14 @@ namespace vezeetaApplicationAPI.Models
     public class Appointment
     {
         public int ID { get; set; }
-
-        [Required]
+        
+        [Required(ErrorMessage = "Doctor Reservation ID is required")]
         public int DoctorReservationID { get; set; }
-
-        [Required]
+        
+        [Required(ErrorMessage = "Patient ID is required")]
         public int PatientId { get; set; }
-
-        public DoctorReservation DoctorReservation { get; set; }
-        public Patient Patient { get; set; }
+        
+        public DoctorReservation? DoctorReservation { get; set; }
+        public Patient? Patient { get; set; }
     }
 }

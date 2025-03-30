@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\vezeetaApplicationAPI\vezeetaApplicationAPI.csproj" />
+    <ProjectReference Include="..\vezeetaApplicationAPI\DAL.csproj" />
   </ItemGroup>
 
 </Project>

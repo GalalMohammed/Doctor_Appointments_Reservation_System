@@ -9,6 +9,7 @@ namespace vezeetaApplicationAPI.Models
 {
     public class DoctorReservation
     {
+        [Key]
         public int ID { get; set; }
         
         [Required(ErrorMessage = "Doctor ID is required")]
@@ -27,6 +28,7 @@ namespace vezeetaApplicationAPI.Models
         [Required(ErrorMessage = "Reservation Date is required")]
         [Display(Name = "Max Reservations")]
         public int MaxReservation { get; set; }
+
         public Doctor? Doctor { get; set; }
         public ICollection<Appointment>? Appointments { get; set; }
     }

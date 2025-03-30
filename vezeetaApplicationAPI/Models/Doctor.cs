@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Models;
 
 namespace vezeetaApplicationAPI.Models
 {
@@ -19,13 +20,13 @@ namespace vezeetaApplicationAPI.Models
         Thursday = 32,
         Friday = 64
     }
-    public class Doctor
+    public class Doctor : Person
     {
         public int ID { get; set; }
 
-        [ForeignKey("AppUser")]
-        public int AppUserID { get; set; }
-        public AppUser? AppUser { get; set; }
+        //[ForeignKey("AppUser")]
+        //public int AppUserID { get; set; }
+        //public AppUser? AppUser { get; set; }
 
         [Required(ErrorMessage = "Doctor Speciality is required")]
         [Display(Name = "Specialty")]
@@ -43,9 +44,9 @@ namespace vezeetaApplicationAPI.Models
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Waiting Time must be a number")]
         public int WaitingTime { get; set; }
         
-        [Required(ErrorMessage = "Doctor Location is required")]
-        [DataType(DataType.Text)]
-        public required string Location { get; set; }
+        //[Required(ErrorMessage = "Doctor Location is required")]
+        //[DataType(DataType.Text)]
+        //public required string Location { get; set; }
         
         [Range(0, 5)]
         [Display(Name = "Overall Rating")]

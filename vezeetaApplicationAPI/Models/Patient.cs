@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace vezeetaApplicationAPI.Models
 {
-    public class Patient
+    public class Patient : Person
     {
         public int ID { get; set; }
-        [ForeignKey("AppUser")]
-        public int AppUserID { get; set; }
-        public AppUser? AppUser { get; set; }
+        //[ForeignKey("AppUser")]
+        //public int AppUserID { get; set; }
+        //public AppUser? AppUser { get; set; }
 
         public ICollection<Appointment>? Appointments { get; set; }
         public ICollection<Review>? Reviews { get; set; }

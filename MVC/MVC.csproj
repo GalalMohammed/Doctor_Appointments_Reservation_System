@@ -10,6 +10,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\ts\confirm-email.ts" />
     <Content Remove="wwwroot\ts\login.ts" />
+    <Content Remove="wwwroot\ts\register.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,9 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\ts\confirm-email.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\register.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="wwwroot\ts\login.ts" />
   </ItemGroup>
 

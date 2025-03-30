@@ -48,5 +48,19 @@ namespace MVC.Controllers
             ModelState.AddModelError("", "Invalid username or password");
             return View(loginUser);
         }
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel registerUser)
+        {
+            ModelState.AddModelError("", "Test Error 1");
+            ModelState.AddModelError("", "Test Error 2");
+            ModelState.AddModelError("", "Test Error 3");
+            ModelState.AddModelError("", "Test Error 4");
+            return View(registerUser);
+        }
     }
 }

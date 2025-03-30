@@ -16,6 +16,10 @@ namespace MVC
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
             app.UseRouting();
 
             app.UseAuthorization();

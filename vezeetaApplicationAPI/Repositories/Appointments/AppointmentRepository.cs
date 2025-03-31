@@ -10,7 +10,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Appointments
 {
-    internal class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
+    public class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
     {
         private readonly AppDbContext context;
         public AppointmentRepository(AppDbContext _context) : base(_context)

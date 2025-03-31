@@ -8,7 +8,7 @@ using vezeetaApplicationAPI.DataAccess;
 
 namespace DAL.Repositories.Generic
 {
-    internal class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly AppDbContext context;
         public GenericRepository(AppDbContext _context) 

@@ -10,7 +10,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.DoctorReservations
 {
-    internal class DoctorReservationRepository : GenericRepository<DoctorReservation>, IDoctorReservationRepository
+    public class DoctorReservationRepository : GenericRepository<DoctorReservation>, IDoctorReservationRepository
     {
         private readonly AppDbContext context;
         public DoctorReservationRepository(AppDbContext _context) : base(_context)
@@ -37,5 +37,19 @@ namespace DAL.Repositories.DoctorReservations
             }
             return res;
         }
+        public async Task<List<DoctorReservation>> GetReservationsByDocID(int doctorID, bool WithAsNoTracking = true)
+        {
+            if (WithAsNoTracking)
+            {
+                return await context.DoctorReservations.Include(x => x.Doctor)
+                    .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID)
+                    .AsNoTracking().ToListAsync();
+            }
+            return await context.DoctorReservations.Include(x => x.Doctor)
+                    .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID)
+                    .ToListAsync();
+        }
+
+        
     }
 }

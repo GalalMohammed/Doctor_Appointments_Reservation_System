@@ -10,5 +10,7 @@ namespace DAL.Repositories.Reviews
 {
     internal interface IReviewRepository : IGenericRepository<Review>
     {
+        public Task<ICollection<Review>> GetDoctorReviews(int doctorId, bool WithAsNoTracking = true);
+
     }
 }

@@ -10,7 +10,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Specialties
 {
-    internal class SpecialtyRepository : GenericRepository<Specialty>, ISpecialtyRepository
+    public class SpecialtyRepository : GenericRepository<Specialty>, ISpecialtyRepository
     {
         private readonly AppDbContext context;
         public SpecialtyRepository(AppDbContext _context) : base(_context)
@@ -36,5 +36,21 @@ namespace DAL.Repositories.Specialties
             }
             return res;
         }
+        public async Task<Specialty> GetByName(string name, bool WithAsNoTracking = true)
+        {
+            var res = await context.Specialties.Include(s => s.Doctors).Where(s => s.Name == name)
+                .FirstOrDefaultAsync();
+            if (WithAsNoTracking)
+            {
+                context.Entry(res).State = EntityState.Detached;
+            }
+            return res;
+        }
+        public async Task<ICollection<Doctor>> GetSpecialtyDoctors(int specialtyId)
+        {
+            Specialty specialty = await GetByID(specialtyId);
+            return specialty.Doctors;
+        }
+
     }
 }

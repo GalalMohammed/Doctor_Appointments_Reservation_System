@@ -12,6 +12,95 @@ html {
 }
 
 
+.SP-badge {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+.SP-badge-scroll {
+    max-height: 80px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--accent-color);
+}
+
+.SP-icon {
+    background-color: rgba(var(--primary-color-rgb), 0.3);
+    color: var(--primary-color);
+    border-radius: 20px;
+    padding: 7px;
+}
+
+.SP-callBTN {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+    .SP-callBTN:hover {
+        background-color: var(--primary-color);
+        color: var(--accent-color);
+    }
+
+.SP-active {
+    background-color: var(--primary-color);
+    color: var(--accent-color)
+}
+
+.SP-bookBTN {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-color: var(--primary-color);
+    font-weight: bold;
+}
+
+    .SP-bookBTN:hover {
+        color: var(--primary-color);
+        background-color: var(--accent-color);
+        border-color: var(--primary-color);
+    }
+
+.SP-bookHeader {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.SP-primaryText {
+    color: var(--primary-color);
+}
+
+.SP-bookCards * {
+    font-size: 0.9rem;
+}
+
+.swiper-slide {
+    display: flex;
+}
+
+.swiper-scrollbar {
+    background: var(--secondary-color); /* Light grey background */
+    border-radius: 10px;
+}
+
+.swiper-scrollbar-drag {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+:root {
+    --primary-color: #004085;
+    --primary-color-rgb: 0, 64, 133;
+    --secondary-color: #B3E5FC;
+    --secondary-color-rgb: 179, 229, 252;
+    --accent-color: #F8F9FA;
+    --accent-color-rgb: 248, 249, 250;
+}
+
+html {
+    scrollbar-color: var(--primary-color) var(--accent-color);
+}
+
+
 
 .SP-filters>div {
     position: sticky;
@@ -152,6 +241,69 @@ html {
     --secondary-color-rgb: 179, 229, 252;
     --accent-color: #F8F9FA;
     --accent-color-rgb: 248, 249, 250;
+}
+
+:root {
+    --primary-color: #004085;
+    --primary-color-rgb: 0, 64, 133;
+    --secondary-color: #B3E5FC;
+    --secondary-color-rgb: 179, 229, 252;
+    --accent-color: #F8F9FA;
+    --accent-color-rgb: 248, 249, 250;
+}
+
+html {
+    scrollbar-color: var(--primary-color) var(--accent-color);
+}
+
+/* Card Styling */
+.SP-card {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 10px;
+    background: var(--accent-color);
+}
+
+/* Text Styling */
+.SP-primaryText {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Reset Button */
+.SP-resetBTN {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-color: var(--primary-color);
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+    .SP-resetBTN:hover {
+        color: var(--primary-color);
+        background-color: var(--secondary-color);
+        border-color: var(--primary-color);
+    }
+
+/* Password Toggle Button */
+.SP-toggle-password {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+    .SP-toggle-password .eye-icon {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        transition: 0.3s ease;
+    }
+
+/* Responsive */
+@media (max-width: 576px) {
+    .SP-card {
+        padding: 2rem;
+    }
 }
 
 html {

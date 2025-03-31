@@ -5,6 +5,10 @@ let minPriceInput = document.querySelector(".SP-filters .minPrice");
 let maxPriceInput = document.querySelector(".SP-filters .maxPrice");
 var priceSlider = document.querySelector('.SP-priceSlider');
 
+// initialize Animate on Scroll library
+AOS.init();
+
+
 noUiSlider.create(YOESlider, {
     start: [minYearInput.value ?? 0],
     step: 1,

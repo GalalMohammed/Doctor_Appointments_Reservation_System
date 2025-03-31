@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/doctorsSearchPage.css">
 }
 
@@ -98,7 +99,7 @@
         }
         @foreach(var doc in Model)
         {
-            <div class="SP-docCard d-flex flex-wrap align-items-center p-3 mb-2 border rounded shadow-sm">
+            <div class="SP-docCard d-flex flex-wrap align-items-center p-3 mb-2 border rounded shadow-sm" data-aos="fade-left">
                 <div class="col-12 col-md-2 text-center">
                     <img src="~/images/@doc.Image" class="rounded-circle img-thumbnail" height="100" width="100" alt="">
                 </div>
@@ -151,7 +152,7 @@
                 <div class="d-flex flex-wrap col-12 align-items-center">
                     <div class="flex-grow-1 col-12 col-md-8 d-flex justify-content-around mt-3">
                         <div><i class="fa-solid fa-star SP-icon"></i><span class="ms-2">@doc.Rating</span></div>
-                        <div><i class="fa-solid fa-calendar-days SP-icon"></i><span class="ms-2">@doc.Experiance+ Years</span></div>
+                        <div><i class="fa-solid fa-calendar-days SP-icon"></i><span class="ms-2">@doc.Experience+ Years</span></div>
                         <div><i class="fa-solid fa-location-dot SP-icon"></i><span class="ms-2">@doc.Governorate : @doc.Location</span></div>
                     </div>
                     <div class="col-12 col-md-4 d-flex mt-3 gap-1">
@@ -167,13 +168,13 @@
             </div>
         }
         <nav aria-label="Page navigation">
-            <ul class="pagination text-center justify-content-center">
+            <ul class="pagination text-center justify-content-center" data-aos="fade-up">
                 <li class="page-item flex-fill">
                     <a class="page-link SP-prevBTN SP-primaryText" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                @if (ViewBag.pageNums > 1)
+                @if (ViewBag.pageNums >= 1)
                 {
                     <li class="page-item flex-fill">
                         <a onclick="GoToPage(1)" href="#" class="page-link @(ViewBag.currentPage == 1 ? "SP-active" : "")">1</a>
@@ -229,6 +230,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="~/js/doctorsSearchPage.js"></script>
 }
 

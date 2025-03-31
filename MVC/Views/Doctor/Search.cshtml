@@ -1,0 +1,232 @@
+﻿@using MVC.Enums
+@model List<docSearchVM>
+@{
+    ViewData["Title"] = "Search Doctors";
+    var today = (int)DateTime.Now.DayOfWeek;
+
+}
+@functions {
+    public static string GetNextDate(int day)
+    {
+        DateTime today = DateTime.Now;
+        int todayIndex = (int)today.DayOfWeek;
+
+        int daysToAdd = (day - todayIndex + 7) % 7;
+        if (daysToAdd == 0) return "Today";
+        if (daysToAdd == 1) return "Tomorrow";
+
+        DateTime nextDate = today.AddDays(daysToAdd);
+        return nextDate.ToString("ddd d/M"); // Example: "Tue 1/12"
+    }
+}
+
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="~/css/doctorsSearchPage.css">
+}
+
+<div class="SP-contain container-fluid justify-content-center d-flex flex-wrap">
+    <div class="SP-filters col-12 col-md-3 container-fluid border rounded shadow-sm">
+        <h2>Filters</h2>
+        <form asp-action="Search" asp-controller="Doctor" method="get">
+            <input type="hidden" name="pageNum" class="SP-pageNum" />
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" name="docSearch" value="@ViewBag.docSearch" class="form-control SP-docSearch" placeholder="Name or Speciality">
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text"><i class="fa-solid fa-location-dot"></i></label>
+                <select asp-items="@Html.GetEnumSelectList<Governorate>()" class="form-select SP-select" name="governorate">
+                    @foreach (var gov in Enum.GetValues(typeof(Governorate)))
+                    {
+                        <option value="@((int)gov)" selected="@(ViewBag.governorate != null && (int)ViewBag.governorate == (int)gov)">
+                            @gov
+                        </option>
+                    }
+                </select>
+
+            </div>
+            <div class="d-flex flex-wrap justify-content-around SP-genderRadios">
+                <label for="gender" class="col-12 form-label-input">Gender</label>
+
+                <div class="me-1">
+                    <input type="radio" name="gender" value="All" class="form-check-input" id="All"
+                           @(ViewBag.gender == Gender.All || ViewBag.gender == null ? "checked" : "")>
+                    <label for="All">All</label>
+                </div>
+
+                <div class="me-1">
+                    <input type="radio" name="gender" value="Male" class="form-check-input" id="Male"
+                           @(ViewBag.gender == Gender.Male ? "checked" : "")>
+                    <label for="Male">Male</label>
+                </div>
+
+                <div class="me-1">
+                    <input type="radio" name="gender" value="Female" class="form-check-input" id="Female"
+                           @(ViewBag.gender == Gender.Female ? "checked" : "")>
+                    <label for="Female">Female</label>
+                </div>
+            </div>
+
+            <div class="my-2">
+                <label class="my-2">Minimum Years of Experiance</label>
+                <div class="SP-Slider SP-YOESlider mx-2 mb-5"></div>
+                <input type="hidden" class="minYear" value="@ViewBag.minYear" name="minYear">
+            </div>
+            <div class="">
+                <label class="my-2">Price</label>
+                <div class="SP-Slider SP-priceSlider mx-2 my-5"></div>
+                <input type="hidden" class="minPrice" value="@ViewBag.minPrice" name="minPrice">
+                <input type="hidden" class="maxPrice" value="@ViewBag.maxPrice" name="maxPrice">
+            </div>
+            <div class="d-flex flex-wrap justify-content-center gap-1">
+                <button class="btn SP-filterBTN mb-2 col-12">Filter</button>
+                <input type="submit" class="d-none" />
+                <input type="reset" class="btn SP-resetBTN mb-2 col-12">
+            </div>
+        </form>
+    </div>
+    <div class="SP-doctorsList col-12 col-md-9">
+        @if(Model.Count == 0)
+        {
+            <h1 class="SP-primaryText text-center p-3">No Doctor Exists</h1>
+        }
+        @foreach(var doc in Model)
+        {
+            <div class="SP-docCard d-flex flex-wrap align-items-center p-3 mb-2 border rounded shadow-sm">
+                <div class="col-12 col-md-2 text-center">
+                    <img src="~/images/@doc.Image" class="rounded-circle img-thumbnail" height="100" width="100" alt="">
+                </div>
+                <div class="col-12 col-md-3 text-center text-md-start">
+                    <p class="mb-1 fw-bold">Dr. @doc.Name</p>
+                    <p class="mb-1 fw-bold">@doc.Title</p>
+                    <p class="mb-1">@doc.Qualifications</p>
+                    <p class="mb-1 fw-bold SP-fees">@doc.Fees E£ fees at the clinic</p>
+                </div>
+                <div class="col-12 col-md-7 flex-wrap justify-content-center gap-2 SP-bookCards">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            @foreach(var app in doc.Appointments)
+                            {
+                                <div class="card d-flex text-center swiper-slide">
+                                    <div class="card-header SP-bookHeader p-1">
+                                        @GetNextDate(app.Day)
+                                    </div>
+                                
+                                    <div class="card-body SP-primaryText flex-column justify-content-center p-2">
+                                        @if(app.Time != null)
+                                        {
+                                            <p class="mb-1">From <strong>@app.Time.Split("|")[0]</strong></p>
+                                            <p class="mb-1">To <strong>@app.Time.Split("|")[1]</strong></p>
+                                        }
+                                        else
+                                        {
+                                            <p class="mb-1">No Available</p>
+                                            <p class="mb-1">Appointments</p>
+                                        }
+                                    </div>
+                                    <a href="#" class="card-footer btn @(app.Time == null ? "disabled" : "")  SP-bookBTN p-1">Book</a>
+                                </div>
+                            }
+                        </div>
+                        <div class="swiper-scrollbar position-static mt-2"></div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <p class="mb-1 text-center text-md-start">Specialities:</p>
+                    <div class="SP-badge-scroll d-flex flex-wrap gap-1">
+                        @foreach(var spec in doc.Specialties)
+                        {
+                            <span class="badge rounded-pill SP-badge">@spec</span>
+                        }
+                    </div>
+                </div>
+                <div class="w-100"></div>
+                <div class="d-flex flex-wrap col-12 align-items-center">
+                    <div class="flex-grow-1 col-12 col-md-8 d-flex justify-content-around mt-3">
+                        <div><i class="fa-solid fa-star SP-icon"></i><span class="ms-2">@doc.Rating</span></div>
+                        <div><i class="fa-solid fa-calendar-days SP-icon"></i><span class="ms-2">@doc.Experiance+ Years</span></div>
+                        <div><i class="fa-solid fa-location-dot SP-icon"></i><span class="ms-2">@doc.Governorate : @doc.Location</span></div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex mt-3 gap-1">
+                        <a href="tel:@doc.Phone" class="btn col-6 SP-callBTN">
+                            <i class="fa-solid fa-phone-volume me-2"></i>
+                            @doc.Phone
+                        </a>
+                        <a asp-action="Profile" asp-controller="Doctor" asp-route-id="@doc.ID" class="btn col-6 SP-callBTN">
+                            View Doctor
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item flex-fill">
+                    <a class="page-link SP-prevBTN SP-primaryText" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @if (ViewBag.pageNums > 1)
+                {
+                    <li class="page-item flex-fill">
+                        <a onclick="GoToPage(1)" href="#" class="page-link @(ViewBag.currentPage == 1 ? "SP-active" : "")">1</a>
+                    </li>
+                }
+
+                <!-- Left Ellipsis -->
+                @if (ViewBag.currentPage > 4)
+                {
+                    <li class="page-item flex-fill disabled"><span class="page-link">...</span></li>
+                }
+                @for (int i = Math.Max(2, ViewBag.currentPage - 2); i <= Math.Min(ViewBag.pageNums - 1, ViewBag.currentPage + 2); i++)
+                {
+                    <li class="page-item flex-fill">
+                        <a onclick="GoToPage(@i)" href="#" class="page-link @(i == ViewBag.currentPage ? "SP-active" : "")">@i</a>
+                    </li>
+
+                }
+
+                @if (ViewBag.currentPage < ViewBag.pageNums - 3)
+                {
+                    <li class="page-item flex-fill disabled"><span class="page-link">...</span></li>
+                }
+
+                <!-- Last Page -->
+                @if (ViewBag.pageNums > 1)
+                {
+                    <li class="page-item flex-fill">
+                        <a onclick="GoToPage(@ViewBag.pageNums)" href="#" class="page-link @(ViewBag.currentPage == ViewBag.pageNums ? "SP-active" : "")">@ViewBag.pageNums</a>
+                    </li>
+                }
+                <li class="page-item flex-fill">
+                    @if(ViewBag.currentPage == ViewBag.pageNums)
+                    {
+                        <a class="page-link SP-nextBTN disabled SP-primaryText" href="#" aria-label="Next">
+                            <span class="w-100" aria-hidden="true">&raquo;</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="page-link SP-nextBTN SP-primaryText" href="#" aria-label="Next">
+                            <span class="w-100" aria-hidden="true">&raquo;</span>
+                        </a>
+                    }
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="~/js/doctorsSearchPage.js"></script>
+}
+

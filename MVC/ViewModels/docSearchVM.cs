@@ -21,7 +21,7 @@ namespace MVC.ViewModels
 
         public float Rating { get; set; }
 
-        public int Experiance { get; set; }
+        public int Experience { get; set; }
 
         public Governorate Governorate { get; set; }
         public string Location { get; set; }

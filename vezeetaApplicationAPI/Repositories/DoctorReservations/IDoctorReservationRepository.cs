@@ -8,7 +8,12 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.DoctorReservations
 {
-    internal interface IDoctorReservationRepository:IGenericRepository<DoctorReservation>
+    public interface IDoctorReservationRepository : IGenericRepository<DoctorReservation>
     {
+        public Task<List<DoctorReservation>> GetReservationsByDocID(int id, bool WithAsNoTracking = true);
+
+
     }
+
+
 }

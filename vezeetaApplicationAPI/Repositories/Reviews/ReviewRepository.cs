@@ -10,7 +10,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Reviews
 {
-    internal class ReviewRepository : GenericRepository<Review> , IReviewRepository
+    public class ReviewRepository : GenericRepository<Review> , IReviewRepository
     {
         private readonly AppDbContext context;
         public ReviewRepository(AppDbContext _context) : base(_context)
@@ -34,6 +34,19 @@ namespace DAL.Repositories.Reviews
             if (WithAsNoTracking)
             {
                 context.Entry(res).State = EntityState.Detached;
+            }
+            return res;
+        }
+        public async Task<ICollection<Review>> GetDoctorReviews(int doctorId, bool WithAsNoTracking = true)
+        {
+            var res = await context.Reviews.Include(r => r.Patient).Include(r => r.Doctor)
+                    .Where(r => r.DoctorID == doctorId).ToListAsync();
+            if (WithAsNoTracking)
+            {
+                foreach (var review in res)
+                {
+                    context.Entry(review).State = EntityState.Detached;
+                }
             }
             return res;
         }

@@ -8,7 +8,8 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Specialties
 {
-    internal interface ISpecialtyRepository : IGenericRepository<Specialty>
+    public interface ISpecialtyRepository : IGenericRepository<Specialty>
     {
+        public Task<ICollection<Doctor>> GetSpecialtyDoctors(int specialtyId);
     }
 }

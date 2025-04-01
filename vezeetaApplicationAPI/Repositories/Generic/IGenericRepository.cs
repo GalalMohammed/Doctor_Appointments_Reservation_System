@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories.Generic
 {
-    internal interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         public Task<List<T>> GetAll(bool WithAsNoTracking = true);
         public Task<T> GetByID(int id, bool WithAsNoTracking = true);

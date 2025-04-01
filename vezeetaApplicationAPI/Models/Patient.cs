@@ -12,9 +12,9 @@ namespace vezeetaApplicationAPI.Models
     public class Patient : Person
     {
         public int ID { get; set; }
-        //[ForeignKey("AppUser")]
-        //public int AppUserID { get; set; }
-        //public AppUser? AppUser { get; set; }
+        [ForeignKey("AppUser")]
+        public int AppUserID { get; set; }
+        public AppUser? AppUser { get; set; }
 
         public ICollection<Appointment>? Appointments { get; set; }
         public ICollection<Review>? Reviews { get; set; }

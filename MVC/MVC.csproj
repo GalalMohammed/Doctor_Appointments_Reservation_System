@@ -10,6 +10,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\ts\confirm-email.ts" />
     <Content Remove="wwwroot\ts\login.ts" />
+    <Content Remove="wwwroot\ts\patient-profile.ts" />
     <Content Remove="wwwroot\ts\register.ts" />
   </ItemGroup>
 
@@ -33,6 +34,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\ts\confirm-email.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\patient-profile.ts" />
     <TypeScriptCompile Include="wwwroot\ts\register.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

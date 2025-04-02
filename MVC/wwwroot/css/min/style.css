@@ -11,23 +11,23 @@
     /* Not Added to Project yet  */
     scroll-behavior: smooth;
 }
-.swiper {
+.home .swiper {
     width: 600px;
     height: 300px;
 }
 
-.swiper-slide img {
+.home .swiper-slide img {
     opacity: 0;
     transform: scale(1.5);
     transition: transform 2s ease-in, opacity 1s ease-in;
 }
 
-.swiper-slide-active img {
+.home .swiper-slide-active img {
     transform: scale(1);
     opacity: 1;
 }
 
-.bg-header {
+.home .bg-header {
     position: absolute;
     inset: 0;
     bottom: 50px;
@@ -38,27 +38,27 @@
     background-color: var(--primary-color);
 }
 
-#words,
-#words + span {
+.home #words,
+.home #words + span {
     font-size: 2rem;
     font-weight: bold;
 }
 
-.services .card {
+.home .services .card {
     --bg-icon-opacity: 0.025;
 }
 
 
-.services .card {
+.home .services .card {
     background-color: var(--accent-color) !important;
     transition: all 0.3s ease-in;
 }
 
-    .services .card * {
+    .home .services .card * {
         transition: all 0.3s ease-in;
     }
 
-    .services .card::after {
+    .home .services .card::after {
         content: '\f061';
         font-family: "Font Awesome 6 Free";
         font-weight: 900;
@@ -73,7 +73,7 @@
         transition: all 1s;
     }
 
-    .services .card::before {
+    .home .services .card::before {
         content: "";
         position: absolute;
         right: 5px;
@@ -89,7 +89,7 @@
 
 
 
-    .services .card:hover {
+    .home .services .card:hover {
         --primary-color: #b3e5fc;
         --secondary-color: #004085;
         --accent-color: #B3E5FC;
@@ -101,33 +101,31 @@
         color: white !important;
     }
 
-        .services .card:hover::after {
+        .home .services .card:hover::after {
             transform: rotate(-45deg) translate(30px, 0px)
         }
 
-.doctors 
-{
+.home .doctors {
     background-image: linear-gradient(to top, rgba(186, 178, 178, 0.626) 10%, #004085d4), url("../../images/home/ser_bg.jpg");
     padding-block: 70px;
     background-attachment: fixed;
 }
 
-.doctors .swiper-slide:not(.my-slide-btn) 
-{
-}
+    .home .doctors .swiper-slide:not(.my-slide-btn) {
+    }
 
-.doctor-button-prev {
+.home .doctor-button-prev {
     left: 8%;
     /* Move left arrow further left */
 }
 
-.doctor-button-next {
+.home .doctor-button-next {
     right: 8%;
     /* Move right arrow further right */
 }
 
-.doctor-button-prev,
-.doctor-button-next {
+.home .doctor-button-prev,
+.home .doctor-button-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -135,11 +133,11 @@
     z-index: 12;
 }
 
-.my-slide-btn {
+.home .my-slide-btn {
     width: fit-content !important;
 }
 
-.my-controls {
+.home .my-controls {
     border-radius: 10px;
     /* background-color: var(--accent-color); */
     padding-block: 8px;
@@ -150,7 +148,7 @@
     /* box-shadow: 0 0 3px 1px var(--primary-color) inset; */
 }
 
-    .my-controls .my-slide-btn .my-btn {
+    .home .my-controls .my-slide-btn .my-btn {
         background-color: white;
         color: #004085;
         transition: all 0.2s ease-in-out;
@@ -158,31 +156,32 @@
         font-weight: 600 !important;
     }
 
-        .my-controls .my-slide-btn .my-btn:hover {
+        .home .my-controls .my-slide-btn .my-btn:hover {
             /* border: #004085; */
             outline: 3px solid #004085a5;
             /* box-shadow:  0 0 2px 1px var(--primary-color) ; */
             scale: 1.05;
         }
 
-        .my-controls .my-slide-btn .my-btn.mixitup-control-active {
+        .home .my-controls .my-slide-btn .my-btn.mixitup-control-active {
             background-color: #004085 !important;
             color: white;
         }
 
-.doctor-stars {
+.home .doctor-stars {
     background-clip: text !important;
     color: transparent !important;
     font-size: 1.5rem;
 }
 
 
-.my-nav-tabs .swiper-slide img {
+.home .my-nav-tabs .swiper-slide img {
     opacity: 1;
     transform: scale(1);
 }
 
-.my-nav-tabs .doctor-card {
+
+.home .my-nav-tabs .doctor-card {
     box-shadow: 0 0 2px 3px #00408588;
     margin-block: 15px;
     position: relative;
@@ -190,7 +189,7 @@
     overflow: hidden;
 }
 
-    .my-nav-tabs .doctor-card::after {
+    .home .my-nav-tabs .doctor-card::after {
         content: "";
         position: absolute;
         bottom: -100%;
@@ -201,12 +200,12 @@
         border-top-right-radius: 999px;
         background-image: linear-gradient(-45deg,#004085d8 0% 20%,rgba(255, 255, 255, 0.562) );
     }
-
-    .my-nav-tabs .doctor-card:hover {
+     
+    .home .my-nav-tabs .doctor-card:hover {
         transform: scale(1.0083) translateY(-10px);
     }
-
-    .my-nav-tabs .doctor-card:hover::after {
+    
+    .home .my-nav-tabs .doctor-card:hover::after {
             bottom: -60%;
             left: -50%;
         }

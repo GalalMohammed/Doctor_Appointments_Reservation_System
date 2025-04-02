@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC.ViewModels;
 
 namespace MVC.Controllers
 {
@@ -8,5 +9,26 @@ namespace MVC.Controllers
         {
             return View();
         }
+
+        public IActionResult ForgetPassword()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgetPassword(ForgetPasswordVM forgetPasswordVM)
+        {
+            #region need some sort of checking (If Email Already Exist in DB)
+
+            #endregion
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("ResetPassword");
+            }
+            return View(forgetPasswordVM);
+        }
+
+
     }
 }

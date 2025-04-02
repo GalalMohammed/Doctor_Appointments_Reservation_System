@@ -101,18 +101,7 @@ var typed = new Typed("#words", {
     loop: true,
 });
 
-//document.querySelectorAll(".swiper-container-btns .btn").forEach(button => {
-//    button.addEventListener("click", function () {
-//        console.log();
-//        //mixer.filter("all")
-//        mixer.filter(button.getAttribute("data-filter"))
-//        //swiper2.update();
-//        //swiper2.slideTo(0);
-//        //swiper2.update();
-//        //swiper2.slideTo(0);
 
-//        });
-//});
 
 AOS.init();
 

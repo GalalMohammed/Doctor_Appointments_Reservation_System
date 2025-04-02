@@ -105,14 +105,16 @@
             transform: rotate(-45deg) translate(30px, 0px)
         }
 
-.doctors {
-    background-image: linear-gradient(to top, rgba(186, 178, 178, 0.626) 10%, #004085d4), url("../../images/ser_bg.jpg");
+.doctors 
+{
+    background-image: linear-gradient(to top, rgba(186, 178, 178, 0.626) 10%, #004085d4), url("../../images/home/ser_bg.jpg");
     padding-block: 70px;
     background-attachment: fixed;
 }
 
-    .doctors .swiper-slide:not(.my-slide-btn) {
-    }
+.doctors .swiper-slide:not(.my-slide-btn) 
+{
+}
 
 .doctor-button-prev {
     left: 8%;

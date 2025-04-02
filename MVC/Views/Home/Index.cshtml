@@ -791,11 +791,9 @@
 
                     @foreach(var Doctor in Model.Doctors)
                     {
-
-
                         <div class="swiper-slide mix @Doctor.Specialty">
 
-                            <a href="" class="text-decoration-none">
+                            <a asp-controller="Doctor" asp-action="Profile" asp-route-ID="@Doctor.ID" class="text-decoration-none">
                                 <div class="slide-content card doctor-card  ">
                                     @*you need add the real path of the uploaded image  *@
                                     <img src="images/home/doctor-ahmed-aboulghate-dermatology_20210110154100677.jpg" class="card-img-top rounded-circle mx-auto mt-3" alt="Doctor" style="width: 100px; height: 100px;">
@@ -807,7 +805,8 @@
                                         <div class="doctor-stars" 
                                         style="background-image: 
                                         linear-gradient(to right,gold 0% @(Doctor.Rating/5*100)% ,rgba(41, 40, 40, 0.662) @(Doctor.Rating/5*100)% 100% );">
-                                        ★★★★★</div>
+                                        ★★★★★
+                                    </div>
 
                                     </div>
                                 </div>
@@ -819,8 +818,6 @@
 
 
                 </div>
-
-                <!-- Navigation Buttons -->
 
             </div>
 

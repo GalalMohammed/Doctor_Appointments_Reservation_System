@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 using vezeetaApplicationAPI.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DAL.Models;
 
 namespace vezeetaApplicationAPI.DataAccess
 {
@@ -24,17 +25,11 @@ namespace vezeetaApplicationAPI.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Patient>( builder =>
+            modelBuilder.Entity<Person>( builder =>
             {
                 builder.HasOne(p => p.AppUser)
                     .WithOne()
-                    .HasForeignKey<Patient>(p => p.AppUserID);
-            });
-            modelBuilder.Entity<Doctor>( builder =>
-            {
-                builder.HasOne(d => d.AppUser)
-                    .WithOne()
-                    .HasForeignKey<Doctor>(d => d.AppUserID);
+                    .HasForeignKey<Person>(p => p.AppUserID);
             });
             modelBuilder.Entity<Doctor>()
                 .HasOne(d => d.Specialty)

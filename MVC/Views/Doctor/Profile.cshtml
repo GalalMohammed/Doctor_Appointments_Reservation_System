@@ -32,11 +32,11 @@
     <link rel="stylesheet" href="~/css/doctorProfile.css">
 }
 
-<div class="container mt-4">
+<div class="container z-n1" style="padding-top:80px">
     <div class="row">
         <div class="col-md-4">
-            <div class=" sticky-md-top text-center">
-                <img src="~/images/@Model.Image" class="rounded-circle img-thumbnail" height="150" width="150" alt="Doctor Image">
+            <div class=" sticky-md-top text-center z-n1 pt-5">
+                <img src="~/images/@Model.Image" class="rounded-circle img-thumbnail z-n1 position-relative" height="150" width="150" alt="Doctor Image">
                 <h3 class="mt-2">Dr. @Model.Name</h3>
                 <p class="fw-bold">@Model.Title</p>
                 <p class="mb-2">@Model.Qualifications</p>
@@ -55,7 +55,7 @@
                     <a class="nav-link SP-primaryText @(ViewBag.reviews != false ? "active" : "")" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reviews</a>
                 </li>
             </ul>
-            <div class="tab-content mt-3">
+            <div class="tab-content my-3 ">
                 <div class="tab-pane fade @(ViewBag.reviews == false ? "show active" : "")" id="details">
                     <div class="col-12 flex-wrap justify-content-center my-3 gap-2 SP-bookCards">
                         <div class="swiper mySwiper">
@@ -205,7 +205,7 @@
                             </div>
                         }
                         <nav aria-label="Page navigation">
-                            <ul class="pagination text-center justify-content-center" data-aos="fade-up">
+                            <ul class="pagination text-center justify-content-center" >
                                 <li class="page-item flex-fill">
                                     <a asp-action="Profile" asp-controller="Doctor" asp-route-id="@Model.ID" asp-route-pageNum="@((int)ViewBag.currentPage - 2)" asp-route-reviews="true" class="page-link SP-prevBTN SP-primaryText" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>

@@ -17,7 +17,7 @@ namespace MVC.ViewModels
 
         public int Fees { get; set; }
 
-        public List<string> Specialties { get; set; }
+        public List<string> Specialties { get; set; } = new();
 
         public float Rating { get; set; }
 

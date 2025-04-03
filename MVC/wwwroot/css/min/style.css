@@ -60,50 +60,6 @@
     --accent-color: #F8F9FA;
     --accent-color-rgb: 248, 249, 250;
 }
-:root {
-    --primary-font-color: #004085;
-    --card-text-color: black;
-    /* Not Added to Project yet  */
-    scroll-behavior: smooth;
-}
-
-.home .swiper {
-    width: 600px;
-    height: 300px;
-}
-
-.home .swiper-slide img 
-{
-    opacity: 0;
-    transform: scale(1.5);
-    transition: transform 2s ease-in, opacity 1s ease-in;
-}
-
-.home .swiper-slide-active img {
-    transform: scale(1);
-    opacity: 1;
-}
-
-.home .bg-header {
-    position: absolute;
-    inset: 0;
-    bottom: 50px;
-    height: 100%;
-    z-index: 10;
-    opacity: 0.75;
-    width: 100%;
-    background-color: var(--primary-color);
-}
-
-.home #words,
-.home #words + span {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.home .services .card {
-    --bg-icon-opacity: 0.025;
-}
 
 html {
     scrollbar-color: var(--primary-color) var(--accent-color);
@@ -342,67 +298,50 @@ html {
 }
 
 :root {
-    --primary-color: #004085;
-    --primary-color-rgb: 0, 64, 133;
-    --secondary-color: #B3E5FC;
-    --secondary-color-rgb: 179, 229, 252;
-    --accent-color: #F8F9FA;
-    --accent-color-rgb: 248, 249, 250;
+    --primary-font-color: #004085;
+    --card-text-color: black;
+    /* Not Added to Project yet  */
+    scroll-behavior: smooth;
 }
 
-html {
-    scrollbar-color: var(--primary-color) var(--accent-color);
+.home .swiper {
+    width: 600px;
+    height: 300px;
 }
 
-/* Card Styling */
-.SP-card {
-    max-width: 400px;
+.home .swiper-slide img 
+{
+    opacity: 0;
+    transform: scale(1.5);
+    transition: transform 2s ease-in, opacity 1s ease-in;
+}
+
+.home .swiper-slide-active img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.home .bg-header {
+    position: absolute;
+    inset: 0;
+    bottom: 50px;
+    height: 100%;
+    z-index: 10;
+    opacity: 0.75;
     width: 100%;
-    border-radius: 10px;
-    background: var(--accent-color);
-}
-
-/* Text Styling */
-.SP-primaryText {
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-/* Reset Button */
-.SP-resetBTN {
     background-color: var(--primary-color);
-    color: var(--accent-color);
-    border-color: var(--primary-color);
+}
+
+.home #words,
+.home #words + span {
+    font-size: 2rem;
     font-weight: bold;
-    transition: 0.3s ease;
 }
 
-    .SP-resetBTN:hover {
-        color: var(--primary-color);
-        background-color: var(--secondary-color);
-        border-color: var(--primary-color);
-    }
-
-/* Password Toggle Button */
-.SP-toggle-password {
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    cursor: pointer;
-    padding: 0 10px;
+.home .services .card {
+    --bg-icon-opacity: 0.025;
 }
 
-    .SP-toggle-password .eye-icon {
-        color: var(--primary-color);
-        font-size: 1.2rem;
-        transition: 0.3s ease;
-    }
-
-/* Responsive */
-@media (max-width: 576px) {
-    .SP-card {
-        padding: 2rem;
-    }
-}
 
 .home .services .card {
     background-color: var(--accent-color) !important;
@@ -917,6 +856,69 @@ input[readonly='readonly'] {
     background-color: var(--primary-color);
     color: white;
 }
+:root {
+    --primary-color: #004085;
+    --primary-color-rgb: 0, 64, 133;
+    --secondary-color: #B3E5FC;
+    --secondary-color-rgb: 179, 229, 252;
+    --accent-color: #F8F9FA;
+    --accent-color-rgb: 248, 249, 250;
+}
+
+html {
+    scrollbar-color: var(--primary-color) var(--accent-color);
+}
+
+/* Card Styling */
+.SP-card {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 10px;
+    background: var(--accent-color);
+}
+
+/* Text Styling */
+.SP-primaryText {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Reset Button */
+.SP-resetBTN {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-color: var(--primary-color);
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+    .SP-resetBTN:hover {
+        color: var(--primary-color);
+        background-color: var(--secondary-color);
+        border-color: var(--primary-color);
+    }
+
+/* Password Toggle Button */
+.SP-toggle-password {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+    .SP-toggle-password .eye-icon {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        transition: 0.3s ease;
+    }
+
+/* Responsive */
+@media (max-width: 576px) {
+    .SP-card {
+        padding: 2rem;
+    }
+}
+
 html {
   font-size: 14px;
 }

@@ -1,4 +1,5 @@
-﻿using MVC.Validation;
+﻿using MVC.Enums;
+using MVC.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVC.ViewModels
@@ -21,7 +22,7 @@ namespace MVC.ViewModels
         [Display(Name = "Phone Number")]
         [RegularExpression("^0\\d{10}$", ErrorMessage = "Invalid Phone Number")]
         public string PhoneNumber { get; set; }
-        public City City { get; set; }
+        public Governorate Governorate { get; set; }
         [Display(Name = "Birth Date")]
         [ValidDate]
         public DateOnly BirthDate { get; set; }

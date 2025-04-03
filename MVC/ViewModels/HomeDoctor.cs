@@ -7,8 +7,7 @@
         public string Specialty { get; set; }
         public string Image { get; set; }
         public float Rating { get; set; }
-        public string Location { get; set; }
-
+        public string Location { get; set; } //Giza,Fasil
     }
 
     

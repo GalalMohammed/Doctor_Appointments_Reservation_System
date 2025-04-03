@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC.Enums;
 using MVC.ViewModels;
 
 namespace MVC.Controllers
@@ -15,7 +16,7 @@ namespace MVC.Controllers
                 FirstName = "John",
                 LastName = "Doe",
                 BirthDate = new DateOnly(2001, 1, 1),
-                City = City.City1,
+                Governorate = Governorate.Assiut,
                 Email = "test@example.com",
                 OldPassword = "1234",
                 PhoneNumber = "01234567891",
@@ -27,7 +28,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -35,7 +36,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -43,7 +44,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -51,7 +52,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -59,7 +60,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -67,7 +68,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -75,7 +76,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -83,7 +84,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -91,7 +92,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -99,7 +100,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -107,7 +108,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -115,7 +116,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -123,7 +124,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = City.City1
+                        Location = Governorate.Assiut
                     }
                 }
             };

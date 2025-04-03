@@ -11,7 +11,7 @@ namespace DAL.Repositories.Generic
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly AppDbContext context;
-        public GenericRepository(AppDbContext _context) 
+        public GenericRepository(AppDbContext _context)
         {
             context = _context;
 
@@ -52,6 +52,16 @@ namespace DAL.Repositories.Generic
         {
             context.Update(entity);
             context.SaveChanges();
+        }
+        public virtual async Task<List<T>> GetAllByConditon(Func<T, bool> condition, bool WithAsNoTracking = true)
+        {
+            if (WithAsNoTracking)
+            {
+                var res = context.Set<T>().AsNoTracking().Where(condition);
+                return res.ToList();
+            }
+            return context.Set<T>().Where(condition).ToList();
+
         }
     }
 }

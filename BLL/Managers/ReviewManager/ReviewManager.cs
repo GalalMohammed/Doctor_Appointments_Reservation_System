@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
-namespace BLLServices.Managers
+namespace BLLServices.Managers.ReviewManager
 {
-    public class ReviewManager
+    public class ReviewManager: IReviewManager
     {
         private readonly ReviewRepository reviewRepository;
         public ReviewManager(ReviewRepository reviewRepository)

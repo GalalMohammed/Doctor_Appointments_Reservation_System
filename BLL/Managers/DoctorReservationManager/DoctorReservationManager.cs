@@ -7,9 +7,9 @@ using DAL.Repositories.DoctorReservations;
 using vezeetaApplicationAPI.Models;
 
 
-namespace BLLServices.Managers
+namespace BLLServices.Managers.DoctorReservationManager
 {
-    public class DoctorReservationManager
+    public class DoctorReservationManager : IDoctorReservationManager
     {
         private readonly IDoctorReservationRepository DR_manager;
         public DoctorReservationManager(IDoctorReservationRepository res)
@@ -32,7 +32,7 @@ namespace BLLServices.Managers
         {
             return DR_manager.GetReservationsByDocID(id);
         }
-        public void GenerateCalanderReservation(Doctor doc,int MaxRes)
+        public void GenerateCalanderReservation(Doctor doc, int MaxRes)
         {
             WorkingDays days = doc.WorkingDays;
             foreach (WorkingDays day in Enum.GetValues(typeof(WorkingDays)))
@@ -42,13 +42,13 @@ namespace BLLServices.Managers
                     GenerateRecordDay(doc, day, MaxRes);
                 }
             }
-            
+
         }
         private void GenerateRecordDay(Doctor doc, WorkingDays day, int MaxRes)
         {
             DateTime date = GetCorrespondingNextDay(DateTime.Now, day);
-            DateTime start = new DateTime(new DateOnly(date.Year,date.Month,date.Day)
-                 ,new TimeOnly(doc.DefaultStartTime.Hour,doc.DefaultStartTime.Minute));
+            DateTime start = new DateTime(new DateOnly(date.Year, date.Month, date.Day)
+                 , new TimeOnly(doc.DefaultStartTime.Hour, doc.DefaultStartTime.Minute));
             DateTime end = new DateTime(new DateOnly(date.Year, date.Month, date.Day)
                  , new TimeOnly(doc.DefaultEndTime.Hour, doc.DefaultEndTime.Minute));
             DoctorReservation newReservation = new DoctorReservation()
@@ -62,12 +62,11 @@ namespace BLLServices.Managers
             {
                 DR_manager.Add(newReservation);
             }
-            else 
-            { 
+            else
+            {
                 Console.WriteLine("Reservation Already Exist");
-                DR_manager.Update(newReservation); 
+                DR_manager.Update(newReservation);
             }
-            
         }
         private static DateTime GetCorrespondingNextDay(DateTime date, WorkingDays day)
         {
@@ -86,7 +85,7 @@ namespace BLLServices.Managers
         private async Task<bool> IsInCalender(DoctorReservation res)
         {
             List<DoctorReservation> reservations = await DR_manager.GetAll();
-            return reservations.Any(r=>r.DoctorID==res.DoctorID 
+            return reservations.Any(r => r.DoctorID == res.DoctorID
             && r.StartTime.Day == res.StartTime.Day);
         }
     }

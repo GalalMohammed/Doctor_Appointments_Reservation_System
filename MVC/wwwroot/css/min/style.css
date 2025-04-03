@@ -57,280 +57,6 @@
     --secondary-color: #B3E5FC;
     --accent-color: #F8F9FA;
 }
-.login-div {
-    width: 750px;
-    height: 500px;
-    border: 1px solid var(--secondary-color);
-}
-
-.login-div > div {
-    background-color: var(--primary-color);
-}
-
-.login-register-button {
-    font-size: 0.8rem;
-    text-decoration: none;
-    background-color: transparent;
-    border: 1px solid white;
-    transition: 0.2s;
-}
-
-.login-register-button:hover {
-    color: var(--primary-color) !important;
-    background-color: white;
-}
-
-.login-register-sm {
-    transform: translateY(510px);
-    border-top: 1px solid #eee;
-    padding-top: 5px;
-}
-
-.login-register-sm > a {
-    text-decoration: none;
-    color: var(--primary-color);
-}
-
-@media(max-width: 768px) {
-    .login-div {
-        width: 80%;
-        height: 450px;
-        border: none;
-        box-shadow: none !important;
-    }
-}
-
-.form-container {
-    color: var(--primary-color);
-}
-
-@media(max-width: 576px) {
-    .form-container {
-        width: 100% !important;
-    }
-}
-
-.login-title {
-    color: var(--primary-color);
-}
-
-.form-container a {
-    text-decoration: none;
-}
-
-.login-social-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: var(--primary-color);
-    border: 1px solid var(--secondary-color);
-}
-
-.login-submit {
-    background-color: var(--primary-color);
-    color: var(--accent-color);
-}
-
-.login-submit:hover {
-    background-color: transparent;
-    border: 1px solid var(--primary-color);
-}
-
-.form-container .login-form-input {
-    display: block;
-    width: 100%;
-    outline: none;
-    border: 1px solid var(--secondary-color);
-    padding: 5px 10px;
-    border-radius: 10px !important;
-}
-
-.form-container .login-form-input:focus {
-    border: 1px solid var(--primary-color);
-}
-
-.separation-div {
-    position: relative;
-}
-
-.separation-div::before {
-    content: "";
-    height: 1px;
-    width: 100%;
-    background-color: var(--primary-color);
-    position: absolute;
-    top: 60%;
-    left: 0;
-    z-index: -1;
-}
-
-.input-div {
-    height: 150px;
-}
-
-#validation-summary > ul {
-    list-style: none;
-    padding: 0;
-}
-.patient-profile-container, .patient-appointments-container {
-    color: var(--primary-color);
-    border: 1px solid var(--secondary-color);
-}
-
-input[readonly='readonly'] {
-    background-color: #ddd;
-}
-
-#patient-more-information {
-    color: white;
-    border: none;
-    background-color: var(--primary-color);
-}
-
-#patient-more-information-button {
-    color: white;
-    background-color: var(--primary-color);
-}
-
-    #patient-more-information-button:focus {
-        box-shadow: none;
-    }
-
-    #patient-more-information-button::after {
-        display: none;
-    }
-
-#patient-arrow-icon {
-    transition: 0.2s;
-}
-
-    #patient-arrow-icon.up {
-        transform: scaleY(-1);
-    }
-
-.patient-tab {
-    color: var(--primary-color);
-}
-
-    .patient-tab:hover {
-        background-color: var(--secondary-color);
-    }
-
-.patient-tab-active, .patient-tab-active:hover {
-    color: white !important;
-    background-color: var(--primary-color);
-}
-
-.patient-appointments-container {
-    height: 600px;
-}
-
-.patient-appointment-card {
-    background-image: linear-gradient(to right, #a2d9ff, #e0f7ff) !important;
-}
-
-@media(max-width: 768px) {
-    .patient-appointment-card {
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        gap: 10px;
-    }
-    .patient-appointment-card-content {
-        width: 100% !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        gap: 10px;
-    }
-
-.patient-appointment-card-content > div {
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 5px;
-}
-
-    .patient-appointment-card-content > div:nth-child(even) {
-        padding-bottom: 10px !important;
-    }
-
-    .appointment-doctor-image {
-        height: 80px;
-        width: 80px;
-    }
-}
-
-.appointment-doctor-image {
-    width: 100px;
-    height: 100px;
-    border: 1px solid var(--secondary-color);
-}
-
-.appointment-cancel-icon {
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
-    color: var(--primary-color);
-    font-size: 20px;
-}
-
-.patient-appointment-details i {
-    color: var(--primary-color);
-}
-
-.register-div {
-    width: 770px;
-    height: 520px;
-    border: 1px solid var(--secondary-color);
-}
-
-.register-div > div {
-    background-color: var(--primary-color);
-}
-
-.register-welcome {
-    width: 40%;
-}
-
-.register-form {
-    width: 60%;
-}
-
-.register-form > div {
-    transition: 0.2s;
-}
-
-@media(max-width: 768px) {
-    .register-div {
-        display: block !important;
-        width: 80%;
-        border: none;
-        box-shadow: none !important;
-    }
-
-    .register-form {
-        width: 100%;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-    }
-
-    .register-input-group {
-        justify-content: center !important;
-    }
-
-    #register-step-2 {
-        justify-content: space-between !important;
-    }
-}
-
-.validation-summary > ul {
-    list-style: none;
-    padding: 0;
-}
-
-.register-input-group {
-    height: 45%;
-}
-
 :root {
     --primary-font-color: #004085;
     --card-text-color: black;
@@ -535,6 +261,121 @@ input[readonly='readonly'] {
             left: -50%;
         }
 
+.login-div {
+    width: 750px;
+    height: 500px;
+    border: 1px solid var(--secondary-color);
+}
+
+.login-div > div {
+    background-color: var(--primary-color);
+}
+
+.login-register-button {
+    font-size: 0.8rem;
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid white;
+    transition: 0.2s;
+}
+
+.login-register-button:hover {
+    color: var(--primary-color) !important;
+    background-color: white;
+}
+
+.login-register-sm {
+    transform: translateY(510px);
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+}
+
+.login-register-sm > a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+@media(max-width: 768px) {
+    .login-div {
+        width: 80%;
+        height: 450px;
+        border: none;
+        box-shadow: none !important;
+    }
+}
+
+.form-container {
+    color: var(--primary-color);
+}
+
+@media(max-width: 576px) {
+    .form-container {
+        width: 100% !important;
+    }
+}
+
+.login-title {
+    color: var(--primary-color);
+}
+
+.form-container a {
+    text-decoration: none;
+}
+
+.login-social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.login-submit {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+.login-submit:hover {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+}
+
+.form-container .login-form-input {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid var(--secondary-color);
+    padding: 5px 10px;
+    border-radius: 10px !important;
+}
+
+.form-container .login-form-input:focus {
+    border: 1px solid var(--primary-color);
+}
+
+.separation-div {
+    position: relative;
+}
+
+.separation-div::before {
+    content: "";
+    height: 1px;
+    width: 100%;
+    background-color: var(--primary-color);
+    position: absolute;
+    top: 60%;
+    left: 0;
+    z-index: -1;
+}
+
+.input-div {
+    height: 150px;
+}
+
+#validation-summary > ul {
+    list-style: none;
+    padding: 0;
+}
 
 .divider-block {
     margin-block: 15px;
@@ -606,6 +447,175 @@ nav li.nav-item {
         opacity: 0.8;
     }
 
+.patient-profile-container, .patient-appointments-container {
+    color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+input[readonly='readonly'] {
+    background-color: #ddd;
+}
+
+#patient-more-information {
+    color: white;
+    border: none;
+    background-color: var(--primary-color);
+}
+
+#patient-more-information-button {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+    #patient-more-information-button:focus {
+        box-shadow: none;
+    }
+
+    #patient-more-information-button::after {
+        display: none;
+    }
+
+#patient-arrow-icon {
+    transition: 0.2s;
+}
+
+    #patient-arrow-icon.up {
+        transform: scaleY(-1);
+    }
+
+.patient-tab {
+    color: var(--primary-color);
+}
+
+    .patient-tab:hover {
+        background-color: var(--secondary-color);
+    }
+
+.patient-tab-active, .patient-tab-active:hover {
+    color: white !important;
+    background-color: var(--primary-color);
+}
+
+.patient-appointments-container {
+    height: 600px;
+}
+
+.patient-appointment-card {
+    background-image: linear-gradient(to right, #a2d9ff, #e0f7ff) !important;
+}
+
+@media(max-width: 768px) {
+    .patient-appointment-card {
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 10px;
+    }
+    .patient-appointment-card-content {
+        width: 100% !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 10px;
+    }
+
+.patient-appointment-card-content > div {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 5px;
+}
+
+    .patient-appointment-card-content > div:nth-child(even) {
+        padding-bottom: 10px !important;
+    }
+
+    .appointment-doctor-image {
+        height: 80px;
+        width: 80px;
+    }
+}
+
+.appointment-doctor-image {
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--secondary-color);
+}
+
+.appointment-cancel-icon {
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.patient-appointment-details i {
+    color: var(--primary-color);
+}
+
+.register-div {
+    width: 770px;
+    height: 520px;
+    border: 1px solid var(--secondary-color);
+}
+
+.register-div > div {
+    background-color: var(--primary-color);
+}
+
+.register-welcome {
+    width: 40%;
+}
+
+.register-form {
+    width: 60%;
+}
+
+.register-form > div {
+    transition: 0.2s;
+}
+
+@media(max-width: 768px) {
+    .register-div {
+        display: block !important;
+        width: 80%;
+        border: none;
+        box-shadow: none !important;
+    }
+
+    .register-form {
+        width: 100%;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .register-input-group {
+        justify-content: center !important;
+    }
+
+    #register-step-2 {
+        justify-content: space-between !important;
+    }
+}
+
+.validation-summary > ul {
+    list-style: none;
+    padding: 0;
+}
+
+.register-input-group {
+    height: 45%;
+}
+
+.register-submit {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.register-submit:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
 html {
   font-size: 14px;
 }

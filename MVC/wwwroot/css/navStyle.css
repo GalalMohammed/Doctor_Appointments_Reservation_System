@@ -68,3 +68,11 @@ nav li.nav-item {
         left: 0%;
         opacity: 0.8;
     }
+
+
+@media only screen and (max-width: 600px) {
+    .bg-primary-color-75 {
+        background-color: hsla(211, 100%, 26%, 1);
+    }
+
+}

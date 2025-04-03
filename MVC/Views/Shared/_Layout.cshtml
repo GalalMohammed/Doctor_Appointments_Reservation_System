@@ -18,7 +18,7 @@
   var CurrentPage =  ViewContext.RouteData.Values["controller"]?.ToString();
 }
 <body class="m-0">
-    <nav class="position-fixed w-100 navbar navbar-dark navbar-expand-lg @customNav">
+    <nav id="MainNav" class="position-fixed w-100 navbar navbar-dark navbar-expand-lg @customNav">
         <div class="container-fluid px-5">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                 <img src="/images/Vezeeta.jpeg" alt="" />
@@ -86,15 +86,32 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
+
+
        document.addEventListener("DOMContentLoaded", function () {
-       let path = window.location.pathname.toLowerCase();
-       document.querySelectorAll(".nav li a").forEach(link => {
-        if (link.getAttribute("href").toLowerCase() === path) {
-            link.parentElement.classList.add("active");
-                 document.querySelector("nav a")
-        }
-            });
+       // let path = window.location.pathname.toLowerCase();
+       // document.querySelectorAll(".nav li a").forEach(link => {
+       //  if (link.getAttribute("href").toLowerCase() === path) {
+       //      link.parentElement.classList.add("active");
+       //           document.querySelector("nav a")
+       //  }
+       document.querySelector("button.navbar-toggler").addEventListener("click",()=>{
+
+
+                  var nav = document.getElementById("MainNav");
+                    if(nav.classList.contains("bg-primary-color-75")&&nav.classList.contains("bg-primary-color"))
+                           nav.classList.remove("bg-primary-color")
+                    else                 
+                   if(nav.classList.contains("bg-primary-color-75"))
+                         nav.classList.add("bg-primary-color")
+
+
+                   
+                  
+
         });
+            });
+
     </script>
 
 </body>

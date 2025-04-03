@@ -49,6 +49,7 @@ var swiper3 = new Swiper(".swiper-container-btns", {
         1024: { slidesPerView: 10 }, // Large screens (≥ 1024px)
     },
 });
+swiper3.slideTo(0);
 
 // Initialize MixItUp (Filtering)
 var mixer = mixitup("#mixContainer", {

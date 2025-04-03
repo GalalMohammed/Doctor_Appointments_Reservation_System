@@ -11,12 +11,14 @@
     /* Not Added to Project yet  */
     scroll-behavior: smooth;
 }
+
 .home .swiper {
     width: 600px;
     height: 300px;
 }
 
-.home .swiper-slide img {
+.home .swiper-slide img 
+{
     opacity: 0;
     transform: scale(1.5);
     transition: transform 2s ease-in, opacity 1s ease-in;
@@ -162,7 +164,6 @@
             /* box-shadow:  0 0 2px 1px var(--primary-color) ; */
             scale: 1.05;
         }
-
         .home .my-controls .my-slide-btn .my-btn.mixitup-control-active {
             background-color: #004085 !important;
             color: white;
@@ -174,12 +175,10 @@
     font-size: 1.5rem;
 }
 
-
 .home .my-nav-tabs .swiper-slide img {
     opacity: 1;
     transform: scale(1);
 }
-
 
 .home .my-nav-tabs .doctor-card {
     box-shadow: 0 0 2px 3px #00408588;
@@ -189,7 +188,7 @@
     overflow: hidden;
 }
 
-    .home .my-nav-tabs .doctor-card::after {
+ .home .my-nav-tabs .doctor-card::after {
         content: "";
         position: absolute;
         bottom: -100%;
@@ -201,11 +200,11 @@
         background-image: linear-gradient(-45deg,#004085d8 0% 20%,rgba(255, 255, 255, 0.562) );
     }
      
-    .home .my-nav-tabs .doctor-card:hover {
+.home .my-nav-tabs .doctor-card:hover {
         transform: scale(1.0083) translateY(-10px);
     }
     
-    .home .my-nav-tabs .doctor-card:hover::after {
+.home .my-nav-tabs .doctor-card:hover::after {
             bottom: -60%;
             left: -50%;
         }

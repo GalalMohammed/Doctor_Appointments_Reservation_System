@@ -51,13 +51,23 @@ namespace BLLServices.Managers
                  ,new TimeOnly(doc.DefaultStartTime.Hour,doc.DefaultStartTime.Minute));
             DateTime end = new DateTime(new DateOnly(date.Year, date.Month, date.Day)
                  , new TimeOnly(doc.DefaultEndTime.Hour, doc.DefaultEndTime.Minute));
-            DR_manager.Add(new DoctorReservation
+            DoctorReservation newReservation = new DoctorReservation()
             {
                 DoctorID = doc.ID,
                 StartTime = start,
                 EndTime = end,
                 MaxReservation = MaxRes
-            });
+            };
+            if (!IsInCalender(newReservation).Result)
+            {
+                DR_manager.Add(newReservation);
+            }
+            else 
+            { 
+                Console.WriteLine("Reservation Already Exist");
+                DR_manager.Update(newReservation); 
+            }
+            
         }
         private static DateTime GetCorrespondingNextDay(DateTime date, WorkingDays day)
         {
@@ -72,6 +82,12 @@ namespace BLLServices.Managers
                 daysToAdd = 7;
             }
             return date.AddDays(daysToAdd);
+        }
+        private async Task<bool> IsInCalender(DoctorReservation res)
+        {
+            List<DoctorReservation> reservations = await DR_manager.GetAll();
+            return reservations.Any(r=>r.DoctorID==res.DoctorID 
+            && r.StartTime.Day == res.StartTime.Day);
         }
     }
 }

@@ -4,7 +4,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <CETCompat>false</CETCompat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\ts\confirm-email.ts" />
+    <Content Remove="wwwroot\ts\login.ts" />
+    <Content Remove="wwwroot\ts\patient-profile.ts" />
+    <Content Remove="wwwroot\ts\register.ts" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Services\" />
@@ -24,6 +32,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLLServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\ts\confirm-email.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\patient-profile.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\register.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\ts\login.ts" />
   </ItemGroup>
 
 </Project>

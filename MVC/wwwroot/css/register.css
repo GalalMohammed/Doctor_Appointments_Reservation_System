@@ -1,0 +1,64 @@
+﻿.register-div {
+    width: 770px;
+    height: 520px;
+    border: 1px solid var(--secondary-color);
+}
+
+.register-div > div {
+    background-color: var(--primary-color);
+}
+
+.register-welcome {
+    width: 40%;
+}
+
+.register-form {
+    width: 60%;
+}
+
+.register-form > div {
+    transition: 0.2s;
+}
+
+@media(max-width: 768px) {
+    .register-div {
+        display: block !important;
+        width: 80%;
+        border: none;
+        box-shadow: none !important;
+    }
+
+    .register-form {
+        width: 100%;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .register-input-group {
+        justify-content: center !important;
+    }
+
+    #register-step-2 {
+        justify-content: space-between !important;
+    }
+}
+
+.validation-summary > ul {
+    list-style: none;
+    padding: 0;
+}
+
+.register-input-group {
+    height: 45%;
+}
+
+.register-submit {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.register-submit:hover {
+    background-color: var(--primary-color);
+    color: white;
+}

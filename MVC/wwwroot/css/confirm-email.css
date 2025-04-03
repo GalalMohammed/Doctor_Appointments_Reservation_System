@@ -1,0 +1,27 @@
+.confirm-div {
+    padding: 30px;
+    height: 420px;
+    color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+#confirm-bar {
+    height: 3px;
+    border-radius: 10px;
+    background-color: #eee;
+}
+
+#confirm-bar-movable {
+    width: 100%;
+    transition: 0.5s;
+    background-color: var(--primary-color);
+}
+
+@media(max-width: 576px) {
+    .confirm-div {
+        width: 85% !important;
+    }
+    #confirm-bar {
+        width: 75% !important;
+    }
+}

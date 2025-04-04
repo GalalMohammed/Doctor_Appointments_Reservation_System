@@ -586,8 +586,7 @@ html {
 
 .login-register-sm {
     transform: translateY(510px);
-    border-top: 1px solid #eee;
-    padding-top: 5px;
+    padding-top: 40px;
 }
 
 .login-register-sm > a {

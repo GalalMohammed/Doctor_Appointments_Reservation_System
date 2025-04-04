@@ -1,16 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
 
 namespace DAL.Repositories.Generic
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly AppDbContext context;
+        protected readonly AppDbContext context;
         public GenericRepository(AppDbContext _context)
         {
             context = _context;

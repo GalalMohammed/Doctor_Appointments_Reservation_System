@@ -9,7 +9,7 @@ namespace MVC.Mappers
         {
             throw new NotImplementedException();
         }
-        public PatientViewModel MapTpPatientViewModel(Patient patient)
+        public PatientViewModel MapToPatientViewModel(Patient patient)
         {
             throw new NotImplementedException();
         }

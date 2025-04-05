@@ -39,6 +39,20 @@ namespace BLLServices.Managers.ReviewManager
         {
             return await reviewRepository.GetDoctorReviews(doctorId);
         }
+        public async Task<float> GetDoctorAverageRating(int docId)
+        {
+            var reviews = await reviewRepository.GetDoctorReviews(docId);
+            if (reviews.Count == 0)
+            {
+                return 0;
+            }
+            float sum = 0;
+            foreach (var review in reviews)
+            {
+                sum += review.Rate;
+            }
+            return sum / reviews.Count;
 
+        }
     }
 }

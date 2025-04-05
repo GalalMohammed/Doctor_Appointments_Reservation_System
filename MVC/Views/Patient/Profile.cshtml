@@ -1,0 +1,116 @@
+﻿@model PatientViewModel
+
+@{
+    ViewData["title"] = "Profile";
+}
+<div class="" style="padding-top:80px">
+    <div class="col-12 pt-3 ">
+        <ul class="d-flex justify-content-center gap-3 list-unstyled p-0 ">
+            <li class="btn patient-tab patient-tab-active" data-tab="patient-tab-1"><span>Details</span></li>
+            <li class="btn patient-tab" data-tab="patient-tab-2"><span>My Appointments</span></li>
+        </ul>
+    </div>
+    <div id="patient-tab-1" class="row w-75 patient-profile-container mx-auto p-3 shadow-sm rounded-4">
+        <div class="col-12 col-md-2 text-center">
+            <img id="patient-profile-image" src="~/images/d.png" alt="patient image" class="rounded-circle w-100" />
+        </div>
+        <form asp-controller="Patient" asp-action="Edit" asp-route-id="@Model.Id" method="post" class="form-container d-flex flex-column justify-content-between gap-3 col-12 col-md-10 p-3">
+            <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
+            <div class="row justify-content-between">
+                <div class="col-12 col-md-6">
+                    <label asp-for="FirstName" class="form-label my-1"></label>
+                    <input asp-for="FirstName" class="login-form-input rounded-1" readonly="readonly" />
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="LastName" class="form-label my-1"></label>
+                    <input asp-for="LastName" class="login-form-input rounded-1" readonly="readonly" />
+                </div>
+            </div>
+            <div>
+                <label asp-for="Email" class="form-label my-1"></label>
+                <input asp-for="Email" class="login-form-input rounded-1" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="PhoneNumber" class="form-label my-1"></label>
+                <input asp-for="PhoneNumber" class="login-form-input rounded-1" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item" id="patient-more-information">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button position-relative" id="patient-more-information-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <span class="px-1 mx-auto">More Information <i id="patient-arrow-icon" class="fa-solid fa-arrow-down ms-1"></i></span>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div>
+                                <label asp-for="BirthDate" class="form-label my-1"></label>
+                                <input asp-for="BirthDate" class="login-form-input rounded-1" readonly="readonly" />
+                            </div>
+                            <div>
+                                <label asp-for="Governorate" class="form-label my-1"></label>
+                                <select asp-for="Governorate" asp-items="@Html.GetEnumSelectList<Governorate>()" class="form-select"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <a asp-controller="account" asp-action="resetpassword" class="btn login-submit">Reset Password</a>
+                <input type="submit" class="btn login-submit" value="Save Changes" />
+            </div>
+        </form>
+    </div>
+    <div id="patient-tab-2" class="d-none row w-75 patient-appointments-container mx-auto shadow-sm rounded-4">
+        <swiper-container class="w-100 h-100 p-3 mx-auto position-relative" pagination="true" pagination-clickable="true" slides-per-view="1" grid-rows="2" space-between="40">
+            @if (Model.Appointments != null)
+            {
+                foreach (var appointment in Model.Appointments)
+                {
+                    <swiper-slide class="patient-appointment-card p-3 shadow overflow-hidden d-flex gap-3 bg-white rounded-3 align-items-center position-relative" data-aos="fade-left">
+                        <partial name="_PatientAppointmentPartial" model="appointment" />
+                    </swiper-slide>
+                }
+            }
+        </swiper-container>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll(".appointment-cancel-icon").forEach(icon =>
+            icon.addEventListener("click", () => {
+                Swal.fire({
+                        icon: "error",
+                        title: "Are you sure?",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        denyButtonText: "No",
+                        color: "#004085",
+                        confirmButtonColor: "#004085",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
+            }));
+    </script>
+    <script src="~/js/patient-profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+    @if (ViewBag?.Success ?? false)
+    {
+        <script type="module">
+            Swal.fire({
+                title: "Success",
+                text: "Your profile has been updated!",
+                color: "#004085",
+                confirmButtonColor: "#004085",
+                icon: "success"
+            });
+        </script>
+    }
+    <partial name="_ValidationScriptsPartial" />
+}

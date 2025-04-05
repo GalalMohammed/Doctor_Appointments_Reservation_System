@@ -1,0 +1,114 @@
+﻿.login-div {
+    width: 750px;
+    height: 500px;
+    border: 1px solid var(--secondary-color);
+}
+
+.login-div > div {
+    background-color: var(--primary-color);
+}
+
+.login-register-button {
+    font-size: 0.8rem;
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid white;
+    transition: 0.2s;
+}
+
+.login-register-button:hover {
+    color: var(--primary-color) !important;
+    background-color: white;
+}
+
+.login-register-sm {
+    transform: translateY(510px);
+    padding-top: 40px;
+}
+
+.login-register-sm > a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+@media(max-width: 768px) {
+    .login-div {
+        width: 80%;
+        height: 450px;
+        border: none;
+        box-shadow: none !important;
+    }
+}
+
+.form-container {
+    color: var(--primary-color);
+}
+
+@media(max-width: 576px) {
+    .form-container {
+        width: 100% !important;
+    }
+}
+
+.login-title {
+    color: var(--primary-color);
+}
+
+.form-container a {
+    text-decoration: none;
+}
+
+.login-social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.login-submit {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+.login-submit:hover {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+}
+
+.form-container .login-form-input {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid var(--secondary-color);
+    padding: 5px 10px;
+    border-radius: 10px !important;
+}
+
+.form-container .login-form-input:focus {
+    border: 1px solid var(--primary-color);
+}
+
+.separation-div {
+    position: relative;
+}
+
+.separation-div::before {
+    content: "";
+    height: 1px;
+    width: 100%;
+    background-color: var(--primary-color);
+    position: absolute;
+    top: 60%;
+    left: 0;
+    z-index: -1;
+}
+
+.input-div {
+    height: 150px;
+}
+
+#validation-summary > ul {
+    list-style: none;
+    padding: 0;
+}

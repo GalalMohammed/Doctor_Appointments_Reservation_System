@@ -73,6 +73,8 @@ namespace BLLServices.Managers.DoctorManger
                 var reviews = doctor.Reviews;
             }
         }
+        // get doctor review avg
+        // get doctor reservation for a week ahead // list of doctorReservation Type
 
 
     }

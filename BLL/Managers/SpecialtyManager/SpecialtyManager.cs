@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
-namespace BLLServices.Managers
+namespace BLLServices.Managers.SpecialtyManager
 {
     public class SpecialtyManager
     {

@@ -8,7 +8,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Appointments
 {
-    internal interface IAppointmentRepository:IGenericRepository<Appointment>
+    public interface IAppointmentRepository:IGenericRepository<Appointment>
     {
     }
 }

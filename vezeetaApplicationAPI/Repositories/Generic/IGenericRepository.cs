@@ -13,6 +13,7 @@ namespace DAL.Repositories.Generic
         public void Add(T entity);
         public void Update(T entity);
         public void Delete(T entity);
+        public Task<List<T>> GetAllByConditon(Func<T, bool> condition, bool WithAsNoTracking = true);
 
 
     }

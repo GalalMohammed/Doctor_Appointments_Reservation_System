@@ -39,8 +39,6 @@ namespace DAL.Models
         [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
 
-
-        [ForeignKey("AppUser")]
         public int AppUserID { get; set; }
         public AppUser? AppUser { get; set; }
         [Required(ErrorMessage = "Location is required")]

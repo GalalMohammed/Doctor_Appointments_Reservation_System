@@ -21,15 +21,15 @@ namespace DAL.Repositories.Appointments
         {
             if (WithAsNoTracking)
             {
-                return await context.Appointments.Include(a => a.DoctorReservation)
+                return await context.Appointments.Include(a => a.DoctorReservation).ThenInclude(a => a!.Doctor).ThenInclude(a => a!.Specialty)
                     .Include(a => a.Patient).AsNoTracking().ToListAsync();
             }
-            return await context.Appointments.Include(a => a.DoctorReservation)
+            return await context.Appointments.Include(a => a.DoctorReservation).ThenInclude(a => a!.Doctor).ThenInclude(a => a!.Specialty)
                     .Include(a => a.Patient).ToListAsync();
         }
         public override async Task<Appointment> GetByID(int id, bool WithAsNoTracking = true)
         {
-            var res = await context.Appointments.Include(a => a.DoctorReservation)
+            var res = await context.Appointments.Include(a => a.DoctorReservation).ThenInclude(a => a!.Doctor).ThenInclude(a => a!.Specialty)
                     .Include(a => a.Patient).Where(a => a.ID == id).FirstOrDefaultAsync();
             if (WithAsNoTracking)
             {

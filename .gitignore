@@ -1,4 +1,5 @@
 **/bin
 **/obj
+**/ts
 .vs
 **/appsettings.Development.json

@@ -11,17 +11,14 @@ namespace vezeetaApplicationAPI.Models
     {
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Specialty Name is required")]
         [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "Specialty Name must be less than 50 characters")]
         [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "Specialty Name must be alphabetic")]
         public required string Name { get; set; }
         
-        [Required(ErrorMessage = "Specialty Image is required")]
-        [Display(Name = "Specialty Image")]
         public required string ImageURL { get; set; }
         
-        public ICollection<Doctor>? Doctors { get; set; }
+        public virtual ICollection<Doctor>? Doctors { get; set; }
         
         public override string ToString()
         {

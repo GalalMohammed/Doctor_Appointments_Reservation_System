@@ -24,61 +24,37 @@ namespace vezeetaApplicationAPI.Models
     {
         public int ID { get; set; }
 
-        //[ForeignKey("AppUser")]
-        //public int AppUserID { get; set; }
-        //public AppUser? AppUser { get; set; }
-
-        [Required(ErrorMessage = "Doctor Speciality is required")]
-        [Display(Name = "Specialty")]
         public int SpecialtyID { get; set; }
-        public Specialty? Specialty { get; set; }
+        public virtual Specialty? Specialty { get; set; }
         
-        [Required(ErrorMessage = "Doctor Name is required")]
         [DataType(DataType.Currency)]
         public decimal Fees { get; set; }
         
-        [Required(ErrorMessage = "Doctor Waiting Time is required")]
         [Range(0, 60)]
-        [Display(Name = "Waiting Time")]
         [DataType(DataType.Duration)]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Waiting Time must be a number")]
         public int WaitingTime { get; set; }
         
-        //[Required(ErrorMessage = "Doctor Location is required")]
-        //[DataType(DataType.Text)]
-        //public required string Location { get; set; }
-        
         [Range(0, 5)]
-        [Display(Name = "Overall Rating")]
         public float OverallRating { get; set; }
         
-        [Display(Name = "Doctor Image")]
-        [Required(ErrorMessage = "Doctor Image is required")]
         public required string ImageURL { get; set; }
         
-        [Required(ErrorMessage = "About Doctor is required")]
         [DataType(DataType.MultilineText)]
-        [Display(Name = "About Doctor")]
         [StringLength(500, ErrorMessage = "About Doctor must be less than 500 characters")]
         public required string About { get; set; }
         
-        [Required(ErrorMessage = "Doctor Working Days is required")]
-        [Display(Name = "Working Days")]
         [EnumDataType(typeof(WorkingDays))]
         public WorkingDays WorkingDays { get; set; }
         
-        [Required(ErrorMessage = "Doctor Default Start Time is required")]
-        [Display(Name = "Default Start Time")]
         [DataType(DataType.Time)]
         public DateTime DefaultStartTime { get; set; }
         
-        [Required(ErrorMessage = "Doctor Default End Time is required")]
-        [Display(Name = "Default End Time")]
         [DataType(DataType.Time)]
         public DateTime DefaultEndTime { get; set; }
         
-        public ICollection<DoctorReservation>? DoctorReservations { get; set; }
-        public ICollection<Review>? Reviews { get; set; }
+        public virtual ICollection<DoctorReservation>? DoctorReservations { get; set; }
+        public virtual ICollection<Review>? Reviews { get; set; }
     }
 
 }

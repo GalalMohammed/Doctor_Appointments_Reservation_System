@@ -166,10 +166,10 @@ namespace MVC.Controllers
 
             
         }
-        private static List<Appointment> GenerateAppointments()
+        private static List<DoctorReservationViewModel> GenerateAppointments()
         {
             var random = new Random();
-            return Enumerable.Range(0, 7).Select(day => new Appointment
+            return Enumerable.Range(0, 7).Select(day => new DoctorReservationViewModel
             {
                 Day = day,
                 Time = random.Next(0, 2) == 0 ? null : $"{random.Next(8, 12)}:00 AM|{random.Next(1, 6)}:00 PM"

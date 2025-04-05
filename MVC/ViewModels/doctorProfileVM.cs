@@ -29,7 +29,7 @@ namespace MVC.ViewModels
         public string Phone { get; set; }
 
         public List<Rating> Ratings { get; set; }
-        public List<Appointment> Appointments { get; set; }
+        public List<DoctorReservationViewModel> Appointments { get; set; }
         public double Latitude { get; internal set; }
         public double Longitude { get; internal set; }
     }

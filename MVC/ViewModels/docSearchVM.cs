@@ -28,6 +28,6 @@ namespace MVC.ViewModels
 
         public string Phone { get; set; }
 
-        public List<Appointment> Appointments { get; set; }
+        public List<DoctorReservationViewModel> Appointments { get; set; }
     }
 }

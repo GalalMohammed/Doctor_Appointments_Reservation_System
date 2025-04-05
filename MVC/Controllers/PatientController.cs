@@ -18,7 +18,6 @@ namespace MVC.Controllers
                 BirthDate = new DateOnly(2001, 1, 1),
                 Governorate = Governorate.Assiut,
                 Email = "test@example.com",
-                OldPassword = "1234",
                 PhoneNumber = "01234567891",
                 Appointments = new List<AppointmentViewModel>()
                 {

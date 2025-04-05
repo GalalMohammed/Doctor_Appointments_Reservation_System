@@ -26,16 +26,6 @@
                     <input asp-for="LastName" class="login-form-input rounded-1" readonly="readonly" />
                 </div>
             </div>
-            <div class="row justify-content-between">
-                <div class="col-12 col-md-6">
-                    <label asp-for="OldPassword" class="form-label my-1"></label>
-                    <input asp-for="OldPassword" class="login-form-input rounded-1" />
-                </div>
-                <div class="col-12 col-md-6">
-                    <label asp-for="NewPassword" class="form-label my-1"></label>
-                    <input asp-for="NewPassword" class="login-form-input rounded-1" />
-                </div>
-            </div>
             <div>
                 <label asp-for="Email" class="form-label my-1"></label>
                 <input asp-for="Email" class="login-form-input rounded-1" />
@@ -67,7 +57,10 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="btn login-submit com-sm-6 col-lg-4 align-self-end" value="Save Changes" />
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <a asp-controller="account" asp-action="resetpassword" class="btn login-submit">Reset Password</a>
+                <input type="submit" class="btn login-submit" value="Save Changes" />
+            </div>
         </form>
     </div>
     <div id="patient-tab-2" class="d-none row w-75 patient-appointments-container mx-auto shadow-sm rounded-4">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.DoctorManger
 {
@@ -11,7 +12,8 @@ namespace BLLServices.Managers.DoctorManger
         public  Task AddDoctor(DoctorVM doctorVM);
         public Task GetDoctorInfo(int doctorID);
         public Task UpdateDoctor(DoctorVM doctorVM);
-       
+        public Task<List<Doctor>> GetDoctorsOrderedByrating();
+
 
 
 

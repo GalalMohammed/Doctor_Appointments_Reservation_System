@@ -7,7 +7,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.DoctorManger
 {
-    public class DoctorVM
+    public class DoctorVM 
     {
         public int ID { get; set; }
         public int SpecialtyID { get; set; }

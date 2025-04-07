@@ -10,7 +10,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Doctors
 {
-    internal class DoctorRepository : GenericRepository<Doctor>, IDoctorRepository
+    public class DoctorRepository : GenericRepository<Doctor>, IDoctorRepository
     {
         private readonly AppDbContext context;
         public DoctorRepository(AppDbContext _context) : base(_context)

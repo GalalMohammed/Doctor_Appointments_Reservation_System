@@ -12,10 +12,8 @@ namespace DAL.Repositories.Specialties
 {
     public class SpecialtyRepository : GenericRepository<Specialty>, ISpecialtyRepository
     {
-        private readonly AppDbContext context;
         public SpecialtyRepository(AppDbContext _context) : base(_context)
         {
-            context = _context;
         }
         public override async Task<List<Specialty>> GetAll(bool WithAsNoTracking = true)
         {

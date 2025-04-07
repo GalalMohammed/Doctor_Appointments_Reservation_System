@@ -8,7 +8,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.SpecialtyManager
 {
-    public class SpecialtyManager
+    public class SpecialtyManager : ISpecialtyManager
     {
         private readonly ISpecialtyRepository _specialtyRepository;
         public SpecialtyManager(ISpecialtyRepository specialtyRepository)

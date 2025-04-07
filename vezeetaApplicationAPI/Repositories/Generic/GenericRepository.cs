@@ -5,7 +5,7 @@ namespace DAL.Repositories.Generic
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly AppDbContext context;
+        protected AppDbContext context;
         public GenericRepository(AppDbContext _context)
         {
             context = _context;

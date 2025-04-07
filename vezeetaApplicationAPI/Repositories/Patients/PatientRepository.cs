@@ -12,7 +12,6 @@ namespace DAL.Repositories.Patients
 {
     public class PatientRepository : GenericRepository<Patient>, IPatientRepository
     {
-        private readonly AppDbContext context;
         public PatientRepository(AppDbContext _context) : base(_context)
         {
         }

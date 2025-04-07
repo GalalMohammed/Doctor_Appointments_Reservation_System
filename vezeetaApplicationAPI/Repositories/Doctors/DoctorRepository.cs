@@ -12,7 +12,7 @@ namespace DAL.Repositories.Doctors
 {
     public class DoctorRepository : GenericRepository<Doctor>, IDoctorRepository
     {
-        private readonly AppDbContext context;
+        private AppDbContext context;
         public DoctorRepository(AppDbContext _context) : base(_context)
         {
             context = _context;

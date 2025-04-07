@@ -12,7 +12,6 @@ namespace DAL.Repositories.DoctorReservations
 {
     public class DoctorReservationRepository : GenericRepository<DoctorReservation>, IDoctorReservationRepository
     {
-        private readonly AppDbContext context;
         public DoctorReservationRepository(AppDbContext _context) : base(_context)
         {
             context = _context;

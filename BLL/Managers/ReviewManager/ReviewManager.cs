@@ -10,8 +10,8 @@ namespace BLLServices.Managers.ReviewManager
 {
     public class ReviewManager: IReviewManager
     {
-        private readonly ReviewRepository reviewRepository;
-        public ReviewManager(ReviewRepository reviewRepository)
+        private readonly IReviewRepository reviewRepository;
+        public ReviewManager(IReviewRepository reviewRepository)
         {
             this.reviewRepository = reviewRepository;
         }

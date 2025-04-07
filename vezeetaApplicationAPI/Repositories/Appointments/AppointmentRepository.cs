@@ -12,7 +12,6 @@ namespace DAL.Repositories.Appointments
 {
     public class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
     {
-        private readonly AppDbContext context;
         public AppointmentRepository(AppDbContext _context) : base(_context)
         {
             context = _context;

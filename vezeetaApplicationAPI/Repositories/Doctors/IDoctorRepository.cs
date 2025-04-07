@@ -8,7 +8,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Repositories.Doctors
 {
-    internal interface IDoctorRepository:IGenericRepository<Doctor>
+    public interface IDoctorRepository:IGenericRepository<Doctor>
     {
     }
 }

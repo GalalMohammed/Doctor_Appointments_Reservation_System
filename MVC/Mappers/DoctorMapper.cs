@@ -1,4 +1,5 @@
 ﻿using BLLServices.Managers.AppointmentManager;
+using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
@@ -11,15 +12,17 @@ namespace MVC.Mappers
     public class DoctorMapper
     {
         private IReviewManager _reviewManager;
+        private IDoctorManager _doctorManager;
         private IDoctorReservationManager _doctorReservationManager;
         private ISpecialtyManager _specialtyManager;
 
         public DoctorMapper(IDoctorReservationManager doctorReservationManager,ISpecialtyManager specialtyManager
-            ,IReviewManager reviewManager) 
+            ,IDoctorManager doctorManager ,IReviewManager reviewManager) 
         {
             _doctorReservationManager = doctorReservationManager;
-            _specialtyManager = specialtyManager
+            _specialtyManager = specialtyManager;
             _reviewManager = reviewManager;
+            _doctorManager = doctorManager;
         }
         public DoctorReservationViewModel MapToDoctorReservationViewModel(DoctorReservation reservation)
         {
@@ -66,9 +69,54 @@ namespace MVC.Mappers
                 Appointments = appointments
             };
         }
-        public doctorProfileVM MapToDoctorProfileVM(Doctor doctor)
+        public async Task<Doctor> MapFromDocSearchVM(docSearchVM doctorVM)
         {
-            throw new NotImplementedException();
+            return await _doctorManager.GetDoctorByID(doctorVM.ID);   
+        }
+        public async Task<doctorProfileVM> MapToDoctorProfileVM(Doctor doctor)
+        {
+            var specialties = await _specialtyManager.GetAllSpecialties();
+            var specialtiesList = specialties.Select(s => s.Name).ToList();
+            var avgRating = await _reviewManager.GetDoctorAverageRating(doctor.ID);
+            var reservations = await _doctorReservationManager.GetReservationsByDocID(doctor.ID);
+            List<DoctorReservationViewModel> appointments = new List<DoctorReservationViewModel>();
+            foreach (var reservation in reservations)
+            {
+                appointments.Add(MapToDoctorReservationViewModel(reservation));
+            }
+            var reviews = await _reviewManager.GetDoctorReviews(doctor.ID);
+            List<Rating> ratings = new List<Rating>();
+            foreach (var review in reviews)
+            {
+                ratings.Add(MapToRating(review));
+            }
+            return new doctorProfileVM
+            {
+                ID = doctor.ID,
+                Name = $"{doctor.FirstName} {doctor.LastName}",
+                Title = null,
+                Gender = (Enums.Gender)doctor.Gender, // unite in one enum
+                Image = doctor.ImageURL,
+                Qualifications = null,
+                Fees = (int)doctor.Fees, // remember to change it to double
+                Specialties = specialtiesList,
+                Rating = avgRating,
+                Experience = 0, // remember to change it or remove it
+                Governorate = 0, // remember to change it or remove it
+                Location = doctor.Location,
+                Phone = doctor.AppUser.PhoneNumber,
+                Appointments = appointments,
+                Ratings = ratings, 
+                Latitude = (double)doctor.Lat, // change it to float
+                Longitude = (double)doctor.Lng
+            };
+        }
+        public async Task<Doctor> MapFromDoctorProfileVM(doctorProfileVM doctorVM)
+        {
+            var doctor = await _doctorManager.GetDoctorByID(doctorVM.ID);
+            doctor.Lat = (float)doctorVM.Latitude;
+            doctor.Lng = (float)doctorVM.Longitude;
+            return doctor;
         }
         public Rating MapToRating(Review review)
         {

@@ -11,12 +11,12 @@ using DAL.Repositories.Doctors;
 
 namespace BLLServices.Managers.DoctorManger
 {
-   
-    public class DoctorManger : IDoctorManger
+
+    public class DoctorManager : IDoctorManager
     {
         IMapper _mapper;
-        DoctorRepository Repository;
-        public DoctorManger(DoctorRepository repo)
+        IDoctorRepository Repository;
+        public DoctorManager(IDoctorRepository repo)
         {
             Repository = repo;
             #region using AutoMapper
@@ -43,7 +43,7 @@ namespace BLLServices.Managers.DoctorManger
             Repository.Add(newDoctor);
 
         }
-        public async Task UpdateDoctor(DoctorVM doctorVM)
+        public async Task UpdateDoctor(Doctor doctorVM)
         {
             var doctor = await Repository.GetByID(doctorVM.ID);
             if (doctor is null)
@@ -52,7 +52,6 @@ namespace BLLServices.Managers.DoctorManger
             }
             else
             {
-                _mapper.Map(doctorVM, doctor);
                 Repository.Update(doctor);
             }
         }
@@ -68,8 +67,24 @@ namespace BLLServices.Managers.DoctorManger
                 var reviews = doctor.Reviews;
             }
         }
+        public async Task<List<Doctor>> GetAllDoctors()
+        {
+            var doctors = await Repository.GetAll();
+            return doctors.ToList();
+        }
+        public async Task<Doctor> GetDoctorByID(int id)
+        {
+            var doctor = await Repository.GetByID(id);
+            if (doctor is null)
+            {
+                throw new Exception("Doctor does not exist");
+            }
+            else
+            {
+                return doctor;
+            }
 
-
+        }
     }
 
 }

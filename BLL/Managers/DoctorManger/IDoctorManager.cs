@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.DoctorManger
 {
-    public interface IDoctorManger
+    public interface IDoctorManager
     {
         public  Task AddDoctor(DoctorVM doctorVM);
         public Task GetDoctorInfo(int doctorID);
-        public Task UpdateDoctor(DoctorVM doctorVM);
-       
+        public Task UpdateDoctor(Doctor doctorVM);
 
+        public Task<List<Doctor>> GetAllDoctors();
+        public Task<Doctor> GetDoctorByID(int id);
 
 
     }

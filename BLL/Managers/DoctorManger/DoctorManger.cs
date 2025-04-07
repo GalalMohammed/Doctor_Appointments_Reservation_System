@@ -68,6 +68,12 @@ namespace BLLServices.Managers.DoctorManger
                 var reviews = doctor.Reviews;
             }
         }
+        public async Task<List<Doctor>> GetDoctorsOrderedByrating()
+        {
+            var doctors = await Repository.GetAll();
+            var orderedDoctors = doctors.OrderByDescending(d => d.OverallRating).ToList();
+            return orderedDoctors;
+        }
 
 
     }

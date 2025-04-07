@@ -8,8 +8,8 @@ namespace MVC.Mappers
     public class HomeMapper
     {
         private readonly ISpecialtyManager _specialtyManager;
-        private readonly IDoctorManger _doctorManger;
-        public HomeMapper(ISpecialtyManager specialtyManager, IDoctorManger doctorManger)
+        private readonly IDoctorManager _doctorManger;
+        public HomeMapper(ISpecialtyManager specialtyManager, IDoctorManager doctorManger)
         {
             _specialtyManager = specialtyManager;
             _doctorManger = doctorManger;

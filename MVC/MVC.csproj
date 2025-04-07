@@ -27,10 +27,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.8.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
   </ItemGroup>
 
@@ -38,13 +34,6 @@
     <ProjectReference Include="..\BLL\BLLServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\ts\confirm-email.ts" />
-    <TypeScriptCompile Include="wwwroot\ts\patient-profile.ts" />
-    <TypeScriptCompile Include="wwwroot\ts\register.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="wwwroot\ts\login.ts" />
-  </ItemGroup>
+  
 
 </Project>

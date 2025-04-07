@@ -7,17 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
+using DAL.Repositories.Doctors;
 
 namespace BLLServices.Managers.DoctorManger
 {
    
-    public class DoctorManger
+    public class DoctorManger : IDoctorManger
     {
-        AppDbContext _context;
         IMapper _mapper;
-        public DoctorManger(AppDbContext context)
+        DoctorRepository Repository;
+        public DoctorManger(DoctorRepository repo)
         {
-            _context = context;
+            Repository = repo;
             #region using AutoMapper
             var config =
                 new MapperConfiguration(cfg =>
@@ -39,15 +40,12 @@ namespace BLLServices.Managers.DoctorManger
         public async Task AddDoctor(DoctorVM doctorVM)
         {
             var newDoctor = _mapper.Map<Doctor>(doctorVM);
-            _context.Doctors.Add(newDoctor);
+            Repository.Add(newDoctor);
 
-            await _context.SaveChangesAsync();
         }
         public async Task UpdateDoctor(DoctorVM doctorVM)
         {
-            var doctor = await _context.Doctors
-                .Include(d => d.AppUser)
-                .FirstOrDefaultAsync(d => d.ID == doctorVM.ID);
+            var doctor = await Repository.GetByID(doctorVM.ID);
             if (doctor is null)
             {
                 throw new Exception("Doctor does not exist");
@@ -55,15 +53,12 @@ namespace BLLServices.Managers.DoctorManger
             else
             {
                 _mapper.Map(doctorVM, doctor);
-
-                await _context.SaveChangesAsync();
+                Repository.Update(doctor);
             }
         }
         public async Task GetDoctorInfo(int doctorID)
         {
-            var doctor = await _context.Doctors
-                .Include(d => d.Reviews).Include(d => d.Specialty).Include(d => d.DoctorReservations)
-                .FirstOrDefaultAsync(d => d.ID == doctorID);
+            var doctor = await Repository.GetByID(doctorID);
             if (doctor is null)
             {
                 throw new Exception("Doctor does not exist");
@@ -73,8 +68,6 @@ namespace BLLServices.Managers.DoctorManger
                 var reviews = doctor.Reviews;
             }
         }
-        // get doctor review avg
-        // get doctor reservation for a week ahead // list of doctorReservation Type
 
 
     }

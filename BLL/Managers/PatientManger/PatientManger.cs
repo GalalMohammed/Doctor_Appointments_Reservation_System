@@ -10,18 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
-
+using DAL.Repositories.Patients; 
 namespace BLLServices.Managers.PatientManger
 {
 
-    public class PatientManger
+    public class PatientManger : IPatientManger
     {
-        AppDbContext _context;
+        private PatientRepository patientRepository;
         IMapper _mapper;
         Patient _patient;
-        public PatientManger(AppDbContext context)
+        public PatientManger(PatientRepository repo)
         {
-            _context = context;
+            patientRepository = repo;
             #region using AutoMapper
             var config =
                 new MapperConfiguration(cfg =>
@@ -43,15 +43,12 @@ namespace BLLServices.Managers.PatientManger
         public async Task AddPatient(PatientVM patientVM)
         {
             var newPatient = _mapper.Map<Patient>(patientVM);
-            _context.Patients.Add(newPatient);
+             patientRepository.Add(newPatient);
 
-            await _context.SaveChangesAsync();
         }
         public async Task UpdatePatient(PatientVM patientVM)
         {
-            var patient = await _context.Patients
-                .Include(p => p.AppUser)
-                .FirstOrDefaultAsync(p => p.ID == patientVM.ID);
+            var patient = await patientRepository.GetByID(patientVM.ID);
             if (patient is null)
             {
                 throw new Exception("Patient does not exist");
@@ -59,11 +56,10 @@ namespace BLLServices.Managers.PatientManger
             else
             {
                 _mapper.Map(patientVM, patient);
+                patientRepository.Update(patient);
 
-                await _context.SaveChangesAsync();
             }
         }
-
 
     }
 }

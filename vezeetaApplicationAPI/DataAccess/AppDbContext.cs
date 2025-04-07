@@ -25,12 +25,7 @@ namespace vezeetaApplicationAPI.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Person>( builder =>
-            {
-                builder.HasOne(p => p.AppUser)
-                    .WithOne()
-                    .HasForeignKey<Person>(p => p.AppUserID);
-            });
+            modelBuilder.Ignore<Person>();
             modelBuilder.Entity<Doctor>()
                 .HasOne(d => d.Specialty)
                 .WithMany(s => s.Doctors)

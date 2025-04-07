@@ -9,6 +9,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace DAL.Models
 {
+    [NotMapped]
     public abstract class Person
     {
         [StringLength(50, ErrorMessage = "First Name must be less than 50 characters")]
@@ -26,7 +27,7 @@ namespace DAL.Models
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-        public int AppUserID { get; set; }
+        public string AppUserID { get; set; }
         public virtual AppUser? AppUser { get; set; }
         
         [DataType(DataType.Text)]

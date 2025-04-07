@@ -11,10 +11,9 @@ namespace vezeetaApplicationAPI.Models
 {
     public class Patient : Person
     {
+        [Key]
         public int ID { get; set; }
         
-        public int AppUserID { get; set; }
-        public virtual AppUser? AppUser { get; set; }
 
         public virtual ICollection<Appointment>? Appointments { get; set; }
         public virtual ICollection<Review>? Reviews { get; set; }

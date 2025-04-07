@@ -22,6 +22,7 @@ namespace vezeetaApplicationAPI.Models
     }
     public class Doctor : Person
     {
+        [Key]
         public int ID { get; set; }
 
         public int SpecialtyID { get; set; }

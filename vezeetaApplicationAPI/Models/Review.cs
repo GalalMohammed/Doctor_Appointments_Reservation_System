@@ -14,6 +14,8 @@ namespace vezeetaApplicationAPI.Models
         public int PatientID { get; set; }
         
         public int DoctorID { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; } = DateTime.Now;
 
         [Range(0, 5)]
         public int Rate { get; set; }

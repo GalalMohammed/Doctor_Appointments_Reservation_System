@@ -15,5 +15,6 @@ namespace BLLServices.Managers.ReviewManager
         Task<ICollection<Review>> GetAllReviews();
         Task<Review> GetReviewByID(int id);
         Task<ICollection<Review>> GetDoctorReviews(int doctorId);
+        Task<float> GetDoctorAverageRating(int docId);
     }
 }

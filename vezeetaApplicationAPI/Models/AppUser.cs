@@ -10,7 +10,7 @@ namespace vezeetaApplicationAPI.Models
 {
     public enum Gender
     {
-        Male,
+        Male=1,
         Female
     }
     public class AppUser : IdentityUser

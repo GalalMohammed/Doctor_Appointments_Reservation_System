@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
+using MVC.Enums;
+
 
 namespace DAL.Models
 {
@@ -26,6 +28,7 @@ namespace DAL.Models
 
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+        public Governorate Governorate { get; set; }
 
         public string AppUserID { get; set; }
         public virtual AppUser? AppUser { get; set; }

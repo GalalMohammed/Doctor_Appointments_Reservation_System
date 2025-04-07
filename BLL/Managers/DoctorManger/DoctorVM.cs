@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
+using DAL.Enums;
+using MVC.Enums;
 
 namespace BLLServices.Managers.DoctorManger
 {

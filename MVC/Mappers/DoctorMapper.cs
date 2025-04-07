@@ -9,7 +9,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace MVC.Mappers
 {
-    public class DoctorMapper
+    public class DoctorMapper : IDoctorMapper
     {
         private IReviewManager _reviewManager;
         private IDoctorManager _doctorManager;
@@ -28,8 +28,8 @@ namespace MVC.Mappers
         {
             return new DoctorReservationViewModel
             {
-                Day = reservation.EndTime.Day,
-                Time = reservation.EndTime.ToString("hh:mm tt")
+                Day = (int)reservation.EndTime.DayOfWeek, 
+                Time =$"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}" 
             };
         }
         //public DoctorReservation MapFromDoctorReservationViewModel(DoctorReservationViewModel reservationVM)
@@ -43,7 +43,7 @@ namespace MVC.Mappers
         public async Task<docSearchVM> MapToDocSearchVMAsync(Doctor doctor)
         {
             var specialties = await _specialtyManager.GetAllSpecialties();
-            var specialtiesList = specialties.Select(s=>s.Name).ToList();
+            //var specialtiesList = specialties.Select(s=>s.Name).ToList();
             var avgRating = await _reviewManager.GetDoctorAverageRating(doctor.ID);
             var reservations = await _doctorReservationManager.GetReservationsByDocID(doctor.ID);
             List<DoctorReservationViewModel> appointments = new List<DoctorReservationViewModel>();
@@ -56,14 +56,14 @@ namespace MVC.Mappers
                 ID = doctor.ID,
                 Name = $"{doctor.FirstName} {doctor.LastName}",
                 Title = null,
-                Gender = (Enums.Gender)doctor.Gender, // unite in one enum
+                Gender = doctor.Gender, // unite in one enum
                 Image = doctor.ImageURL,
                 Qualifications = null,
                 Fees = (int)doctor.Fees, // remember to change it to double
-                Specialties = specialtiesList,
+                Specialties = new List<string>() { doctor.Specialty.Name }, // for later
                 Rating = avgRating,
                 Experience = 0, // remember to change it or remove it
-                Governorate = 0, // remember to change it or remove it
+                Governorate = 0, // add to database
                 Location = doctor.Location,
                 Phone = doctor.AppUser.PhoneNumber,
                 Appointments = appointments

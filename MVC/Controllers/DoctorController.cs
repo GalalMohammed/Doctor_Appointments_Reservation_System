@@ -1,11 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreGeneratedDocument;
+using BLLServices.Managers.DoctorManger;
+using Microsoft.AspNetCore.Mvc;
 using MVC.Enums;
+using MVC.Mappers;
 using MVC.ViewModels;
 
 namespace MVC.Controllers
 {
     public class DoctorController : Controller
     {
+        private IDoctorManager _doctorManager;
+        private IDoctorMapper _doctorMapper;
+
+        public DoctorController(IDoctorManager doctorManager ,IDoctorMapper doctorMapper)
+        {
+            _doctorManager = doctorManager;
+            _doctorMapper = doctorMapper;
+        }
         public IActionResult Index()
         {
             return View();
@@ -14,39 +25,44 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult Profile(int ID, int pageNum = 0, int pageSize = 10, bool? reviews = false)
         {
-            if(ID == 0) return BadRequest();
-            var doctor = new doctorProfileVM()
-            {
-                ID = 1,
-                Name = "Peter Doe",
-                Title = "Dentist",
-                Image = "maleDoc.jpg",
-                Gender = Gender.Male,
-                Qualifications = "BDS, MDS",
-                Fees = 58,
-                Specialties = new List<string> { "Orthodontist", "Endodontist", "Cosmetic Dentist" },
-                Rating = 4.5f,
-                Experience = 7,
-                Governorate = Governorate.Menofia,
-                Location = "Shebin El Kom",
-                Phone = "23123322",
-                Ratings = GenerateRatings(100,1),
-                Appointments = GenerateAppointments(),
-                Latitude = 30.0444,
-                Longitude = 31.2357
+            var doctor = _doctorManager.GetDoctorByID(ID).Result;
+            if (doctor == null) return NotFound();
+            var doctorVM = _doctorMapper.MapToDoctorProfileVM(doctor);
+            return View(doctorVM);
 
-            };
+            //if(ID == 0) return BadRequest();
+            //var doctor = new doctorProfileVM()
+            //{
+            //    ID = 1,
+            //    Name = "Peter Doe",
+            //    Title = "Dentist",
+            //    Image = "maleDoc.jpg",
+            //    Gender = Gender.Male,
+            //    Qualifications = "BDS, MDS",
+            //    Fees = 58,
+            //    Specialties = new List<string> { "Orthodontist", "Endodontist", "Cosmetic Dentist" },
+            //    Rating = 4.5f,
+            //    Experience = 7,
+            //    Governorate = Governorate.Menofia,
+            //    Location = "Shebin El Kom",
+            //    Phone = "23123322",
+            //    Ratings = GenerateRatings(100,1),
+            //    Appointments = GenerateAppointments(),
+            //    Latitude = 30.0444,
+            //    Longitude = 31.2357
 
-            doctor.Appointments = doctor.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
-                                   .Concat(doctor.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
-                                   .ToList();
+            //};
 
-            ViewBag.reviews = reviews;
-            ViewBag.pageNums = Math.Ceiling((double)doctor.Ratings.Count / pageSize);
-            ViewBag.currentPage = pageNum + 1;
+            //doctor.Appointments = doctor.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
+            //                       .Concat(doctor.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
+            //                       .ToList();
 
-            doctor.Ratings = doctor.Ratings.Skip(pageNum * pageSize).Take(pageSize).ToList();
-            return View(doctor);
+            //ViewBag.reviews = reviews;
+            //ViewBag.pageNums = Math.Ceiling((double)doctor.Ratings.Count / pageSize);
+            //ViewBag.currentPage = pageNum + 1;
+
+            //doctor.Ratings = doctor.Ratings.Skip(pageNum * pageSize).Take(pageSize).ToList();
+            //return View(doctor);
         }
 
         [HttpGet]

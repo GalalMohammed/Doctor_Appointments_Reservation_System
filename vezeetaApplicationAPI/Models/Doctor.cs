@@ -6,20 +6,11 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DAL.Models;
+using DAL.Enums;
 
 namespace vezeetaApplicationAPI.Models
 {
-    [Flags]
-    public enum WorkingDays
-    {
-        Saturday = 1,
-        Sunday = 2,
-        Monday = 4,
-        Tuesday = 8,
-        Wednesday = 16,
-        Thursday = 32,
-        Friday = 64
-    }
+    
     public class Doctor : Person
     {
         [Key]

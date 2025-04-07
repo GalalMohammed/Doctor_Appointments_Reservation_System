@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Repositories.DoctorReservations;
 using vezeetaApplicationAPI.Models;
+using DAL.Enums;
 
 
 namespace BLLServices.Managers.DoctorReservationManager

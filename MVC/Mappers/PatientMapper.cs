@@ -14,7 +14,8 @@ namespace MVC.Mappers
                 DateTime = appointment.AppointmentDate,
                 Doctor = appointment.DoctorReservation?.Doctor?.FirstName + " " + appointment.DoctorReservation?.Doctor?.LastName,
                 Specialty = appointment.DoctorReservation?.Doctor?.Specialty?.Name ?? "Not Available",
-                Location = Enum.Parse<Governorate>(appointment.DoctorReservation?.Doctor?.Location ?? "0"),
+                Governorate = appointment.DoctorReservation.Doctor.Governorate,
+                Location = appointment.DoctorReservation.Doctor.Location,
                 DoctorImagePath = appointment.DoctorReservation?.Doctor?.ImageURL ?? "default_doctor.png"
             };
         }

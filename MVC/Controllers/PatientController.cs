@@ -27,7 +27,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -35,7 +35,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -43,7 +43,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -51,7 +51,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -59,7 +59,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -67,7 +67,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -75,7 +75,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -83,7 +83,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -91,7 +91,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -99,7 +99,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -107,7 +107,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -115,7 +115,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     },
                     new AppointmentViewModel()
                     {
@@ -123,7 +123,7 @@ namespace MVC.Controllers
                         Doctor = "Test Doctor",
                         Specialty = "Cardiology",
                         DoctorImagePath = "d.png",
-                        Location = Governorate.Assiut
+                        Governorate = Governorate.Assiut
                     }
                 }
             };

@@ -5,14 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MVC.Enums;
 
 namespace vezeetaApplicationAPI.Models
 {
-    public enum Gender
-    {
-        Male=1,
-        Female
-    }
     public class AppUser : IdentityUser
     {
         [StringLength(50, ErrorMessage = "First Name must be less than 50 characters")]

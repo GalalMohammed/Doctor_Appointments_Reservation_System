@@ -21,15 +21,15 @@ namespace DAL.Repositories.DoctorReservations
         {
             if (WithAsNoTracking)
             {
-                return await context.DoctorReservations.Include(x=>x.Doctor)
+                return await context.DoctorReservations.Include(x=>x.Doctor).ThenInclude(x => x!.Specialty)
                     .Include(x=>x.Appointments).AsNoTracking().ToListAsync();
             }
-            return await context.DoctorReservations.Include(x => x.Doctor)
+            return await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
                     .Include(x => x.Appointments).ToListAsync();
         }
         public override async Task<DoctorReservation> GetByID(int id, bool WithAsNoTracking = true)
         {
-            var res = await context.DoctorReservations.Include(x => x.Doctor)
+            var res = await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
                     .Include(x => x.Appointments).Where(x=>x.ID== id).FirstOrDefaultAsync();
             if (WithAsNoTracking)
             {
@@ -41,11 +41,11 @@ namespace DAL.Repositories.DoctorReservations
         {
             if (WithAsNoTracking)
             {
-                return await context.DoctorReservations.Include(x => x.Doctor)
+                return await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
                     .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID)
                     .AsNoTracking().ToListAsync();
             }
-            return await context.DoctorReservations.Include(x => x.Doctor)
+            return await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
                     .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID)
                     .ToListAsync();
         }

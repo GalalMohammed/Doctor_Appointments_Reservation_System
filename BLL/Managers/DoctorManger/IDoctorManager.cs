@@ -11,7 +11,9 @@ namespace BLLServices.Managers.DoctorManger
     {
         public  Task AddDoctor(DoctorVM doctorVM);
         public Task GetDoctorInfo(int doctorID);
-        public Task UpdateDoctor(Doctor doctorVM);
+        public Task UpdateDoctor(DoctorVM doctorVM);
+        public Task<List<Doctor>> GetDoctorsOrderedByrating();
+
 
         public Task<List<Doctor>> GetAllDoctors();
         public Task<Doctor> GetDoctorByID(int id);

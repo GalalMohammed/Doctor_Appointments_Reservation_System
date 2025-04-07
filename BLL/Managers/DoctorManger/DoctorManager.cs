@@ -72,17 +72,13 @@ namespace BLLServices.Managers.DoctorManger
             var doctors = await Repository.GetAll();
             return doctors.ToList();
         }
-        public async Task<Doctor> GetDoctorByID(int id)
+        public async Task<List<Doctor>> GetDoctorsOrderedByrating()
         {
-            var doctor = await Repository.GetByID(id);
-            if (doctor is null)
-            {
-                throw new Exception("Doctor does not exist");
-            }
-            else
-            {
-                return doctor;
-            }
+            var doctors = await Repository.GetAll();
+            var orderedDoctors = doctors.OrderByDescending(d => d.OverallRating).ToList();
+            return orderedDoctors;
+        }
+
 
         }
     }

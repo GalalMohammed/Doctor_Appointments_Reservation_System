@@ -79,7 +79,9 @@ namespace BLLServices.Managers.DoctorManger
             return orderedDoctors;
         }
 
-
+        public Task<Doctor> GetDoctorByID(int id)
+        {
+            return Repository.GetByID(id);
         }
     }
 

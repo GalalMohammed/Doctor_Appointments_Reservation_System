@@ -20,7 +20,7 @@ namespace DAL.Repositories.Patients
         {
             if (WithAsNoTracking)
             {
-                return await context.Patients.Include(p=>p.AppUser).Include(p=>p.Appointments)
+                return await context.Patients.Include(p => p.AppUser).Include(p => p.Appointments)
                     .AsNoTracking().ToListAsync();
             }
             return await context.Patients.Include(p => p.AppUser).Include(p => p.Appointments)

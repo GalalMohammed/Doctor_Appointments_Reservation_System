@@ -60,6 +60,17 @@ namespace BLLServices.Managers.PatientManger
 
             }
         }
-
+        public async Task<Patient> GetPatientInfo(int patientID)
+        {
+            var patient = await patientRepository.GetByID(patientID);
+            if (patient is null)
+            {
+                throw new Exception("Patient does not exist");
+            }
+            else
+            {
+                return patient;
+            }
+        }
     }
 }

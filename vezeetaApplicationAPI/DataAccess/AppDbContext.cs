@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
-using vezeetaApplicationAPI.Models;
+﻿using DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using vezeetaApplicationAPI.Models;
 
 namespace vezeetaApplicationAPI.DataAccess
 {
@@ -21,6 +15,9 @@ namespace vezeetaApplicationAPI.DataAccess
         public DbSet<DoctorReservation> DoctorReservations { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Review> Reviews { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseSqlServer("Server=db16383.public.databaseasp.net; Database=db16383; User Id=db16383; Password=wP?2+3LdnD#5; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,17 +36,20 @@ namespace vezeetaApplicationAPI.DataAccess
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.DoctorReservation)
                 .WithMany(dr => dr.Appointments)
-                .HasForeignKey(a => a.DoctorReservationID);
+                .HasForeignKey(a => a.DoctorReservationID)
+                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Patient)
                 .WithMany(p => p.Appointments)
-                .HasForeignKey(a => a.PatientId);
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Patient)
                 .WithMany(p => p.Reviews)
-                .HasForeignKey(r => r.PatientID);
+                .HasForeignKey(r => r.PatientID)
+                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Doctor)

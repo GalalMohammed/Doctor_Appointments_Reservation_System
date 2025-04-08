@@ -1,10 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BLLServices.Managers.PatientManger;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MVC.ViewModels;
+using vezeetaApplicationAPI.Models;
 
 namespace MVC.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly SignInManager<AppUser> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly IPatientManger patientManager;
+
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager)
+        {
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+            this.patientManager = patientManager;
+        }
         public IActionResult Index()
         {
             return View();
@@ -56,10 +69,35 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel registerUser)
         {
-            ModelState.AddModelError("", "Test Error 1");
-            ModelState.AddModelError("", "Test Error 2");
-            ModelState.AddModelError("", "Test Error 3");
-            ModelState.AddModelError("", "Test Error 4");
+            if (ModelState.IsValid)
+            {
+                var appUser = new AppUser()
+                {
+                    FirstName = registerUser.FirstName,
+                    LastName = registerUser.LastName,
+                    Email = registerUser.Email,
+                    PhoneNumber = registerUser.PhoneNumber
+                };
+                IdentityResult created = await userManager.CreateAsync(appUser, registerUser.Password);
+                if (created.Succeeded)
+                {
+                    // Bypassing Layers
+                    //var patient = new PatientVM()
+                    //{
+                    //    AppUserID = appUser.Id,
+                    //    FirstName = registerUser.FirstName,
+                    //    LastName = registerUser.LastName,
+                    //    Location = registerUser.Location,
+                    //    BirthDate = registerUser.BirthDate
+                    //};
+                    //patientManager.AddPatient()
+                    await userManager.AddToRoleAsync(appUser, "patient");
+                    await signInManager.SignInAsync(appUser, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in created.Errors)
+                    ModelState.AddModelError("", error.Description);
+            }
             return View(registerUser);
         }
 
@@ -101,7 +139,7 @@ namespace MVC.Controllers
             // TODO: Implement password reset logic (e.g., update user password in database)
 
             TempData["SuccessMessage"] = "Password reset successfully!";
-            return RedirectToAction("Search","Doctor"); // Redirect to login page after successful reset
+            return RedirectToAction("Search", "Doctor"); // Redirect to login page after successful reset
         }
     }
 }

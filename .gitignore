@@ -4,3 +4,4 @@
 .vs
 **/appsettings.Development.json
 **/min
+/vezeetaApplicationAPI/Migrations

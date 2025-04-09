@@ -10,8 +10,10 @@ namespace BLLServices.Managers.PatientManger
 {
     public interface IPatientManger
     {
-        public Task AddPatient(PatientVM patientVM);
-        public  Task UpdatePatient(PatientVM patientVM);
+        public Task AddPatient(Patient patientVM);
+        public Task UpdatePatient(Patient patientVM);
+
+        public Task<List<Patient>> GetAllPatients();
 
     }
 }

@@ -23,30 +23,30 @@ namespace BLLServices.Managers.PatientManger
         {
             patientRepository = repo;
             #region using AutoMapper
-            var config =
-                new MapperConfiguration(cfg =>
-                {
-                    cfg.CreateMap<PatientVM, Patient>()
-                        .ForMember(p => p.AppUser, opt => opt.MapFrom(src => new AppUser
-                        {
-                            FirstName = src.FirstName,
-                            LastName = src.LastName,
-                            Gender = src.Gender,
-                            BirthDate = src.BirthDate,
-                        }));
-                });
-            _mapper = config.CreateMapper();
+            //var config =
+            //    new MapperConfiguration(cfg =>
+            //    {
+            //        cfg.CreateMap<PatientVM, Patient>()
+            //            .ForMember(p => p.AppUser, opt => opt.MapFrom(src => new AppUser
+            //            {
+            //                FirstName = src.FirstName,
+            //                LastName = src.LastName,
+            //                Gender = src.Gender,
+            //                BirthDate = src.BirthDate,
+            //            }));
+            //    });
+            //_mapper = config.CreateMapper();
             #endregion
 
 
         }
-        public async Task AddPatient(PatientVM patientVM)
+        public async Task AddPatient(Patient patient)
         {
-            var newPatient = _mapper.Map<Patient>(patientVM);
-             patientRepository.Add(newPatient);
+            //var newPatient = _mapper.Map<Patient>(patientVM);
+             patientRepository.Add(patient);
 
         }
-        public async Task UpdatePatient(PatientVM patientVM)
+        public async Task UpdatePatient(Patient patientVM)
         {
             var patient = await patientRepository.GetByID(patientVM.ID);
             if (patient is null)
@@ -55,7 +55,7 @@ namespace BLLServices.Managers.PatientManger
             }
             else
             {
-                _mapper.Map(patientVM, patient);
+                //_mapper.Map(patientVM, patient);
                 patientRepository.Update(patient);
 
             }
@@ -72,5 +72,18 @@ namespace BLLServices.Managers.PatientManger
                 return patient;
             }
         }
+        public async Task<List<Patient>> GetAllPatients()
+        {
+            var patients = await patientRepository.GetAll();
+            if (patients is null)
+            {
+                throw new Exception("No Patients Exist");
+            }
+            else
+            {
+                return patients.ToList();
+            }
+        }
+
     }
 }

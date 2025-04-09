@@ -19,28 +19,13 @@ namespace BLLServices.Managers.DoctorManger
         public DoctorManager(IDoctorRepository repo)
         {
             Repository = repo;
-            #region using AutoMapper
-            var config =
-                new MapperConfiguration(cfg =>
-                {
-                    cfg.CreateMap<DoctorVM, Doctor>()
-                        .ForMember(D => D.AppUser, opt => opt.MapFrom(src => new AppUser
-                        {
-                            FirstName = src.FirstName,
-                            LastName = src.LastName,
-                            Gender = src.Gender,
-                            BirthDate = src.BirthDate,
-                        }));
-                });
-            _mapper = config.CreateMapper();
-            #endregion
+            
 
 
         }
-        public async Task AddDoctor(DoctorVM doctorVM)
+        public async Task AddDoctor(Doctor doctorVM)
         {
-            var newDoctor = _mapper.Map<Doctor>(doctorVM);
-            Repository.Add(newDoctor);
+            Repository.Add(doctorVM);
 
         }
         public async Task UpdateDoctor(Doctor doctorVM)

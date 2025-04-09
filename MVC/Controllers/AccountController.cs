@@ -44,6 +44,7 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginUser)
         {
+
             // =============== Function Skeleton ===============
             //if (ModelState.IsValid)
             //{
@@ -93,6 +94,11 @@ namespace MVC.Controllers
                     //patientManager.AddPatient()
                     await userManager.AddToRoleAsync(appUser, "patient");
                     await signInManager.SignInAsync(appUser, false);
+
+
+                    var patient = MapToPatient(patientvm);
+                    patient.appuserid= appUser.Id;
+                    patientManager.AddPatient(patient);
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in created.Errors)

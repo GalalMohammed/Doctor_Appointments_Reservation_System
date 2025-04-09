@@ -9,7 +9,7 @@ namespace BLLServices.Managers.DoctorManger
 {
     public interface IDoctorManager
     {
-        public  Task AddDoctor(DoctorVM doctorVM);
+        public  Task AddDoctor(Doctor doctorVM);
         public Task GetDoctorInfo(int doctorID);
         public Task UpdateDoctor(Doctor doctorVM);
         public Task<List<Doctor>> GetDoctorsOrderedByrating();

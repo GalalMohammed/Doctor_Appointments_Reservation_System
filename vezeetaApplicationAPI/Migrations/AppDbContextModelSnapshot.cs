@@ -276,7 +276,6 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("AppUserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("BirthDate")
@@ -378,7 +377,6 @@ namespace DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("AppUserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("BirthDate")
@@ -547,9 +545,7 @@ namespace DAL.Migrations
                 {
                     b.HasOne("vezeetaApplicationAPI.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserID");
 
                     b.HasOne("vezeetaApplicationAPI.Models.Specialty", "Specialty")
                         .WithMany("Doctors")
@@ -577,9 +573,7 @@ namespace DAL.Migrations
                 {
                     b.HasOne("vezeetaApplicationAPI.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserID");
 
                     b.Navigation("AppUser");
                 });

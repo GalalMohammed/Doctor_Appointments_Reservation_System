@@ -16,8 +16,8 @@ namespace vezeetaApplicationAPI.DataAccess
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Server=db16383.public.databaseasp.net; Database=db16383; User Id=db16383; Password=wP?2+3LdnD#5; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;");
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //    => optionsBuilder.UseSqlServer("Server=db16383.public.databaseasp.net; Database=db16383; User Id=db16383; Password=wP?2+3LdnD#5; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

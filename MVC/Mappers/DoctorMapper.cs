@@ -104,7 +104,7 @@ namespace MVC.Mappers
                 Experience = 0, // remember to change it or remove it
                 Governorate = 0, // remember to change it or remove it
                 Location = doctor.Location,
-                Phone = doctor.AppUser.PhoneNumber,
+                Phone = doctor.FirstName.ToString(),//.AppUser.PhoneNumber,
                 Appointments = appointments,
                 Ratings = ratings, 
                 Latitude = (double)doctor.Lat, // change it to float

@@ -30,7 +30,7 @@ namespace DAL.Models
         public DateTime BirthDate { get; set; }
         public Governorate Governorate { get; set; }
 
-        public string AppUserID { get; set; }
+        public string? AppUserID { get; set; }
         public virtual AppUser? AppUser { get; set; }
         
         [DataType(DataType.Text)]

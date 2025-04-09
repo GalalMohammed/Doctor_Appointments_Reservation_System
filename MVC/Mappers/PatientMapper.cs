@@ -14,14 +14,24 @@ namespace MVC.Mappers
                 DateTime = appointment.AppointmentDate,
                 Doctor = appointment.DoctorReservation?.Doctor?.FirstName + " " + appointment.DoctorReservation?.Doctor?.LastName,
                 Specialty = appointment.DoctorReservation?.Doctor?.Specialty?.Name ?? "Not Available",
-                Governorate = appointment.DoctorReservation.Doctor.Governorate,
-                Location = appointment.DoctorReservation.Doctor.Location,
+                Governorate = appointment.DoctorReservation?.Doctor?.Governorate ?? Governorate.All,
+                Location = appointment.DoctorReservation?.Doctor?.Location ?? "Not Available",
                 DoctorImagePath = appointment.DoctorReservation?.Doctor?.ImageURL ?? "default_doctor.png"
             };
         }
         public PatientViewModel MapToPatientViewModel(Patient patient)
         {
-            throw new NotImplementedException();
+            return new PatientViewModel
+            {
+                Id = patient.ID,
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+                Email = patient?.AppUser?.Email ?? "Not Available",
+                PhoneNumber = patient?.AppUser?.PhoneNumber ?? "Not Available",
+                Governorate = patient?.Governorate ?? Governorate.All,
+                BirthDate = DateOnly.FromDateTime(patient?.BirthDate ?? new DateTime()),
+                Appointments = patient?.Appointments?.Select(MapToAppointmentViewModel).ToList()
+            };
         }
         public Patient MapToPatient(PatientViewModel patientViewModel)
         {

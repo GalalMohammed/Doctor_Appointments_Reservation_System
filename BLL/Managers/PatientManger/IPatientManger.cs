@@ -13,6 +13,7 @@ namespace BLLServices.Managers.PatientManger
         public Task AddPatient(Patient patientVM);
         public Task UpdatePatient(Patient patientVM);
 
+        public Task<Patient> GetPatientInfo(int patientID);
         public Task<List<Patient>> GetAllPatients();
 
     }

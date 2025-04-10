@@ -62,7 +62,7 @@ namespace MVC.Controllers
                     }
                 }
             }
-            ModelState.AddModelError("", "Invalid username or password");
+            ModelState.AddModelError("", "Invalid email or password");
             return View(loginUser);
         }
         public async Task<IActionResult> Logout()

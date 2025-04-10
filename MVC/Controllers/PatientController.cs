@@ -32,7 +32,8 @@ namespace MVC.Controllers
                 ViewBag.Success = true;
                 patient.Id = int.Parse(User.FindFirst("currentId").Value);
                 await patientManager.UpdatePatient(await patientMapper.MapToPatient(patient));
-                return View("Profile", patient);
+                var modifiedPatient = patientMapper.MapToPatientViewModel(await patientManager.GetPatientInfo(int.Parse(User.FindFirst("currentId").Value)));
+                return View("Profile", modifiedPatient);
             }
             ViewBag.Success = false;
             return View("Profile", patient);

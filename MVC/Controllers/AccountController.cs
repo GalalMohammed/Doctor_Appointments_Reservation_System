@@ -17,7 +17,7 @@ namespace MVC.Controllers
         private readonly PatientMapper patientMapper;
         private readonly IEmailService emailService;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper,IEmailService emailService)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper, IEmailService emailService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -25,19 +25,17 @@ namespace MVC.Controllers
             this.patientMapper = patientMapper;
             this.emailService = emailService;
         }
-        public async Task<IActionResult> ConfirmEmail(string email,string token)
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
             var user = await userManager.FindByEmailAsync(email);
-
-            if(user is  null)
+            if (user is null)
             {
-                throw new Exception($"Email is not existing !!\n {email}");   
+                throw new Exception($"Email is not existing !!\n {email}");
             }
-           
-
-            userManager.ConfirmEmailAsync(user, token);
-            return View();
-            
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+                return View();
+            throw new Exception();
         }
         public IActionResult Login()
         {
@@ -102,8 +100,13 @@ namespace MVC.Controllers
                         newPatient.AppUserID = appUser.Id;
                         patientManager.AddPatient(newPatient);
                         await userManager.AddToRoleAsync(appUser, "patient");
-                        await signInManager.SignInAsync(appUser, false);
-                        return RedirectToAction("Index", "Home");
+                        emailService.SendEmail(new Email
+                        {
+                            To = registerUser.Email,
+                            Subject = "Confirm your email",
+                            Body = Url.Action("ConfirmEmail", "Account", new { email = registerUser.Email, token = await userManager.GenerateEmailConfirmationTokenAsync(appUser) }, Request.Scheme)
+                        });
+                        return RedirectToAction("NeedToConfirm");
                     }
                     foreach (var error in created.Errors)
                         ModelState.AddModelError("", error.Description);
@@ -111,6 +114,11 @@ namespace MVC.Controllers
                 ModelState.AddModelError("", "Email already exists");
             }
             return View(registerUser);
+        }
+
+        public IActionResult NeedToConfirm()
+        {
+            return View();
         }
 
         [Authorize]
@@ -123,24 +131,24 @@ namespace MVC.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult ForgetPassword(ForgetPasswordVM forgetPasswordVM)
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
             #region need some sort of checking (If Email Already Exist in DB)
-            var user =  await userManager.FindByEmailAsync(forgetPasswordVM.Email);
+            var user = await userManager.FindByEmailAsync(forgetPasswordVM.Email);
             //object user = null;
 
 
-            ViewBag.emailIsExist = user is not null? "NotExist" : "Exist"; 
-            
+            ViewBag.emailIsExist = user is not null ? "NotExist" : "Exist";
+
 
             #endregion
-            if (ModelState.IsValid&& user is not null)
+            if (ModelState.IsValid && user is not null)
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
-                string url = Url.Action("ResetPassword", "Account", new {email=user.Email,token =token}, Request.Scheme);
+                string url = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token }, Request.Scheme);
 
-                emailService.SendEmail(new Email{ To=forgetPasswordVM.Email ,Subject="Reset Your Password",Body=url });
-                
+                emailService.SendEmail(new Email { To = forgetPasswordVM.Email, Subject = "Reset Your Password", Body = url });
+
             }
 
             return View(forgetPasswordVM);
@@ -159,9 +167,11 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 var email = TempData["email"] as string;
                 var token = TempData["token"] as string;
@@ -178,14 +188,14 @@ namespace MVC.Controllers
                 {
                     foreach (var item in result.Errors)
                     {
-                        ModelState.AddModelError(string.Empty, item.Description); 
+                        ModelState.AddModelError(string.Empty, item.Description);
                     }
                 }
             }
-            
-                return View(model); // Return the view with validation errors
-            
-                                            
+
+            return View(model); // Return the view with validation errors
+
+
         }
         [Route("account/change-password")]
         public IActionResult ChangePassword()

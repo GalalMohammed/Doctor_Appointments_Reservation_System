@@ -86,6 +86,8 @@ namespace MVC.Controllers
                     PhoneNumber = registerUser.PhoneNumber,
                     BirthDate = registerUser.BirthDate.ToDateTime(new TimeOnly(0, 0))
                 };
+                
+
 
                 IdentityResult created = await userManager.CreateAsync(appUser, registerUser.Password);
                 if (created.Succeeded)

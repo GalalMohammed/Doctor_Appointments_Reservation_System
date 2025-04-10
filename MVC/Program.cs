@@ -3,6 +3,7 @@ using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.PatientManger;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
+using BLLServices.Common;
 using DAL.Repositories.DoctorReservations;
 using DAL.Repositories.Doctors;
 using DAL.Repositories.Generic;
@@ -11,11 +12,13 @@ using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using MVC.Claims;
 using MVC.Mappers;
 using MVC.Middlewares;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
+using BLLServices.Common.EmailService;
 
 namespace MVC
 {
@@ -44,10 +47,15 @@ namespace MVC
             builder.Services.AddScoped<IDoctorMapper, DoctorMapper>();
             builder.Services.AddScoped<IPatientManger, PatientManger>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
+            #region Common Services
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            //builder.Services.AddScoped<>
+            #endregion
 
             // Identity Configuration
             builder.Services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
             builder.Services.AddControllersWithViews();

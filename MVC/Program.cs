@@ -1,10 +1,12 @@
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
+using BLLServices.Managers.PatientManger;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
 using DAL.Repositories.DoctorReservations;
 using DAL.Repositories.Doctors;
 using DAL.Repositories.Generic;
+using DAL.Repositories.Patients;
 using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
 using Microsoft.EntityFrameworkCore;
@@ -21,25 +23,28 @@ namespace MVC
 
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDoctorReservationRepository, DoctorReservationRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<ISpecialtyRepository, SpecialtyRepository>();
+            builder.Services.AddScoped<IPatientRepository, PatientRepository>();
             builder.Services.AddScoped<IDoctorReservationManager, DoctorReservationManager>();
             builder.Services.AddScoped<ISpecialtyManager, SpecialtyManager>();
             builder.Services.AddScoped<IDoctorManager, DoctorManager>();
             builder.Services.AddScoped<IReviewManager, ReviewManager>();
             builder.Services.AddScoped<IDoctorMapper, DoctorMapper>();
+            builder.Services.AddScoped<IPatientManger, PatientManger>();
+            builder.Services.AddScoped<PatientMapper, PatientMapper>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
-            
+
 
 
 

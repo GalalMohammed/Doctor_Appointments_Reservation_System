@@ -96,9 +96,9 @@ namespace MVC.Controllers
                     await signInManager.SignInAsync(appUser, false);
 
 
-                    var patient = MapToPatient(patientvm);
-                    patient.appuserid= appUser.Id;
-                    patientManager.AddPatient(patient);
+                    //var patient = MapToPatient(patientvm);
+                    //patient.appuserid= appUser.Id;
+                    //patientManager.AddPatient(patient);
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in created.Errors)

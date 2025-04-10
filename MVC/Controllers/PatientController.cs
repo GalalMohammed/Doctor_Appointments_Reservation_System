@@ -1,133 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Enums;
+﻿using BLLServices.Managers.PatientManger;
+using Microsoft.AspNetCore.Mvc;
+using MVC.Mappers;
 using MVC.ViewModels;
+
 
 namespace MVC.Controllers
 {
     public class PatientController : Controller
     {
-        public IActionResult Profile(int? id)
+        private readonly IPatientManger patientManager;
+        private readonly PatientMapper patientMapper;
+
+        public PatientController(IPatientManger patientManager, PatientMapper patientMapper)
+        {
+            this.patientManager = patientManager;
+            this.patientMapper = patientMapper;
+        }
+        public async Task<IActionResult> Profile(int? id)
         {
             if (id == null)
                 throw new Exception();
-            var test = new PatientViewModel()
-            {
-                Id = 1,
-                FirstName = "John",
-                LastName = "Doe",
-                BirthDate = new DateOnly(2001, 1, 1),
-                Governorate = Governorate.Assiut,
-                Email = "test@example.com",
-                PhoneNumber = "01234567891",
-                Appointments = new List<AppointmentViewModel>()
-                {
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    },
-                    new AppointmentViewModel()
-                    {
-                        DateTime = DateTime.Now.AddDays(3),
-                        Doctor = "Test Doctor",
-                        Specialty = "Cardiology",
-                        DoctorImagePath = "d.png",
-                        Governorate = Governorate.Assiut
-                    }
-                }
-            };
-            return View(test);
+            var patient = patientMapper.MapToPatientViewModel(await patientManager.GetPatientInfo(id.Value));
+            return View(patient);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

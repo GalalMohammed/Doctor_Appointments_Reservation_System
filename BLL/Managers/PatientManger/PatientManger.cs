@@ -1,25 +1,15 @@
 ﻿using AutoMapper;
-using DAL.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using vezeetaApplicationAPI.DataAccess;
+using DAL.Repositories.Patients;
 using vezeetaApplicationAPI.Models;
-using DAL.Repositories.Patients; 
 namespace BLLServices.Managers.PatientManger
 {
 
     public class PatientManger : IPatientManger
     {
-        private PatientRepository patientRepository;
+        private IPatientRepository patientRepository;
         IMapper _mapper;
         Patient _patient;
-        public PatientManger(PatientRepository repo)
+        public PatientManger(IPatientRepository repo)
         {
             patientRepository = repo;
             #region using AutoMapper
@@ -43,7 +33,7 @@ namespace BLLServices.Managers.PatientManger
         public async Task AddPatient(Patient patient)
         {
             //var newPatient = _mapper.Map<Patient>(patientVM);
-             patientRepository.Add(patient);
+            patientRepository.Add(patient);
 
         }
         public async Task UpdatePatient(Patient patientVM)

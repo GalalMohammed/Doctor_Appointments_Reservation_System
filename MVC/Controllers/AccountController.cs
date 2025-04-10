@@ -1,4 +1,5 @@
-﻿using BLLServices.Managers.PatientManger;
+﻿using BLLServices.Common.EmailService;
+using BLLServices.Managers.PatientManger;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Mappers;
@@ -13,27 +14,29 @@ namespace MVC.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly IPatientManger patientManager;
         private readonly PatientMapper patientMapper;
+        private readonly IEmailService emailService;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper,IEmailService emailService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.patientManager = patientManager;
             this.patientMapper = patientMapper;
+            this.emailService = emailService;
         }
-        public IActionResult ConfirmEmail(string? token)
+        public async Task<IActionResult> ConfirmEmail(string email,string token)
         {
-            // =============== Function Skeleton ===============
-            //if (token != null)
-            //{
-            //    int? id = GetIdFromToken(token);
-            //    if (id != null)
-            //    {
-            //        SaveToDb(id);
+            var user = await userManager.FindByEmailAsync(email);
+
+            if(user is  null)
+            {
+                throw new Exception($"Email is not existing !!\n {email}");   
+            }
+           
+
+            userManager.ConfirmEmailAsync(user, token);
             return View();
-            //    }
-            //}
-            //return View("CustomError");
+            
         }
         public IActionResult Login()
         {
@@ -83,6 +86,7 @@ namespace MVC.Controllers
                     PhoneNumber = registerUser.PhoneNumber,
                     BirthDate = registerUser.BirthDate.ToDateTime(new TimeOnly(0, 0))
                 };
+
                 IdentityResult created = await userManager.CreateAsync(appUser, registerUser.Password);
                 if (created.Succeeded)
                 {
@@ -101,43 +105,74 @@ namespace MVC.Controllers
 
         public IActionResult ForgetPassword()
         {
-
+            ViewBag.emailIsExist = "";
             return View();
         }
 
         [HttpPost]
-        public IActionResult ForgetPassword(ForgetPasswordVM forgetPasswordVM)
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
             #region need some sort of checking (If Email Already Exist in DB)
+            var user =  await userManager.FindByEmailAsync(forgetPasswordVM.Email);
+            //object user = null;
+
+
+            ViewBag.emailIsExist = user is not null? "NotExist" : "Exist"; 
+            
 
             #endregion
-            if (ModelState.IsValid)
+            if (ModelState.IsValid&& user is not null)
             {
-                return RedirectToAction("ResetPassword");
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                string url = Url.Action("ResetPassword", "Account", new {email=user.Email,token =token}, Request.Scheme);
+
+                emailService.SendEmail(new Email{ To=forgetPasswordVM.Email ,Subject="Reset Your Password",Body=url });
+                
             }
+
             return View(forgetPasswordVM);
+
         }
 
 
 
         [HttpGet]
-        public IActionResult ResetPassword()
+        public IActionResult ResetPassword(string email, string token)
         {
+            TempData["email"] = email;
+            TempData["token"] = token;
+
             return View(new ResetPasswordVM()); // Load the empty form
         }
 
         [HttpPost]
-        public IActionResult ResetPassword(ResetPasswordVM model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
-                return View(model); // Return the view with validation errors
+                var email = TempData["email"] as string;
+                var token = TempData["token"] as string;
+
+                var user = await userManager.FindByEmailAsync(email);
+                var result = await userManager.ResetPasswordAsync(user, token, model.ConfirmPassword);
+
+                if (result.Succeeded)
+                {
+                    TempData["SuccessMessage"] = "Password reset successfully!";
+                    return RedirectToAction(nameof(Login));
+                }
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, item.Description); 
+                    }
+                }
             }
-
-            // TODO: Implement password reset logic (e.g., update user password in database)
-
-            TempData["SuccessMessage"] = "Password reset successfully!";
-            return RedirectToAction("Search", "Doctor"); // Redirect to login page after successful reset
+            
+                return View(model); // Return the view with validation errors
+            
+                                            
         }
     }
 }

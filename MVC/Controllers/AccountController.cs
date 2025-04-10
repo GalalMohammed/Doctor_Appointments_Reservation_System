@@ -49,6 +49,11 @@ namespace MVC.Controllers
                 var appUser = await userManager.FindByEmailAsync(loginUser.Email);
                 if (appUser != null)
                 {
+                    if (!appUser.EmailConfirmed)
+                    {
+                        ModelState.AddModelError("", "Email not confirmed");
+                        return View(loginUser);
+                    }
                     bool correctPassword = await userManager.CheckPasswordAsync(appUser, loginUser.Password);
                     if (correctPassword)
                     {

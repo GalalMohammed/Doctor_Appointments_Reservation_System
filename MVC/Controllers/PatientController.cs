@@ -16,11 +16,10 @@ namespace MVC.Controllers
             this.patientManager = patientManager;
             this.patientMapper = patientMapper;
         }
-        public async Task<IActionResult> Profile(int? id)
+        public async Task<IActionResult> Profile()
         {
-            if (id == null)
-                throw new Exception();
-            var patient = patientMapper.MapToPatientViewModel(await patientManager.GetPatientInfo(id.Value));
+            var claims = User.Claims.ToList();
+            var patient = patientMapper.MapToPatientViewModel(await patientManager.GetPatientInfo(int.Parse(User.FindFirst("currentId").Value)));
             return View(patient);
         }
         [HttpPost]

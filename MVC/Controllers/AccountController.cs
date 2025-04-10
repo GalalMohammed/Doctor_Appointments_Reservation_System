@@ -1,6 +1,7 @@
 ﻿using BLLServices.Managers.PatientManger;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Mappers;
 using MVC.ViewModels;
 using vezeetaApplicationAPI.Models;
 
@@ -11,16 +12,14 @@ namespace MVC.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
         private readonly IPatientManger patientManager;
+        private readonly PatientMapper patientMapper;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.patientManager = patientManager;
-        }
-        public IActionResult Index()
-        {
-            return View();
+            this.patientMapper = patientMapper;
         }
         public IActionResult ConfirmEmail(string? token)
         {
@@ -44,23 +43,26 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginUser)
         {
-
-            // =============== Function Skeleton ===============
-            //if (ModelState.IsValid)
-            //{
-            //    var appUser = await userManager.FindByNameAsync(loginUser.Username);
-            //    if (appUser != null)
-            //    {
-            //        bool correctPassword = await userManager.CheckPasswordAsync(appUser, loginUser.Password);
-            //        if (correctPassword)
-            //        {
-            //            await signInManager.SignInAsync(appUser, loginUser.RememberMe);
-            //            return RedirectToAction("Index", "Customer");
-            //        }
-            //    }
-            //}
+            if (ModelState.IsValid)
+            {
+                var appUser = await userManager.FindByEmailAsync(loginUser.Email);
+                if (appUser != null)
+                {
+                    bool correctPassword = await userManager.CheckPasswordAsync(appUser, loginUser.Password);
+                    if (correctPassword)
+                    {
+                        await signInManager.SignInAsync(appUser, false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+            }
             ModelState.AddModelError("", "Invalid username or password");
             return View(loginUser);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Register()
         {
@@ -76,29 +78,19 @@ namespace MVC.Controllers
                 {
                     FirstName = registerUser.FirstName,
                     LastName = registerUser.LastName,
+                    UserName = $"{registerUser.FirstName[0]}_{registerUser.LastName}",
                     Email = registerUser.Email,
-                    PhoneNumber = registerUser.PhoneNumber
+                    PhoneNumber = registerUser.PhoneNumber,
+                    BirthDate = registerUser.BirthDate.ToDateTime(new TimeOnly(0, 0))
                 };
                 IdentityResult created = await userManager.CreateAsync(appUser, registerUser.Password);
                 if (created.Succeeded)
                 {
-                    // Bypassing Layers
-                    //var patient = new PatientVM()
-                    //{
-                    //    AppUserID = appUser.Id,
-                    //    FirstName = registerUser.FirstName,
-                    //    LastName = registerUser.LastName,
-                    //    Location = registerUser.Location,
-                    //    BirthDate = registerUser.BirthDate
-                    //};
-                    //patientManager.AddPatient()
+                    var newPatient = patientMapper.MapToPatient(registerUser);
+                    newPatient.AppUserID = appUser.Id;
+                    patientManager.AddPatient(newPatient);
                     await userManager.AddToRoleAsync(appUser, "patient");
                     await signInManager.SignInAsync(appUser, false);
-
-
-                    //var patient = MapToPatient(patientvm);
-                    //patient.appuserid= appUser.Id;
-                    //patientManager.AddPatient(patient);
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in created.Errors)

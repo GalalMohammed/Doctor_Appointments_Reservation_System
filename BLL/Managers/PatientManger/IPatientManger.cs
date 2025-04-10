@@ -1,10 +1,4 @@
-﻿using DAL.Repositories.Patients;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using vezeetaApplicationAPI.Models;
+﻿using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.PatientManger
 {
@@ -16,5 +10,6 @@ namespace BLLServices.Managers.PatientManger
         public Task<Patient> GetPatientInfo(int patientID);
         public Task<List<Patient>> GetAllPatients();
 
+        public Task<List<Patient>?> GetPatientCondition(Func<Patient, bool> condition);
     }
 }

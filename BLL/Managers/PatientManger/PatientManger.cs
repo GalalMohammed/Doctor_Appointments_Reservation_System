@@ -75,5 +75,10 @@ namespace BLLServices.Managers.PatientManger
             }
         }
 
+        public async Task<List<Patient>?> GetPatientCondition(Func<Patient, bool> condition)
+        {
+            var patients = await patientRepository.GetAllByConditon(condition);
+            return patients;
+        }
     }
 }

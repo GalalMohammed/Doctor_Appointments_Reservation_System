@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using vezeetaApplicationAPI.DataAccess;
-using vezeetaApplicationAPI.Models;
 using DAL.Repositories.Doctors;
+using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.DoctorManger
 {
@@ -19,7 +12,7 @@ namespace BLLServices.Managers.DoctorManger
         public DoctorManager(IDoctorRepository repo)
         {
             Repository = repo;
-            
+
 
 
         }
@@ -67,6 +60,12 @@ namespace BLLServices.Managers.DoctorManger
         public Task<Doctor> GetDoctorByID(int id)
         {
             return Repository.GetByID(id);
+        }
+
+        public async Task<List<Doctor>?> GetDoctorCondition(Func<Doctor, bool> condition)
+        {
+            var doctors = await Repository.GetAllByConditon(condition);
+            return doctors;
         }
     }
 

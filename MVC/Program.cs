@@ -9,9 +9,12 @@ using DAL.Repositories.Generic;
 using DAL.Repositories.Patients;
 using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MVC.Claims;
 using MVC.Mappers;
 using vezeetaApplicationAPI.DataAccess;
+using vezeetaApplicationAPI.Models;
 
 namespace MVC
 {
@@ -38,6 +41,11 @@ namespace MVC
             builder.Services.AddScoped<IDoctorMapper, DoctorMapper>();
             builder.Services.AddScoped<IPatientManger, PatientManger>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

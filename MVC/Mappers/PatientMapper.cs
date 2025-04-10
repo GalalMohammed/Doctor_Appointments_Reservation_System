@@ -50,7 +50,7 @@ namespace MVC.Mappers
         }
         public Appointment MapToAppointment(AppointmentViewModel appointmentViewModel, int patientId, int doctorReservationId)
         {
-            Appointment appointment =  new()
+            Appointment appointment = new()
             {
                 PatientId = patientId,
                 DoctorReservationID = doctorReservationId,
@@ -61,6 +61,17 @@ namespace MVC.Mappers
                 appointment.ID = appointmentViewModel.Id;
             }
             return appointment;
+        }
+        public Patient MapToPatient(RegisterViewModel registerViewModel)
+        {
+            return new Patient
+            {
+                FirstName = registerViewModel.FirstName,
+                LastName = registerViewModel.LastName,
+                BirthDate = registerViewModel.BirthDate.ToDateTime(new TimeOnly(0, 0)),
+                Governorate = registerViewModel.Governorate,
+                Location = registerViewModel.Governorate.ToString()
+            };
         }
     }
 }

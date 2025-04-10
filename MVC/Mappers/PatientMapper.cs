@@ -1,4 +1,5 @@
-﻿using MVC.Enums;
+﻿using BLLServices.Managers.PatientManger;
+using MVC.Enums;
 using MVC.ViewModels;
 using vezeetaApplicationAPI.Models;
 
@@ -6,6 +7,12 @@ namespace MVC.Mappers
 {
     public class PatientMapper
     {
+        private readonly IPatientManger patientManager;
+
+        public PatientMapper(IPatientManger patientManager)
+        {
+            this.patientManager = patientManager;
+        }
         public AppointmentViewModel MapToAppointmentViewModel(Appointment appointment)
         {
             return new AppointmentViewModel
@@ -33,20 +40,27 @@ namespace MVC.Mappers
                 Appointments = patient?.Appointments?.Select(MapToAppointmentViewModel).ToList()
             };
         }
-        public Patient MapToPatient(PatientViewModel patientViewModel)
+        public async Task<Patient> MapToPatient(PatientViewModel patientViewModel)
         {
-            Patient patient = new()
+            if (patientViewModel.Id != 0)
+            {
+                var patient = await patientManager.GetPatientInfo(patientViewModel.Id);
+                patient.FirstName = patientViewModel.FirstName;
+                patient.LastName = patientViewModel.LastName;
+                patient.AppUser.Email = patientViewModel.Email;
+                patient.AppUser.PhoneNumber = patientViewModel.PhoneNumber;
+                patient.Governorate = patientViewModel.Governorate;
+                patient.BirthDate = patientViewModel.BirthDate.ToDateTime(new TimeOnly(0, 0));
+                return patient;
+            }
+            return new Patient
             {
                 FirstName = patientViewModel.FirstName,
                 LastName = patientViewModel.LastName,
-                BirthDate = patientViewModel.BirthDate.ToDateTime(new TimeOnly()),
-                Location = patientViewModel.Governorate.ToString(),
+                BirthDate = patientViewModel.BirthDate.ToDateTime(new TimeOnly(0, 0)),
+                Governorate = patientViewModel.Governorate,
+                Location = patientViewModel.Governorate.ToString()
             };
-            if (patientViewModel.Id != 0)
-            {
-                patient.ID = patientViewModel.Id;
-            }
-            return patient;
         }
         public Appointment MapToAppointment(AppointmentViewModel appointmentViewModel, int patientId, int doctorReservationId)
         {

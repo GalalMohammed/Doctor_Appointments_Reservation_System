@@ -51,14 +51,14 @@
                             </div>
                             <div>
                                 <label asp-for="Governorate" class="form-label my-1"></label>
-                                <select asp-for="Governorate" asp-items="@Html.GetEnumSelectList<Governorate>()" class="form-select"></select>
+                                <select asp-for="Governorate" asp-items="@Html.GetEnumSelectList<Governorate>().Where(e=>e.Value!=Governorate.All.ToString())" class="form-select"></select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                <a asp-controller="account" asp-action="resetpassword" class="btn login-submit">Reset Password</a>
+                <a asp-controller="account" asp-action="change-password" class="btn login-submit">Change Password</a>
                 <input type="submit" class="btn login-submit" value="Save Changes" />
             </div>
         </form>

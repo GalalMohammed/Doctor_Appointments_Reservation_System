@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC.Claims;
 using MVC.Mappers;
+using MVC.Middlewares;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
 
@@ -25,9 +26,11 @@ namespace MVC
             var builder = WebApplication.CreateBuilder(args);
 
 
+            // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
+            // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDoctorReservationRepository, DoctorReservationRepository>();
@@ -42,39 +45,31 @@ namespace MVC
             builder.Services.AddScoped<IPatientManger, PatientManger>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
 
+            // Identity Configuration
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
-
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
-
             var app = builder.Build();
 
-
-
-
-
-            // Configure the HTTP request pipeline.
+            // Exception Handling
             if (!app.Environment.IsDevelopment())
-            {
                 app.UseExceptionHandler("/Home/Error");
-            }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseMiddleware<CustomExceptionHandler>();
+                app.UseStatusCodePagesWithReExecute("/Error");
             }
-            app.UseRouting();
-
-            app.UseAuthorization();
-
+            // Middleware Configuration
             app.MapStaticAssets();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
-
             app.Run();
         }
     }

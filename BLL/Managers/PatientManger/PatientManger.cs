@@ -38,15 +38,14 @@ namespace BLLServices.Managers.PatientManger
         }
         public async Task UpdatePatient(Patient patientVM)
         {
-            var patient = await patientRepository.GetByID(patientVM.ID);
-            if (patient is null)
+            if (patientVM is null)
             {
                 throw new Exception("Patient does not exist");
             }
             else
             {
                 //_mapper.Map(patientVM, patient);
-                patientRepository.Update(patient);
+                patientRepository.Update(patientVM);
 
             }
         }

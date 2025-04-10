@@ -1,4 +1,5 @@
 ﻿using BLLServices.Managers.PatientManger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Mappers;
@@ -78,27 +79,33 @@ namespace MVC.Controllers
                 {
                     FirstName = registerUser.FirstName,
                     LastName = registerUser.LastName,
-                    UserName = $"{registerUser.FirstName[0]}_{registerUser.LastName}",
+                    UserName = registerUser.Email,
                     Email = registerUser.Email,
                     PhoneNumber = registerUser.PhoneNumber,
                     BirthDate = registerUser.BirthDate.ToDateTime(new TimeOnly(0, 0))
                 };
-                IdentityResult created = await userManager.CreateAsync(appUser, registerUser.Password);
-                if (created.Succeeded)
+                var existingUser = await userManager.FindByEmailAsync(registerUser.Email);
+                if (existingUser == null)
                 {
-                    var newPatient = patientMapper.MapToPatient(registerUser);
-                    newPatient.AppUserID = appUser.Id;
-                    patientManager.AddPatient(newPatient);
-                    await userManager.AddToRoleAsync(appUser, "patient");
-                    await signInManager.SignInAsync(appUser, false);
-                    return RedirectToAction("Index", "Home");
+                    IdentityResult created = await userManager.CreateAsync(appUser, registerUser.Password);
+                    if (created.Succeeded)
+                    {
+                        var newPatient = patientMapper.MapToPatient(registerUser);
+                        newPatient.AppUserID = appUser.Id;
+                        patientManager.AddPatient(newPatient);
+                        await userManager.AddToRoleAsync(appUser, "patient");
+                        await signInManager.SignInAsync(appUser, false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    foreach (var error in created.Errors)
+                        ModelState.AddModelError("", error.Description);
                 }
-                foreach (var error in created.Errors)
-                    ModelState.AddModelError("", error.Description);
+                ModelState.AddModelError("", "Email already exists");
             }
             return View(registerUser);
         }
 
+        [Authorize]
         public IActionResult ForgetPassword()
         {
 
@@ -106,6 +113,8 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public IActionResult ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
             #region need some sort of checking (If Email Already Exist in DB)
@@ -127,6 +136,8 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(ResetPasswordVM model)
         {
             if (!ModelState.IsValid)
@@ -138,6 +149,19 @@ namespace MVC.Controllers
 
             TempData["SuccessMessage"] = "Password reset successfully!";
             return RedirectToAction("Search", "Doctor"); // Redirect to login page after successful reset
+        }
+        [Route("account/change-password")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [Route("account/change-password")]
+        public IActionResult ChangePassword(string oldPassword, string newPassword)
+        {
+            return View();
         }
     }
 }

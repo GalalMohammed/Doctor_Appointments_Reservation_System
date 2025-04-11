@@ -2,27 +2,31 @@ using Microsoft.AspNetCore.Mvc;
 using MVC.Models;
 using System.Diagnostics;
 using MVC.ViewModels;
+using MVC.Mappers;
 
 namespace MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly HomeMapper homeMapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger ,HomeMapper homeMapper)
         {
-            _logger = logger;
+            this.logger = logger;
+            this.homeMapper = homeMapper;
+
         }
 
         public IActionResult Index()
         {
             HomeVM homeVM;
             #region CodeFromDB
-
+            homeVM = homeMapper.MapToHomeVM();
             #endregion
 
             #region FakeModels
-            homeVM = GenerateFakeHomeVM();
+            //homeVM = GenerateFakeHomeVM();
 
             #endregion
 

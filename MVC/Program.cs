@@ -49,6 +49,8 @@ namespace MVC
             builder.Services.AddScoped<IDoctorMapper, DoctorMapper>();
             builder.Services.AddScoped<IPatientManger, PatientManger>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
+            builder.Services.AddScoped<HomeMapper, HomeMapper>();
+
             #region Common Services
             builder.Services.AddScoped<IEmailService, EmailService>();
 

@@ -1,4 +1,5 @@
 ﻿using BLLServices.Managers.PatientManger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Mappers;
 using MVC.ViewModels;
@@ -6,6 +7,7 @@ using MVC.ViewModels;
 
 namespace MVC.Controllers
 {
+    [Authorize(Roles = "patient")]
     public class PatientController : Controller
     {
         private readonly IPatientManger patientManager;
@@ -18,19 +20,22 @@ namespace MVC.Controllers
         }
         public async Task<IActionResult> Profile()
         {
-            var claims = User.Claims.ToList();
             var patient = patientMapper.MapToPatientViewModel(await patientManager.GetPatientInfo(int.Parse(User.FindFirst("currentId").Value)));
             return View(patient);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(PatientViewModel patient)
+        public async Task<IActionResult> Edit(PatientViewModel patient)
         {
-            //ModelState.AddModelError("", "Test Error");
-            //ModelState.AddModelError("", "Test Error");
-            //ModelState.AddModelError("", "Test Error");
-            //ModelState.AddModelError("", "Test Error");
-            ViewBag.Success = ModelState.IsValid;
+            if (ModelState.IsValid)
+            {
+                ViewBag.Success = true;
+                patient.Id = int.Parse(User.FindFirst("currentId").Value);
+                await patientManager.UpdatePatient(await patientMapper.MapToPatient(patient));
+                var modifiedPatient = patientMapper.MapToPatientViewModel(await patientManager.GetPatientInfo(int.Parse(User.FindFirst("currentId").Value)));
+                return View("Profile", modifiedPatient);
+            }
+            ViewBag.Success = false;
             return View("Profile", patient);
         }
     }

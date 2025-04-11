@@ -200,6 +200,15 @@ html {
     border-radius: 10px;
 }
 
+.doctor-register-div {
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .doctor-register-days:nth-child(5) {
+        flex-grow: 1 !important;
+    }
+}
 :root {
     --primary-color: #004085;
     --primary-color-rgb: 0, 64, 133;

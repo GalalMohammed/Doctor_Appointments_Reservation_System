@@ -2,7 +2,7 @@
 let patientAccordionButton = document.getElementById("patient-more-information-button");
 let patientArrowIcon = document.getElementById("patient-arrow-icon");
 let patientTabs = document.querySelectorAll(".patient-tab");
-document.querySelector("option[value='0'").classList.add("d-none");
+document.querySelector("option[value='0']").remove();
 if (patientAccordionButton != null)
     patientAccordionButton.onclick = () => patientArrowIcon === null || patientArrowIcon === void 0 ? void 0 : patientArrowIcon.classList.toggle("up");
 patientTabs === null || patientTabs === void 0 ? void 0 : patientTabs.forEach(tab => {

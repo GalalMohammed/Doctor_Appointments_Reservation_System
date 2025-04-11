@@ -1,9 +1,13 @@
 ﻿using BLLServices.Common.EmailService;
+using BLLServices.Common.UploadService;
 using BLLServices.Managers.DoctorManger;
+using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.PatientManger;
+using BLLServices.Managers.SpecialtyManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Mappers;
 using MVC.ViewModels;
 using vezeetaApplicationAPI.Models;
@@ -19,8 +23,21 @@ namespace MVC.Controllers
         private readonly IEmailService emailService;
         private readonly IDoctorManager doctorManager;
         private readonly IDoctorMapper doctorMapper;
+        private readonly ISpecialtyManager specialtyManager;
+        private readonly IUploadService uploadService;
+        private readonly IDoctorReservationManager reservationManager;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper, IEmailService emailService, IDoctorManager doctorManager, IDoctorMapper doctorMapper)
+        public AccountController(
+            SignInManager<AppUser> signInManager,
+            UserManager<AppUser> userManager,
+            IPatientManger patientManager,
+            PatientMapper patientMapper,
+            IEmailService emailService,
+            IDoctorManager doctorManager,
+            IDoctorMapper doctorMapper,
+            ISpecialtyManager specialtyManager,
+            IUploadService uploadService,
+            IDoctorReservationManager reservationManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -29,6 +46,9 @@ namespace MVC.Controllers
             this.emailService = emailService;
             this.doctorManager = doctorManager;
             this.doctorMapper = doctorMapper;
+            this.specialtyManager = specialtyManager;
+            this.uploadService = uploadService;
+            this.reservationManager = reservationManager;
         }
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
@@ -121,8 +141,11 @@ namespace MVC.Controllers
             }
             return View(registerUser);
         }
-        public IActionResult DoctorRegister()
+        [Route("account/doctor-register")]
+        public async Task<IActionResult> DoctorRegister()
         {
+            var specialties = await specialtyManager.GetAllSpecialties();
+            ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
             return View();
         }
         [HttpPost]
@@ -149,8 +172,11 @@ namespace MVC.Controllers
                     {
                         var newDoctor = doctorMapper.MapToDoctorFromRegister(doctorRegister);
                         newDoctor.AppUserID = appUser.Id;
+                        var imageURL = await uploadService.UploadFile(doctorRegister.Image);
+                        newDoctor.ImageURL = imageURL;
                         await doctorManager.AddDoctor(newDoctor);
                         await userManager.AddToRoleAsync(appUser, "doctor");
+                        reservationManager.GenerateCalanderReservation(newDoctor, doctorRegister.ReservationQuota);
                         emailService.SendEmail(new Email
                         {
                             To = doctorRegister.Email,
@@ -164,6 +190,8 @@ namespace MVC.Controllers
                 }
                 ModelState.AddModelError("", "Email already exists");
             }
+            var specialties = await specialtyManager.GetAllSpecialties();
+            ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
             return View(doctorRegister);
         }
         public IActionResult NeedToConfirm()

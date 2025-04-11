@@ -140,8 +140,24 @@ namespace MVC.Mappers
             };
         }
         public Doctor MapToDoctorFromRegister(DoctorRegisterViewModel doctorRegisterVM)
-        {
-            throw new NotImplementedException();
-        }
+            => new Doctor()
+            {
+                FirstName = doctorRegisterVM.FirstName,
+                LastName = doctorRegisterVM.LastName,
+                BirthDate = doctorRegisterVM.BirthDate.ToDateTime(new TimeOnly(0, 0)),
+                SpecialtyID = doctorRegisterVM.SpecialtyID,
+                Fees = doctorRegisterVM.Fees,
+                WaitingTime = doctorRegisterVM.WaitingTime,
+                ImageURL = doctorRegisterVM.ImageURL,
+                About = doctorRegisterVM.About,
+                WorkingDays = doctorRegisterVM.WorkingDays,
+                Governorate = doctorRegisterVM.Governorate,
+                Location = doctorRegisterVM.Address,
+                Gender = doctorRegisterVM.Gender,
+                Lng = doctorRegisterVM.Lng,
+                Lat = doctorRegisterVM.Lat,
+                DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), doctorRegisterVM.StartTime),
+                DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), doctorRegisterVM.EndTime),
+            };
     }
 }

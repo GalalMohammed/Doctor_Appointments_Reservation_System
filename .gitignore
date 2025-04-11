@@ -3,6 +3,7 @@
 **/ts
 .vs
 **/appsettings.Development.json
+**/log.txt
 **/min
 /vezeetaApplicationAPI/Migrations
 /MVC/appsettings.json

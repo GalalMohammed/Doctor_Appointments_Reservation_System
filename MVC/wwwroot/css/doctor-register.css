@@ -1,0 +1,9 @@
+﻿.doctor-register-div {
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .doctor-register-days:nth-child(5) {
+        flex-grow: 1 !important;
+    }
+}

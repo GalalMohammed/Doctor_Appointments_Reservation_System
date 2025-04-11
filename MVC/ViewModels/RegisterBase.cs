@@ -13,7 +13,7 @@ namespace MVC.ViewModels
         [RegularExpression("^[a-zA-Z0-9](?:[a-zA-Z0-9_ -]*[a-zA-Z0-9])?$", ErrorMessage = "Invalid Name Format")]
         public string LastName { get; set; }
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "New password is required.")]
+        [Required(ErrorMessage = "Password is required.")]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
         ErrorMessage = "Password must contain at least one uppercase letter, one number, and one special character.")]

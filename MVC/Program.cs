@@ -1,9 +1,12 @@
+using BLLServices.Common.EmailService;
+using BLLServices.Common.UploadService;
+using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.PatientManger;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
-using BLLServices.Common;
+using DAL.Repositories.Appointments;
 using DAL.Repositories.DoctorReservations;
 using DAL.Repositories.Doctors;
 using DAL.Repositories.Generic;
@@ -12,15 +15,11 @@ using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MVC.Claims;
 using MVC.Mappers;
 using MVC.Middlewares;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
-using BLLServices.Common.EmailService;
-using BLLServices.Common.UploadService;
-using Microsoft.DotNet.Scaffolding.Shared;
 
 namespace MVC
 {
@@ -42,12 +41,15 @@ namespace MVC
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<ISpecialtyRepository, SpecialtyRepository>();
             builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+            builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            builder.Services.AddScoped<IDoctorReservationRepository, DoctorReservationRepository>();
             builder.Services.AddScoped<IDoctorReservationManager, DoctorReservationManager>();
             builder.Services.AddScoped<ISpecialtyManager, SpecialtyManager>();
             builder.Services.AddScoped<IDoctorManager, DoctorManager>();
             builder.Services.AddScoped<IReviewManager, ReviewManager>();
             builder.Services.AddScoped<IDoctorMapper, DoctorMapper>();
             builder.Services.AddScoped<IPatientManger, PatientManger>();
+            builder.Services.AddScoped<IAppointmentManager, AppointmentManager>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
             builder.Services.AddScoped<HomeMapper, HomeMapper>();
 
@@ -58,7 +60,7 @@ namespace MVC
             {
                 var webHostEnvironment = provider.GetRequiredService<IWebHostEnvironment>();
 
-                string rootPath = webHostEnvironment.WebRootPath; 
+                string rootPath = webHostEnvironment.WebRootPath;
 
                 return new UploadService(rootPath);
 

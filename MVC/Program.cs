@@ -19,6 +19,8 @@ using MVC.Middlewares;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
 using BLLServices.Common.EmailService;
+using BLLServices.Common.UploadService;
+using Microsoft.DotNet.Scaffolding.Shared;
 
 namespace MVC
 {
@@ -47,9 +49,21 @@ namespace MVC
             builder.Services.AddScoped<IDoctorMapper, DoctorMapper>();
             builder.Services.AddScoped<IPatientManger, PatientManger>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
+            builder.Services.AddScoped<HomeMapper, HomeMapper>();
+
             #region Common Services
             builder.Services.AddScoped<IEmailService, EmailService>();
-            //builder.Services.AddScoped<>
+
+            builder.Services.AddScoped<IUploadService, UploadService>(provider =>
+            {
+                var webHostEnvironment = provider.GetRequiredService<IWebHostEnvironment>();
+
+                string rootPath = webHostEnvironment.WebRootPath; 
+
+                return new UploadService(rootPath);
+
+            });
+
             #endregion
 
             // Identity Configuration
@@ -62,6 +76,10 @@ namespace MVC
             var app = builder.Build();
 
             // Exception Handling
+
+
+
+            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
                 app.UseExceptionHandler("/Home/Error");
             else
@@ -80,5 +98,8 @@ namespace MVC
                 .WithStaticAssets();
             app.Run();
         }
+
+
+
     }
 }

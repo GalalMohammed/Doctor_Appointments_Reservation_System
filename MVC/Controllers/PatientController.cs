@@ -43,9 +43,9 @@ namespace MVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CancelAppointment(int patientId, int appointmentId)
+        public async Task<IActionResult> CancelAppointment(int _, int appointmentId)
         {
-            await appointmentManager.DeleteAppointmentAsync(patientId, appointmentId);
+            await appointmentManager.DeleteAppointmentAsync(appointmentId);
             return Ok();
         }
     }

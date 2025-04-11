@@ -1,3 +1,9 @@
 ﻿@{
 	ViewData["Title"] = "Need to Confirm";
 }
+
+<div style="padding-top:80px" class="col-8 mx-auto error-container d-flex flex-column justify-content-center align-items-center gap-4">
+	<i class="fa-solid fa-envelope" style="color: var(--primary-color); font-size: 100px"></i>
+	<p class="error-paragraph text-center">Please confirm your email address to activate your account. Check your inbox and click the confirmation link we sent you.</p>
+	<a asp-controller="Home" asp-action="Index" class="error-link px-4 py-3 rounded-5 text-white text-decoration-none">Home</a>
+</div>

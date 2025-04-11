@@ -1,4 +1,5 @@
 ﻿using BLLServices.Common.EmailService;
+using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.PatientManger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,14 +17,18 @@ namespace MVC.Controllers
         private readonly IPatientManger patientManager;
         private readonly PatientMapper patientMapper;
         private readonly IEmailService emailService;
+        private readonly IDoctorManager doctorManager;
+        private readonly IDoctorMapper doctorMapper;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper, IEmailService emailService)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IPatientManger patientManager, PatientMapper patientMapper, IEmailService emailService, IDoctorManager doctorManager, IDoctorMapper doctorMapper)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.patientManager = patientManager;
             this.patientMapper = patientMapper;
             this.emailService = emailService;
+            this.doctorManager = doctorManager;
+            this.doctorMapper = doctorMapper;
         }
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
@@ -52,7 +57,8 @@ namespace MVC.Controllers
                 {
                     if (!appUser.EmailConfirmed)
                     {
-                        ModelState.AddModelError("", "Email not confirmed");
+                        //ModelState.AddModelError("", "Email not confirmed");
+                        ViewBag.emailNotConfirmed = true;
                         return View(loginUser);
                     }
                     bool correctPassword = await userManager.CheckPasswordAsync(appUser, loginUser.Password);
@@ -98,7 +104,7 @@ namespace MVC.Controllers
                     {
                         var newPatient = patientMapper.MapToPatient(registerUser);
                         newPatient.AppUserID = appUser.Id;
-                        patientManager.AddPatient(newPatient);
+                        await patientManager.AddPatient(newPatient);
                         await userManager.AddToRoleAsync(appUser, "patient");
                         emailService.SendEmail(new Email
                         {
@@ -115,7 +121,51 @@ namespace MVC.Controllers
             }
             return View(registerUser);
         }
-
+        public IActionResult DoctorRegister()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("account/doctor-register")]
+        public async Task<IActionResult> DoctorRegister(DoctorRegisterViewModel doctorRegister)
+        {
+            if (ModelState.IsValid)
+            {
+                var appUser = new AppUser()
+                {
+                    FirstName = doctorRegister.FirstName,
+                    LastName = doctorRegister.LastName,
+                    UserName = doctorRegister.Email,
+                    Email = doctorRegister.Email,
+                    PhoneNumber = doctorRegister.PhoneNumber,
+                    BirthDate = doctorRegister.BirthDate.ToDateTime(new TimeOnly(0, 0))
+                };
+                var existingUser = await userManager.FindByEmailAsync(doctorRegister.Email);
+                if (existingUser == null)
+                {
+                    IdentityResult created = await userManager.CreateAsync(appUser, doctorRegister.Password);
+                    if (created.Succeeded)
+                    {
+                        var newDoctor = doctorMapper.MapToDoctorFromRegister(doctorRegister);
+                        newDoctor.AppUserID = appUser.Id;
+                        await doctorManager.AddDoctor(newDoctor);
+                        await userManager.AddToRoleAsync(appUser, "doctor");
+                        emailService.SendEmail(new Email
+                        {
+                            To = doctorRegister.Email,
+                            Subject = "Confirm your email",
+                            Body = Url.Action("ConfirmEmail", "Account", new { email = doctorRegister.Email, token = await userManager.GenerateEmailConfirmationTokenAsync(appUser) }, Request.Scheme)
+                        });
+                        return RedirectToAction("NeedToConfirm");
+                    }
+                    foreach (var error in created.Errors)
+                        ModelState.AddModelError("", error.Description);
+                }
+                ModelState.AddModelError("", "Email already exists");
+            }
+            return View(doctorRegister);
+        }
         public IActionResult NeedToConfirm()
         {
             return View();
@@ -206,8 +256,21 @@ namespace MVC.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         [Route("account/change-password")]
-        public IActionResult ChangePassword(string oldPassword, string newPassword)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel)
         {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(User.Identity.Name);
+                var result = await userManager.ChangePasswordAsync(user, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
+                if (result.Succeeded)
+                {
+                    ViewBag.Success = true;
+                    return View();
+                }
+                ViewBag.Success = false;
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
+            }
             return View();
         }
     }

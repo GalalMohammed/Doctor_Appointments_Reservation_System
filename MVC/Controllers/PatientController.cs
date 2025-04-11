@@ -1,4 +1,5 @@
-﻿using BLLServices.Managers.PatientManger;
+﻿using BLLServices.Managers.AppointmentManager;
+using BLLServices.Managers.PatientManger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Mappers;
@@ -12,11 +13,13 @@ namespace MVC.Controllers
     {
         private readonly IPatientManger patientManager;
         private readonly PatientMapper patientMapper;
+        private readonly IAppointmentManager appointmentManager;
 
-        public PatientController(IPatientManger patientManager, PatientMapper patientMapper)
+        public PatientController(IPatientManger patientManager, PatientMapper patientMapper, IAppointmentManager appointmentManager)
         {
             this.patientManager = patientManager;
             this.patientMapper = patientMapper;
+            this.appointmentManager = appointmentManager;
         }
         public async Task<IActionResult> Profile()
         {
@@ -37,6 +40,13 @@ namespace MVC.Controllers
             }
             ViewBag.Success = false;
             return View("Profile", patient);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelAppointment(int patientId, int appointmentId)
+        {
+            await appointmentManager.DeleteAppointmentAsync(patientId, appointmentId);
+            return Ok();
         }
     }
 }

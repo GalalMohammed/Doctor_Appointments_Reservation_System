@@ -1,9 +1,7 @@
-﻿using BLLServices.Managers.AppointmentManager;
-using BLLServices.Managers.DoctorManger;
+﻿using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
-using MVC.Enums;
 using MVC.ViewModels;
 using vezeetaApplicationAPI.Models;
 
@@ -16,8 +14,8 @@ namespace MVC.Mappers
         private IDoctorReservationManager _doctorReservationManager;
         private ISpecialtyManager _specialtyManager;
 
-        public DoctorMapper(IDoctorReservationManager doctorReservationManager,ISpecialtyManager specialtyManager
-            ,IDoctorManager doctorManager ,IReviewManager reviewManager) 
+        public DoctorMapper(IDoctorReservationManager doctorReservationManager, ISpecialtyManager specialtyManager
+            , IDoctorManager doctorManager, IReviewManager reviewManager)
         {
             _doctorReservationManager = doctorReservationManager;
             _specialtyManager = specialtyManager;
@@ -28,8 +26,8 @@ namespace MVC.Mappers
         {
             return new DoctorReservationViewModel
             {
-                Day = (int)reservation.EndTime.DayOfWeek, 
-                Time =$"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}" 
+                Day = (int)reservation.EndTime.DayOfWeek,
+                Time = $"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}"
             };
         }
         //public DoctorReservation MapFromDoctorReservationViewModel(DoctorReservationViewModel reservationVM)
@@ -71,7 +69,7 @@ namespace MVC.Mappers
         }
         public async Task<Doctor> MapFromDocSearchVM(docSearchVM doctorVM)
         {
-            return await _doctorManager.GetDoctorByID(doctorVM.ID);   
+            return await _doctorManager.GetDoctorByID(doctorVM.ID);
         }
         public async Task<doctorProfileVM> MapToDoctorProfileVM(Doctor doctor)
         {
@@ -106,7 +104,7 @@ namespace MVC.Mappers
                 Location = doctor.Location,
                 Phone = doctor.FirstName.ToString(),//.AppUser.PhoneNumber,
                 Appointments = appointments,
-                Ratings = ratings, 
+                Ratings = ratings,
                 Latitude = (double)doctor.Lat, // change it to float
                 Longitude = (double)doctor.Lng
             };
@@ -140,6 +138,10 @@ namespace MVC.Mappers
                 Date = DateTime.Parse(rating.Date),
                 DoctorID = rating.DocID
             };
+        }
+        public Doctor MapToDoctorFromRegister(DoctorRegisterViewModel doctorRegisterVM)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -28,14 +28,22 @@ namespace MVC.Controllers
             var doctor = _doctorManager.GetDoctorByID(ID).Result;
             if (doctor == null) return NotFound();
             var doctorVM = _doctorMapper.MapToDoctorProfileVM(doctor).Result;
-            doctorVM.Appointments = doctorVM.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
-                                   .Concat(doctorVM.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
-                                   .ToList();
 
             ViewBag.reviews = reviews;
             ViewBag.pageNums = Math.Ceiling((double)doctorVM.Ratings.Count / pageSize);
             ViewBag.currentPage = pageNum + 1;
 
+            for (int i = 0; i < 7; i++)
+            {
+                if (!doctorVM.Appointments.Any(app => app.Day == i))
+                {
+                    doctorVM.Appointments.Add(new DoctorReservationViewModel() { Day = i, Time = null });
+                }
+            }
+            doctorVM.Appointments.Sort((a, b) => a.Day - b.Day);
+            doctorVM.Appointments = doctorVM.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
+                                   .Concat(doctorVM.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
+                                   .ToList();
             doctorVM.Ratings = doctorVM.Ratings.Skip(pageNum * pageSize).Take(pageSize).ToList();
             return View(doctorVM);
 

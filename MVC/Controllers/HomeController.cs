@@ -25,10 +25,6 @@ namespace MVC.Controllers
             homeVM = homeMapper.MapToHomeVM();
             #endregion
 
-            #region FakeModels
-            //homeVM = GenerateFakeHomeVM();
-
-            #endregion
 
 
             return View(homeVM);

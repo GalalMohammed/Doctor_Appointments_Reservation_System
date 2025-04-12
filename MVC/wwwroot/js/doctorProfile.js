@@ -68,6 +68,22 @@ if (!isNaN(latitude) && !isNaN(longitude)) {
     console.error("Invalid coordinates");
 }
 
+
+// Image Code
+
+let imageForm = document.querySelector("#imageForm")
+let imgFile = document.querySelector(".SP-file");
+
+imageForm.addEventListener("click", function () {
+    imgFile.click()
+})
+
+imgFile.addEventListener("change", function () {
+    imageForm.submit();
+})
+
+
+
 // Calender Code
 
 let currentDate = new Date();
@@ -142,6 +158,26 @@ const calendar = new calendarJs("SP-Calendar",{ // Target element
 
     }
 });
+
+let events = []
+
+for (let i = 1; i <= 30; i++) {
+    let date = new Date();
+    date.setDate(date.getDate() + i)
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(),0,0,0,0);
+
+    let event = {
+        from: date,
+        to: date,
+        title: "Add Work +",
+        color : "#004085",
+        colorBorder: "#B3E5FC",
+        description:"Vacation Day",
+        status: "Done",
+        isAllDay: true
+    }
+    calendar.addEvent(event);
+}
 
 calendar.addEvent(cal);
 

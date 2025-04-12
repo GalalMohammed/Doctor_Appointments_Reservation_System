@@ -34,10 +34,46 @@
 }
 
 <div class="container-fluid" style="padding-top:80px">
+    <!-- #region Alerts -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Added"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> @TempData["Added"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Updated"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> @TempData["Updated"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Deleted"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Warning!</strong> @TempData["Deleted"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <!-- #endregion -->
     <div class="row">
         <div class="col-md-4">
             <div class=" sticky-md-top text-center" style="padding-top:89px">
-                <img src="~/images/@Model.Image" class="rounded-circle img-thumbnail position-relative" height="150" width="150" alt="Doctor Image">
+                <form asp-action="ChangeImage" asp-controller="Account" class="position-relative d-inline-block" id="imageForm" enctype="multipart/form-data">
+                    
+                    <img src="~/uploads/images/@Model.Image" class="rounded-circle img-thumbnail SP-photo" height="150" width="150" alt="Doctor Image">
+                    <input type="file" name="File" class="SP-file d-none"/>
+                    <div class="SP-upload"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                </form>
+
                 <h3 class="mt-2">Dr. @Model.Name</h3>
                 <p class="fw-bold">@Model.Title</p>
                 <p class="mb-2">@Model.Qualifications</p>

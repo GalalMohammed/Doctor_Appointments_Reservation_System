@@ -301,5 +301,34 @@ namespace MVC.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeImage(ChangeImageVM image)
+        {
+            if (ModelState.IsValid)
+            {
+                var doc = await doctorManager.GetDoctorByID(image.ID);
+                if (doc == null) TempData["Error"] = $"Doctor with ID {image.ID} was not found";
+
+
+                doc.ImageURL = await uploadService.UploadFile(image.File);
+
+
+                await doctorManager.UpdateDoctor(doc);
+
+                TempData["Updated"] = "Image was updated successfully";
+                return RedirectToAction("profile","doctor",new {id = 1});
+            }
+            else
+            {
+                TempData["Error"] = string.Join("\n",
+                    ModelState
+                        .Where(m => m.Value.Errors.Any())
+                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}"))
+                );
+                return RedirectToAction("profile", "doctor", new { id = 1 });
+            }
+        }
     }
 }

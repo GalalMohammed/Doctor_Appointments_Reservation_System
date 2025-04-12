@@ -30,7 +30,7 @@ namespace BLLServices.Managers.DoctorManger
             }
             else
             {
-                Repository.Update(doctor);
+                Repository.Update(doctorVM);
             }
         }
         public async Task GetDoctorInfo(int doctorID)

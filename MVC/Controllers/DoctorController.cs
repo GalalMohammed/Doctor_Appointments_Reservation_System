@@ -38,7 +38,7 @@ namespace MVC.Controllers
             {
                 from = DateTime.Now.AddDays(1),
                 to = DateTime.Now.AddDays(1),
-                title = "9:00 AM to 10:00 PM",
+                title = "Vaction",
                 color = "#004085",
                 colorBorder = "#B3E5FC",
                 status = "Done"

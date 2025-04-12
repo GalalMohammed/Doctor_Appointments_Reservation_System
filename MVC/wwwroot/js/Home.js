@@ -76,12 +76,12 @@ window.addEventListener("scroll", function () {
     console.log(lenght, "px");
 
     if (lenght < 0) {
-        document.getElementsByTagName("nav")[0].classList.replace("py-2", "py-3");
+        document.getElementsByTagName("nav")[0].classList.replace("py-1", "py-2");
         document
             .getElementsByTagName("nav")[0]
             .classList.replace("bg-primary-color-75", "bg-primary-color");
     } else {
-        document.getElementsByTagName("nav")[0].classList.replace("py-3", "py-2");
+        document.getElementsByTagName("nav")[0].classList.replace("py-2", "py-1");
         document
             .getElementsByTagName("nav")[0]
             .classList.replace("bg-primary-color", "bg-primary-color-75");

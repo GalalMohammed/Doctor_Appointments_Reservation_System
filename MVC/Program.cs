@@ -6,6 +6,7 @@ using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.PatientManger;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
+using BLLServices.Payment;
 using DAL.Repositories.Appointments;
 using DAL.Repositories.DoctorReservations;
 using DAL.Repositories.Doctors;
@@ -75,6 +76,12 @@ namespace MVC
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton(x => 
+            new PayPalClient(
+                clientId: builder.Configuration["PayPalOptions:ClientId"] ?? throw new ArgumentNullException(nameof(builder.Configuration["PayPalOptions:ClientId"])),
+                clientSecret: builder.Configuration["PayPalOptions:ClientSecret"] ?? throw new ArgumentNullException(nameof(builder.Configuration["PayPalOptions:ClientSecret"])),
+                mode: builder.Configuration["PayPalOptions:Mode"] ?? "sandbox"
+            ));
             var app = builder.Build();
 
             // Exception Handling

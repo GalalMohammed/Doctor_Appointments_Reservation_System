@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="text-center">
+    <article>
+        <h1 class="display-4">Payment</h1>
+        <p>Pay with PayPal</p>
+        <div id="paypal-button-container"></div>
+    </article>
+</div>
+@section Scripts {
+    <script src="https://www.paypal.com/sdk/js?client-id={{ViewBag.ClientId}}"></script>
+    <script src="~/js/payment.js"></script>
+}

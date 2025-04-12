@@ -20,8 +20,8 @@
 <body class="m-0">
     <nav id="MainNav" class="position-fixed w-100 navbar navbar-dark navbar-expand-lg @customNav">
         <div class="container-fluid px-5">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                <img src="/images/Vezeeta.jpeg" alt="" />
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index" >
+                <img src="/images/MainLogo.png" height="45" style="filter: drop-shadow(1px 1px 2px var(--secondary-color));" />
             </a>
 
             <button class="navbar-toggler"
@@ -37,7 +37,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav gap-md-5 m-auto">
                     <li class="nav-item">
-                        <a class="nav-link @(CurrentPage.ToLower() == "home"?"active" :"")" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link @(CurrentPage.ToLower() == "home"?"active" :"")"   asp-controller="Home"     asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @(CurrentPage.ToLower() == "doctor"?"active" :"")" asp-controller="Doctor" asp-action="Search">Doctors</a>

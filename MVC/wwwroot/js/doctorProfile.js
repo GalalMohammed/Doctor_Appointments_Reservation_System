@@ -24,11 +24,15 @@ function GoToPage() {
 }
 
 document.getElementById("details-tab").addEventListener("click", function () {
-    updateQueryString("reviews", "false");
+    updateQueryString("tab", "details");
 });
 
 document.getElementById("reviews-tab").addEventListener("click", function () {
-    updateQueryString("reviews", "true");
+    updateQueryString("tab", "reviews");
+});
+
+document.getElementById("calender-tab").addEventListener("click", function () {
+    updateQueryString("tab", "calender");
 });
 
 function updateQueryString(key, value) {
@@ -63,3 +67,81 @@ if (!isNaN(latitude) && !isNaN(longitude)) {
 } else {
     console.error("Invalid coordinates");
 }
+
+// Calender Code
+
+let currentDate = new Date();
+let currentYear = currentDate.getFullYear();
+let currentMonth = currentDate.getMonth();
+let nextMonth = new Date(currentYear, currentMonth + 1, 1);
+
+const calendar = new calendarJs("SP-Calendar",{ // Target element
+    initialDateTime: currentDate,
+
+    // Restrict year range to current and next year (if next month is in next year)
+    minimumYear: currentYear,
+    maximumYear: nextMonth.getFullYear(),
+
+    // Allow event creation
+    manualEditingEnabled: false,
+
+    // View configuration
+    views: {
+        fullMonth: {
+            enabled: true,              // Enable full-month view
+            isPinUpViewEnabled: false,  // Disable pin-up images
+            showExtraTitleBarButtons: false, // Hide extra buttons
+            showPreviousNextMonthNames: false // Hide month names in navigation
+        },
+        fullDay: { enabled: false },
+        fullWeek: { enabled: false },
+        fullYear: { enabled: false },
+        timeline: { enabled: false },
+        allEvents: { enabled: false }
+    },
+
+    // Disable features not needed
+    fullScreenModeEnabled: false,
+    exportEventsEnabled: false,
+    importEventsEnabled: false,
+    configurationDialogEnabled: false,
+    jumpToDateEnabled: false,
+    dragAndDropForEventsEnabled: false,
+    
+    sideMenu: {
+        showDays: false,
+        showEventTypes: false,
+        showGroups: false,
+        showWorkingDays: false,
+        showWeekendDays: false
+    },
+    events: {
+        onPreviousMonth: function (displayDate) {
+            calendar.setCurrentDisplayDate(new Date(currentYear, currentMonth, 1));
+
+        },
+        onNextMonth: function (displayDate) {
+            calendar.setCurrentDisplayDate(new Date(currentYear, currentMonth + 1, 1));
+        },
+        onDayClick: function (date, event) {
+            var dateString = date.toDateString();
+            // Log the click
+            console.log("Clicked day:", dateString);
+
+        },
+        onBeforeEventAddEdit(event) {
+            
+            console.log(event)
+
+
+        },
+        onEventClick: function (event) {
+            console.log(event)
+        }
+
+
+    }
+});
+
+calendar.addEvent(cal);
+

@@ -26,7 +26,7 @@ namespace MVC.Mappers
         {
             return new DoctorReservationViewModel
             {
-                Day = (int)reservation.EndTime.DayOfWeek,
+                Day =  (int)reservation.EndTime.DayOfWeek,
                 Time = $"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}",
                 ResID = reservation.ID
             };

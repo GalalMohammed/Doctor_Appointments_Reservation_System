@@ -24,15 +24,16 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="~/css/doctorProfile.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="~/lib/calenderJS/dist/calendar.js.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="~/css/doctorProfile.css">
 }
 
-<div class="container" style="padding-top:80px">
+<div class="container-fluid" style="padding-top:80px">
     <div class="row">
         <div class="col-md-4">
             <div class=" sticky-md-top text-center" style="padding-top:89px">
@@ -49,14 +50,20 @@
         <div class="col-md-8">
             <ul class="nav nav-tabs" id="doctorTabs">
                 <li class="nav-item">
-                    <a class="nav-link SP-primaryText @(ViewBag.reviews == false ? "active" : "")" id="details-tab" data-bs-toggle="tab" href="#details">Details</a>
+                    <a class="nav-link SP-primaryText @(ViewBag.tab == "details" ? "active" : "")" id="details-tab" data-bs-toggle="tab" href="#details">Details</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link SP-primaryText @(ViewBag.reviews != false ? "active" : "")" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reviews</a>
+                    <a class="nav-link SP-primaryText @(ViewBag.tab == "reviews" ? "active" : "")" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link SP-primaryText @(ViewBag.tab == "calender" ? "active" : "")" id="calender-tab" data-bs-toggle="tab" href="#calender">Calender</a>
                 </li>
             </ul>
             <div class="tab-content my-3 ">
-                <div class="tab-pane fade @(ViewBag.reviews == false ? "show active" : "")" id="details">
+                
+                <!-- #region Details Section -->
+
+                <div class="tab-pane fade @(ViewBag.tab == "details" ? "show active" : "")" id="details">
                     <div class="col-12 flex-wrap justify-content-center my-3 gap-2 SP-bookCards">
                         <div class="swiper mySwiper">
                             <div class="swiper-wrapper">
@@ -64,14 +71,31 @@
                                 {
                                     <div class="card d-flex text-center swiper-slide">
                                         <div class="card-header SP-bookHeader p-1">
+                                            @* @if(app.Day.Date == DateTime.Now.Date)
+                                            {
+                                                @:Today
+                                            }
+                                            else if(app.Day.Date == DateTime.Now.AddDays(1).Date)
+                                            {
+                                                @:Tomorrow
+                                            }
+                                            else
+                                            {
+                                                app.Day.ToString("ddd d/M");
+                                            } *@
                                             @GetNextDate(app.Day)
                                         </div>
 
                                         <div class="card-body SP-primaryText flex-column justify-content-center p-2">
-                                            @if (app.Time != null)
+                                            @if (app.Time != null && app.IsAvailable)
                                             {
                                                 <p class="mb-1">From <strong>@app.Time.Split("|")[0]</strong></p>
                                                 <p class="mb-1">To <strong>@app.Time.Split("|")[1]</strong></p>
+                                            }
+                                            else if (!app.IsAvailable)
+                                            {
+                                                <p class="mb-1">All Appointments</p>
+                                                <p class="mb-1">Reserved</p>
                                             }
                                             else
                                             {
@@ -86,7 +110,7 @@
                             <div class="swiper-scrollbar position-static mt-2"></div>
                         </div>
                     </div>
-                    
+
                     <h4>Specialties</h4>
                     <ul>
                         <div class="SP-badge-scroll d-flex flex-wrap gap-1">
@@ -100,7 +124,7 @@
                     <p class="offset-1"><i class="fa-solid fa-calendar-days SP-icon"></i><span class="ms-2">@Model.Experience+ Years</span></p>
                     <h4>Location</h4>
                     <p class="offset-1"><i class="fa-solid fa-location-dot SP-icon"></i><span class="ms-2">@Model.Governorate : @Model.Location</span></p>
-                    
+
                     <h4>Fees</h4>
                     <p class="fw-bold offset-1"><i class="fa-solid fa-money-bills SP-icon"></i><span class="ms-2 SP-primaryText">@Model.Fees E£</span></p>
 
@@ -129,30 +153,34 @@
                         {
                             <i class="fa-regular fa-face-smile-beam SP-icon me-2"></i>
                         }
-                    
-                        @for(i = 0;i < (int)Model.Rating;i++)
+
+                        @for (i = 0; i < (int)Model.Rating; i++)
                         {
                             <i class="fa-solid fa-star"></i>
                         }
-                        @if(Model.Rating != (int)Model.Rating)
+                        @if (Model.Rating != (int)Model.Rating)
                         {
                             i++;
                             <i class="fa-solid fa-star-half-stroke"></i>
                         }
-                        @for(i = i;i<5;i++)
+                        @for (i = i; i < 5; i++)
                         {
                             <i class="fa-regular fa-star"></i>
                         }
                         <span>@Model.Rating</span>
                     </p>
                     <h4>Map</h4>
-                    <div 
-                        class=" col-12" 
-                        style="height:400px" 
-                        id="map"
+                    <div class=" col-12"
+                         style="height:400px"
+                         id="map"
                          data-latitude="@Model.Latitude" data-longitude="@Model.Longitude"></div>
                 </div>
-                <div class="tab-pane fade @(ViewBag.reviews != false ? "show active" : "")" id="reviews">
+
+                <!-- #endregion -->
+
+                <!-- #region Rating Section -->
+
+                <div class="tab-pane fade @(ViewBag.tab == "reviews" ? "show active" : "")" id="reviews">
                     <h4>Patient Reviews</h4>
                     <div id="reviewsContainer">
                         @if (Model.Ratings.Count == 0)
@@ -164,7 +192,8 @@
                             <div class="border p-3 mb-2 rounded" data-aos="fade-left">
                                 <h5>@review.PatientName</h5>
                                 <p>@review.Review</p>
-                                <p class="SP-primaryText">Rating:
+                                <p class="SP-primaryText">
+                                    Rating:
                                     @if (review.Rate <= 1)
                                     {
                                         <i class="fa-regular fa-face-frown SP-icon me-2"></i>
@@ -205,13 +234,13 @@
                             </div>
                         }
                         <nav aria-label="Page navigation">
-                            <ul class="pagination text-center justify-content-center" >
+                            <ul class="pagination text-center justify-content-center">
                                 <li class="page-item flex-fill">
                                     <a asp-action="Profile" asp-controller="Doctor" asp-route-id="@Model.ID" asp-route-pageNum="@((int)ViewBag.currentPage - 2)" asp-route-reviews="true" class="page-link SP-prevBTN SP-primaryText" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
-                                
+
                                 @if (ViewBag.pageNums >= 1)
                                 {
                                     <li class="page-item flex-fill">
@@ -231,7 +260,6 @@
                                     </li>
 
                                 }<!-- Correct usage on an anchor tag -->
-
                                 @if (ViewBag.currentPage < ViewBag.pageNums - 3)
                                 {
                                     <li class="page-item flex-fill disabled"><span class="page-link">...</span></li>
@@ -261,8 +289,19 @@
                             </ul>
                         </nav>
                     </div>
-                    
+
                 </div>
+
+                <!-- #endregion -->
+                
+                <!-- #region Calender Section -->
+
+                <div class="tab-pane fade @(ViewBag.tab == "calender" ? "show active" : "")" id="calender">
+                    <div id="SP-Calendar"></div>
+                </div>
+
+                <!-- #endregion -->
+                
             </div>
         </div>
     </div>
@@ -271,7 +310,12 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="~/lib/calenderJS/dist/calendar.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var cal = @Html.Raw(ViewBag.cal)
+        console.log(cal);
+    </script>
     <script src="~/js/doctorProfile.js"></script>
 }
 

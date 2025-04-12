@@ -21,6 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\calenderJS\dist\.DS_Store" />
+    <None Include="wwwroot\lib\calenderJS\dist\translations\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />

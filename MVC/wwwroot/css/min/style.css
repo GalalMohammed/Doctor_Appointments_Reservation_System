@@ -186,6 +186,8 @@ html {
     font-size: 0.9rem;
 }
 
+/* Swiper Booking Cards CSS */
+
 .swiper-slide {
     display: flex;
 }
@@ -198,6 +200,56 @@ html {
 .swiper-scrollbar-drag {
     background: var(--primary-color);
     border-radius: 10px;
+}
+
+/* Calender CSS */
+
+.ib-hamburger, .left-divider-line, .ib-arrow-down-full-medium {
+    display: none !important;
+}
+
+#SP-Calendar {
+    border-color:var(--secondary-color);
+}
+
+#SP-Calendar .year-dropdown-button {
+    pointer-events: none;
+    cursor: default;
+    background-color: var(--accent-color);
+    padding: 5px 10px
+}
+
+#SP-Calendar .title-bar {
+    background-color: var(--primary-color);
+}
+
+#SP-Calendar .title-container {
+    background-color: var(--secondary-color);
+    color : var(--primary-color)
+}
+
+#SP-Calendar .header-days > * {
+    background-color: var(--secondary-color);
+    color: var(--primary-color)
+}
+
+#SP-Calendar .days > * {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+#SP-Calendar .days > *:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+#SP-Calendar .cell > span.today {
+    background-color: var(--primary-color) !important;
+    color: var(--accent-color) !important;
+}
+
+#SP-Calendar .event {
+    cursor: pointer;
 }
 
 .doctor-register-div {

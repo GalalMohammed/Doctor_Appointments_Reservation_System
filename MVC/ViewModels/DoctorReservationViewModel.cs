@@ -6,5 +6,7 @@
         public string? Time { get; set; }
 
         public int ResID { get; set; }
+
+        public bool IsAvailable { get; set; }
     }
 }

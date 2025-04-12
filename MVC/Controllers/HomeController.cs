@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using MVC.Models;
-using System.Diagnostics;
-using MVC.ViewModels;
 using MVC.Mappers;
+using MVC.Models;
+using MVC.ViewModels;
+using System.Diagnostics;
 
 namespace MVC.Controllers
 {
@@ -11,7 +11,7 @@ namespace MVC.Controllers
         private readonly ILogger<HomeController> logger;
         private readonly HomeMapper homeMapper;
 
-        public HomeController(ILogger<HomeController> logger ,HomeMapper homeMapper)
+        public HomeController(ILogger<HomeController> logger, HomeMapper homeMapper)
         {
             this.logger = logger;
             this.homeMapper = homeMapper;
@@ -40,7 +40,16 @@ namespace MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
+        [Route("contact")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [Route("about")]
+        public IActionResult About()
+        {
+            return View();
+        }
 
 
         #region FakeDateGenrator

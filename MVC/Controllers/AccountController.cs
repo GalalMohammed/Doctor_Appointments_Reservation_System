@@ -77,7 +77,6 @@ namespace MVC.Controllers
                 {
                     if (!appUser.EmailConfirmed)
                     {
-                        //ModelState.AddModelError("", "Email not confirmed");
                         ViewBag.emailNotConfirmed = true;
                         return View(loginUser);
                     }

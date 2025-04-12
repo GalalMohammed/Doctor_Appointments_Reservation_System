@@ -1,5 +1,4 @@
-﻿using DAL.Enums;
-using MVC.Enums;
+﻿using MVC.Enums;
 using MVC.Validation;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,26 +23,10 @@ namespace MVC.ViewModels
         [DataType(DataType.MultilineText)]
         [StringLength(500, ErrorMessage = "About Doctor must be less than 500 characters")]
         public string About { get; set; }
-        [Display(Name = "Work Days")]
-        [EnumDataType(typeof(WorkingDays))]
-        public WorkingDays WorkingDays { get; set; }
-
-        [DataType(DataType.Time)]
-        [Display(Name = "Start Time")]
-        public TimeOnly StartTime { get; set; }
-
-        [DataType(DataType.Time)]
-        [Display(Name = "End Time")]
-        [ValidEndTime]
-        public TimeOnly EndTime { get; set; }
-        [Range(0, 50)]
-        [Display(Name = "Reservation Quota")]
-        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Reservation Quota must be a number")]
-        public int ReservationQuota { get; set; }
         [MaxLength(200)]
         public string Address { get; set; }
         public Gender Gender { get; set; }
-        public float Lat { get; set; } = 30.0594629f;
-        public float Lng { get; set; } = 31.3406953f;
+        public double Lat { get; set; } = 30.0594629;
+        public double Lng { get; set; } = 31.3406953;
     }
 }

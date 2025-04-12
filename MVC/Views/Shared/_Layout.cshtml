@@ -15,7 +15,7 @@
     var customNav = ViewData["Title"] == "Home" ? "bg-primary-color-75 py-2" : "bg-primary-color py-3";
 }
 @{
-  var CurrentPage =  ViewContext.RouteData.Values["controller"]?.ToString();
+    var CurrentPage =  ViewContext.RouteData.Values["controller"]?.ToString();
 }
 <body class="m-0">
     <nav id="MainNav" class="position-fixed w-100 navbar navbar-dark navbar-expand-lg @customNav">
@@ -25,12 +25,12 @@
             </a>
 
             <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -51,7 +51,7 @@
                 </ul>
                 <ul class="navbar-nav gap-md-2">
                     @if (!User.Identity.IsAuthenticated)
-                  {
+                    {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                         </li>
@@ -61,16 +61,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-nowrap" asp-controller="Account" asp-action="DoctorRegister">Join us</a>
                         </li>
-                  }
-                  else{
+                    }
+                    else{
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Patient" asp-action="Profile">Profile</a>
+                            <a class="nav-link" asp-controller="@(User.IsInRole("patient") ? "Patient" : "Doctor")" asp-action="Profile">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout"> Logout </a>
                         </li>
                   }
-                
               </ul>
             </div>
         </div>

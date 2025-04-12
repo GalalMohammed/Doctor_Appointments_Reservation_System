@@ -41,12 +41,10 @@ namespace MVC.Controllers
             ViewBag.Success = false;
             return View("Profile", patient);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CancelAppointment(int _, int appointmentId)
+        public async Task<IActionResult> CancelAppointment(int appointmentId)
         {
             await appointmentManager.DeleteAppointmentAsync(appointmentId);
-            return Ok();
+            return RedirectToAction("Profile");
         }
     }
 }

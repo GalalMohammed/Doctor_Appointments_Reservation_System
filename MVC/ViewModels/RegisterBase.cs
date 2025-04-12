@@ -22,7 +22,7 @@ namespace MVC.ViewModels
         [Display(Name = "Confirm Password")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-        [RegularExpression(@"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.com$", ErrorMessage = "Email must match the following pattern: test@test.com")]
+        [RegularExpression(@"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.com$", ErrorMessage = "Email must match the following pattern: test@test.com")]
         public string Email { get; set; }
         [Display(Name = "Phone Number")]
         [RegularExpression("^0\\d{10}$", ErrorMessage = "Invalid Phone Number")]

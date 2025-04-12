@@ -11,21 +11,17 @@ namespace BLLServices.Managers.AppointmentManager
 {
     public class AppointmentManager(IAppointmentRepository appointmentRepository, IDoctorReservationRepository reservationRepository) : IAppointmentManager
     {
-        public async Task AddAppointment(int patientId, int doctorReservationId, DateTime appointmentDate)
+        public async Task AddAppointment(int patientId, int doctorReservationId)
         {
-            DateTime baseDateTime = DateOnly.FromDateTime(appointmentDate).ToDateTime(new TimeOnly(0, 0));
-            IEnumerable<Appointment> alreadyReserved = await appointmentRepository.GetAllByConditon(app => app.DoctorReservationID == doctorReservationId && app.AppointmentDate > baseDateTime );
+            IEnumerable<Appointment> alreadyReserved = await appointmentRepository.GetAllByConditon(app => app.DoctorReservationID == doctorReservationId );
             DoctorReservation? reservation = await reservationRepository.GetByID(doctorReservationId);
             int reserved = alreadyReserved.Count();
             if (reservation != null && reservation.MaxReservation > reserved)
             {
-                double delay = reserved * (reservation.Doctor?.WaitingTime ?? .5);
-                appointmentDate = reservation.StartTime.AddHours(delay);
                 Appointment appointment = new()
                 {
                     PatientId = patientId,
-                    DoctorReservationID = doctorReservationId,
-                    AppointmentDate = appointmentDate
+                    DoctorReservationID = doctorReservationId
                 };
                 appointmentRepository.Add(appointment);
             }
@@ -42,26 +38,24 @@ namespace BLLServices.Managers.AppointmentManager
                 appointmentRepository.Delete(appointment);
         }
 
-        public async Task<List<Appointment>> GetDoctorAppointments(int doctorId)
+        public async Task<List<Appointment>> GetDoctorAppointments(int doctorId, int reservationId)
         {
-            IEnumerable<DoctorReservation> reservations = await reservationRepository.GetReservationsByDocID(doctorId);
+            IEnumerable<DoctorReservation> reservations = await reservationRepository.GetAllByConditon(reservation => reservation.ID == reservationId && reservation.DoctorID == doctorId);
             List<int> reservationsIds = [.. reservations.Select(r => r.ID)];
-            List<Appointment> appointments = await appointmentRepository.GetAllByConditon(app => reservationsIds.Contains(app.DoctorReservationID) && app.AppointmentDate >= DateTime.Now);
-            return [.. appointments.OrderBy(app => app.AppointmentDate)];
+            List<Appointment> appointments = await appointmentRepository.GetAllByConditon(app => reservationsIds.Contains(app.DoctorReservationID));
+            return [.. appointments];
         }
 
         public async Task<List<Appointment>> GetPatientAppointments(int patientId, string? specialtyName = null, string? doctorName = null)
         {
-            IEnumerable<DoctorReservation> reservations;
+            IEnumerable<Appointment> appointments;
             if (specialtyName != null)
-                reservations = await reservationRepository.GetAllByConditon(r => r != null && r.Doctor != null && r.Doctor.Specialty != null && r.Doctor.Specialty.Name == specialtyName);
+                appointments = await appointmentRepository.GetAllByConditon(r => r.PatientId == patientId && r != null && r.DoctorReservation != null && r.DoctorReservation.Doctor != null && r.DoctorReservation.Doctor.Specialty != null && r.DoctorReservation.Doctor.Specialty.Name == specialtyName);
             else
-                reservations = await reservationRepository.GetAll();
+                appointments = await appointmentRepository.GetAllByConditon( r => r.PatientId == patientId);
             if (doctorName != null)
-                reservations = reservations.Where(r => r != null && r.Doctor != null && ($"{r.Doctor.FirstName} {r.Doctor.LastName}".StartsWith(doctorName, StringComparison.OrdinalIgnoreCase) || (r.Doctor.FirstName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase)) || (r.Doctor.LastName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase))));
-            List<int> reservationsIds = [.. reservations.Select(r => r.ID)];
-            List<Appointment> appointments = await appointmentRepository.GetAllByConditon(app => reservationsIds.Contains(app.DoctorReservationID) && app.PatientId == patientId && app.AppointmentDate >= DateTime.Now);
-            return [.. appointments.OrderBy(app => app.AppointmentDate)];
+                appointments = appointments.Where(r => r != null && r.DoctorReservation != null && r.DoctorReservation.Doctor != null && ($"{r.DoctorReservation.Doctor.FirstName} {r.DoctorReservation.Doctor.LastName}".StartsWith(doctorName, StringComparison.OrdinalIgnoreCase) || (r.DoctorReservation.Doctor.FirstName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase)) || (r.DoctorReservation.Doctor.LastName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase))));
+            return [..appointments];
         }
     }
 }

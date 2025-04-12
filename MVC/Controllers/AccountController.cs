@@ -77,7 +77,6 @@ namespace MVC.Controllers
                 {
                     if (!appUser.EmailConfirmed)
                     {
-                        //ModelState.AddModelError("", "Email not confirmed");
                         ViewBag.emailNotConfirmed = true;
                         return View(loginUser);
                     }
@@ -146,7 +145,7 @@ namespace MVC.Controllers
         {
             var specialties = await specialtyManager.GetAllSpecialties();
             ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
-            return View();
+            return View(new DoctorRegisterViewModel());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -176,7 +175,7 @@ namespace MVC.Controllers
                         newDoctor.ImageURL = imageURL;
                         await doctorManager.AddDoctor(newDoctor);
                         await userManager.AddToRoleAsync(appUser, "doctor");
-                        reservationManager.GenerateCalanderReservation(newDoctor, doctorRegister.ReservationQuota);
+                        reservationManager.GenerateCalanderReservation(newDoctor, 20);
                         emailService.SendEmail(new Email
                         {
                             To = doctorRegister.Email,
@@ -233,8 +232,6 @@ namespace MVC.Controllers
 
         }
 
-
-
         [HttpGet]
         public IActionResult ResetPassword(string email, string token)
         {
@@ -245,7 +242,6 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
         {

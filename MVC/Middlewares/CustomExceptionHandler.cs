@@ -22,6 +22,9 @@
                     writer.WriteLine($"--------------------------------------- {DateTime.Now} ---------------------------------------\n{exception}");
                     writer.WriteLine("");
                     writer.WriteLine("");
+                    Console.WriteLine($"--------------------------------------- {DateTime.Now} ---------------------------------------\n{exception}");
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                 }
                 context.Response.Redirect("/Error");
             }

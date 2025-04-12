@@ -15,7 +15,7 @@
     var customNav = ViewData["Title"] == "Home" ? "bg-primary-color-75 py-2" : "bg-primary-color py-3";
 }
 @{
-    var CurrentPage =  ViewContext.RouteData.Values["controller"]?.ToString();
+    var CurrentPage =  ViewContext.RouteData.Values["action"]?.ToString();
 }
 <body class="m-0">
     <nav id="MainNav" class="position-fixed w-100 navbar navbar-dark navbar-expand-lg @customNav">
@@ -37,17 +37,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav gap-md-5 m-auto">
                     <li class="nav-item">
-                        <a class="nav-link @(CurrentPage.ToLower() == "home"?"active" :"")"   asp-controller="Home"     asp-action="Index">Home</a>
+                        <a class="nav-link @(CurrentPage.ToLower() == "index"?"active" :"")" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(CurrentPage.ToLower() == "doctor"?"active" :"")" asp-controller="Doctor" asp-action="Search">Doctors</a>
+                        <a class="nav-link @(CurrentPage.ToLower() == "search"?"active" :"")" asp-controller="Doctor" asp-action="Search">Doctors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(CurrentPage.ToLower() == "doctor"?"active" :"")" asp-controller="Doctor" asp-action="Search">Services</a>
+                        <a class="nav-link @(CurrentPage.ToLower() == "about"?"active" :"")" asp-controller="Home" asp-action="About">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(CurrentPage.ToLower() == "doctor"?"active" :"")" asp-controller="Doctor" asp-action="Search">Search</a>
+                        <a class="nav-link @(CurrentPage.ToLower() == "contact"?"active" :"")" asp-controller="Home" asp-action="Contact">Contact</a>
                     </li>
+                    @* <li class="nav-item"> *@
+                    @*     <a class="nav-link @(CurrentPage.ToLower() == "doctor"?"active" :"")" asp-controller="Doctor" asp-action="Search">Services</a> *@
+                    @* </li> *@
+                    @* <li class="nav-item"> *@
+                    @*     <a class="nav-link @(CurrentPage.ToLower() == "doctor"?"active" :"")" asp-controller="Doctor" asp-action="Search">Search</a> *@
+                    @* </li> *@
                 </ul>
                 <ul class="navbar-nav gap-md-2">
                     @if (!User.Identity.IsAuthenticated)

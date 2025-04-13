@@ -30,6 +30,6 @@ namespace MVC.ViewModels
         public Governorate Governorate { get; set; }
         [Display(Name = "Birth Date")]
         [ValidDate]
-        public DateOnly BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; } = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
     }
 }

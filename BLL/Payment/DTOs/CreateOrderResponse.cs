@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLLServices.Payment.Helpers
+namespace BLLServices.Payment.DTOs
 {
     public sealed class CreateOrderResponse
     {

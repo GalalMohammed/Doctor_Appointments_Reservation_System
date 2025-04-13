@@ -9,6 +9,7 @@ namespace BLLServices.Managers.AppointmentManager
 {
     public interface IAppointmentManager
     {
+        public Task<bool> IsReservationFull(int doctorReservationId);
         public Task DeleteAppointmentAsync(int appointmentId);
         public Task AddAppointment(int patientId, int doctorReservationId);
         public Task<List<Appointment>> GetDoctorAppointments(int doctorId, int reservationId);

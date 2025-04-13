@@ -1,24 +1,74 @@
 ﻿paypal.Buttons({
-    createOrder: function (data, actions) {
-        return fetch(@Url.Action("Order"), {
-            method: 'post'
-        }).then(function (response) {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).then(function (orderData) {
-            return orderData.id;
+    async createOrder() {
+        const value = document.getElementById("amount").value;
+        const response = await fetch("/Payment/CreateOrder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                amount: value,
+            })
         });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const order = await response.json();
+
+        return order.id;
     },
-    onApprove: function (data, actions) {
-        return fetch(`${@Url.Action("Capture")}?orderId=${data.orderId}`, {
-            method: 'post'
-        }).then(function (response) {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        }).render('#paypal-button-container');
+    async onApprove(data) {
+        const response = await fetch("/Payment/CaptureOrder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                orderID: data.orderID
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const details = await response.json();
+        // Show a success message to your buyer
+        if (details.status === "COMPLETED") {
+            document.getElementById("notification-container").innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Transaction Completed!</strong> Thank you for your payment.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+        } else {
+            document.getElementById("notification-container").innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Transaction Failed!</strong> ${details}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+        }
+        return details;
+    },
+    onError(err) {
+        console.error(err);
+        document.getElementById("notification-container").innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>An Error Occured! Please retry later.</strong> ${err.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+    },
+    onCancel(data) {
+        alert('Transaction was cancelled.');
+        document.getElementById("notification-container").innerHTML = `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Transaction Cancelled!</strong> Please retry later.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
     }
-})
+}).render('#paypal-button-container');

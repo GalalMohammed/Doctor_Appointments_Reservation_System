@@ -76,12 +76,13 @@ namespace MVC
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddSingleton(x => 
+            builder.Services.AddSingleton(x =>
             new PayPalClient(
-                clientId: builder.Configuration["PayPalOptions:ClientId"] ?? throw new ArgumentNullException(nameof(builder.Configuration["PayPalOptions:ClientId"])),
-                clientSecret: builder.Configuration["PayPalOptions:ClientSecret"] ?? throw new ArgumentNullException(nameof(builder.Configuration["PayPalOptions:ClientSecret"])),
-                mode: builder.Configuration["PayPalOptions:Mode"] ?? "sandbox"
-            ));
+                clientId: builder.Configuration["PayPalOptions:ClientId"] ?? throw new Exception("ClientId is not set"),
+                clientSecret: builder.Configuration["PayPalOptions:ClientSecret"] ?? throw new Exception("ClientSecret is not set"),
+                baseUrl: builder.Configuration["PayPalOptions:Url"] ?? throw new Exception("BaseUrl is not set")
+            )
+            );
             var app = builder.Build();
 
             // Exception Handling

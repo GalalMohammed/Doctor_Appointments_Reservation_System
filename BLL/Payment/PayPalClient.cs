@@ -1,4 +1,6 @@
 ﻿using BLLServices.Payment.Helpers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +8,16 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace BLLServices.Payment
 {
-    public class PayPalClient(string mode, string clientId, string clientSecret)
+    public class PayPalClient(string clientId, string clientSecret, string baseUrl)
     {
-        public string Mode { get; } = mode ?? throw new ArgumentNullException(nameof(mode));
         public string ClientId { get; } = clientId ?? throw new ArgumentNullException(nameof(clientId));
         public string ClientSecret { get; } = clientSecret ?? throw new ArgumentNullException(nameof(clientSecret));
-        public string BaseUrl => Mode == "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+        public string BaseUrl => baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
         async Task<AuthResponse> Authenticate()
         {
             using HttpClient httpClient = new();
@@ -28,47 +30,74 @@ namespace BLLServices.Payment
             HttpResponseMessage response = await httpClient.PostAsync($"{BaseUrl}/v1/oauth2/token", content);
             response.EnsureSuccessStatusCode();
             string jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<AuthResponse>(jsonResponse) ?? throw new Exception("Failed to deserialize AuthResponse");
+            JsonNode? jsonNodeResponse = JsonNode.Parse(jsonResponse) ?? throw new Exception("Failed to parse authentication response");
+            AuthResponse authResponse = new()
+            {
+                Scope = jsonNodeResponse["scope"]?.ToString() ?? throw new Exception("Scope is missing in the response"),
+                AccessToken = jsonNodeResponse["access_token"]?.ToString() ?? throw new Exception("Access token is missing in the response"),
+                TokenType = jsonNodeResponse["token_type"]?.ToString() ?? throw new Exception("Token type is missing in the response"),
+                AppId = jsonNodeResponse["app_id"]?.ToString() ?? throw new Exception("App ID is missing in the response"),
+                ExpiresIn = jsonNodeResponse["expires_in"]?.GetValue<int>() ?? throw new Exception("Expires in is missing in the response"),
+                Nonce = jsonNodeResponse["nonce"]?.ToString()
+            };
+            return authResponse;
         }
-        public async Task<CreateOrderResponse> CreateOrder(string value, string currency, string reference)
+            public async Task<CreateOrderResponse> CreateOrder(string value)
         {
             AuthResponse authResponse = await Authenticate();
             using HttpClient httpClient = new();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResponse.AccessToken);
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            CreateOrderRequest request = new()
+            // Create a new order request with the specified amount and currency
+            JsonObject createOrderRequest = new()
             {
-                Intent = "CAPTURE",
-                PurchaseUnits =
-                [
-                    new() {
-                        Amount = new Amount
+                ["intent"] = "CAPTURE",
+                ["purchase_units"] = new JsonArray
+                {
+                    new JsonObject
+                    {
+                        ["amount"] = new JsonObject
                         {
-                            CurrencyCode = currency,
-                            Value = value
-                        },
-                        ReferenceId = reference
+                            ["currency_code"] = "USD",
+                            ["value"] = value
+                        }
                     }
-                ]
+                }
             };
-            string jsonRequest = JsonSerializer.Serialize(request);
-            StringContent content = new(jsonRequest, Encoding.UTF8, "application/json");
+            StringContent content = new(createOrderRequest.ToString(), Encoding.UTF8, "application/json");
             HttpResponseMessage response = await httpClient.PostAsync($"{BaseUrl}/v2/checkout/orders", content);
             response.EnsureSuccessStatusCode();
             string jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<CreateOrderResponse>(jsonResponse) ?? throw new Exception("Failed to deserialize CreateOrderResponse");
+            JsonNode? jsonNodeResponse = JsonNode.Parse(jsonResponse) ?? throw new Exception("Failed to parse CreateOrderResponse");
+            CreateOrderResponse createOrderResponse = new()
+            {
+                Id = jsonNodeResponse["id"]?.ToString() ?? throw new Exception("Order ID is missing in the response"),
+                Status = jsonNodeResponse["status"]?.ToString() ?? throw new Exception("Status is missing in the response"),
+                Links = jsonNodeResponse["links"]?.AsArray().Select(x => new Link
+                {
+                    Href = x?["href"]?.ToString() ?? throw new Exception("Link href is missing in the response"),
+                    Rel = x?["rel"]?.ToString() ?? throw new Exception("Link rel is missing in the response"),
+                    Method = x?["method"]?.ToString() ?? throw new Exception("Link method is missing in the response")
+                }).ToList() ?? throw new Exception("Links are missing in the response")
+            };
+            return createOrderResponse;
         }
         public async Task<CaptureOrderResponse> CaptureOrder(string orderId)
         {
             AuthResponse authResponse = await Authenticate();
             using HttpClient httpClient = new();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResponse.AccessToken);
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            StringContent content = new("", Encoding.UTF8, "application/json");
+            StringContent content = new("", null, "application/json");
             HttpResponseMessage response = await httpClient.PostAsync($"{BaseUrl}/v2/checkout/orders/{orderId}/capture", content);
             response.EnsureSuccessStatusCode();
             string jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<CaptureOrderResponse>(jsonResponse) ?? throw new Exception("Failed to deserialize CaptureOrderResponse");
+            JsonNode? jsonNodeResponse = JsonNode.Parse(jsonResponse) ?? throw new Exception("Failed to parse CaptureOrderResponse");
+            CaptureOrderResponse captureOrderResponse = new()
+            {
+                Id = jsonNodeResponse["id"]?.ToString() ?? throw new Exception("Capture ID is missing in the response"),
+                Status = jsonNodeResponse["status"]?.ToString() ?? throw new Exception("Status is missing in the response")
+            };
+            return captureOrderResponse;
         }
     }
 }

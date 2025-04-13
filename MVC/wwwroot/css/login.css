@@ -85,8 +85,20 @@
     border-radius: 10px !important;
 }
 
-.form-container .login-form-input:focus {
+.login-pass {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid var(--secondary-color);
+    padding: 5px 10px;
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.form-container .login-form-input:focus,
+.login-pass:focus {
     border: 1px solid var(--primary-color);
+    box-shadow: none !important;
 }
 
 .separation-div {

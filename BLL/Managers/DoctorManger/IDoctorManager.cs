@@ -1,4 +1,5 @@
-﻿using vezeetaApplicationAPI.Models;
+﻿using System.Linq.Expressions;
+using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.DoctorManger
 {
@@ -14,5 +15,10 @@ namespace BLLServices.Managers.DoctorManger
         public Task<Doctor> GetDoctorByID(int id);
 
         public Task<List<Doctor>?> GetDoctorCondition(Func<Doctor, bool> condition);
+
+        public Task<List<Doctor>?> GetDoctorConditionByPage(int pageNum, int pageSize, Expression<Func<Doctor, bool>> condition);
+
+        public Task<int> GetDoctorConditionCount(Expression<Func<Doctor, bool>> condition);
+
     }
 }

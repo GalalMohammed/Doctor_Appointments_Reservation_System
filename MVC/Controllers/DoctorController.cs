@@ -1,8 +1,8 @@
-﻿using BLLServices.Managers.DoctorManger;
+﻿using BLLServices.Common.UploadService;
+using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.SpecialtyManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Enums;
 using MVC.Mappers;
 using MVC.ViewModels;
@@ -15,12 +15,17 @@ namespace MVC.Controllers
         private IDoctorManager _doctorManager;
         private IDoctorMapper _doctorMapper;
         private readonly ISpecialtyManager specialtyManager;
+        private readonly IUploadService uploadService;
 
-        public DoctorController(IDoctorManager doctorManager, IDoctorMapper doctorMapper, ISpecialtyManager specialtyManager)
+        public DoctorController(IDoctorManager doctorManager,
+                                IDoctorMapper doctorMapper,
+                                ISpecialtyManager specialtyManager,
+                                IUploadService uploadService)
         {
             _doctorManager = doctorManager;
             _doctorMapper = doctorMapper;
             this.specialtyManager = specialtyManager;
+            this.uploadService = uploadService;
         }
         public IActionResult Index()
         {
@@ -147,29 +152,24 @@ namespace MVC.Controllers
         public async Task<IActionResult> Edit()
         {
             var doctor = await _doctorManager.GetDoctorByID(int.Parse(User.FindFirst("currentId").Value));
-            var viewModel = _doctorMapper.MapToDoctorRegister(doctor);
-            var specialties = await specialtyManager.GetAllSpecialties();
-            ViewBag.CurrentSpecialty = doctor.Specialty.Name;
-            TempData["CurrentSpecialty"] = doctor.Specialty.Name;
-            ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
-            return View("DoctorRegister", viewModel);
+            var viewModel = _doctorMapper.MapToDoctorEdit(doctor);
+            return View(viewModel);
         }
         [Authorize(Roles = "doctor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(DoctorRegisterViewModel viewModel)
+        public async Task<IActionResult> Edit(DoctorEditViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var doctor = _doctorMapper.MapToDoctorFromRegister(viewModel);
+                if (viewModel.Image != null)
+                    viewModel.ImageURL = await uploadService.UploadFile(viewModel.Image, oldFilename: viewModel.ImageURL);
+                var doctor = await _doctorMapper.MapToDoctorFromEdit(viewModel);
                 await _doctorManager.UpdateDoctor(doctor);
                 ViewBag.Success = true;
-                return RedirectToAction("Profile", doctor.ID);
+                return View(viewModel);
             }
-            var specialties = await specialtyManager.GetAllSpecialties();
-            ViewBag.CurrentSpecialty = TempData["CurrentSpecialty"] as string;
-            ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
-            return View("DoctorRegister", viewModel);
+            return View(viewModel);
         }
         public static class DoctorMockData
         {

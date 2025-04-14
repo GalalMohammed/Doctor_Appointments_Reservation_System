@@ -162,9 +162,26 @@ namespace MVC.Mappers
                 DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(10, 0)),
             };
 
-        public DoctorRegisterViewModel MapToDoctorRegister(Doctor doctor)
-            => new DoctorRegisterViewModel()
+        public async Task<Doctor> MapToDoctorFromEdit(DoctorEditViewModel doctorEditVM)
+        {
+            var doctor = await _doctorManager.GetDoctorByID(doctorEditVM.Id);
+
+            doctor.About = doctorEditVM.About;
+            doctor.ImageURL = doctorEditVM.ImageURL;
+            doctor.Location = doctorEditVM.Address;
+            doctor.Fees = doctorEditVM.Fees;
+            doctor.Lat = doctorEditVM.Lat;
+            doctor.Lng = doctorEditVM.Lng;
+            doctor.Governorate = doctorEditVM.Governorate;
+            doctor.WaitingTime = doctorEditVM.WaitingTime;
+            doctor.AppUser.PhoneNumber = doctorEditVM.PhoneNumber;
+
+            return doctor;
+        }
+        public DoctorEditViewModel MapToDoctorEdit(Doctor doctor)
+            => new DoctorEditViewModel()
             {
+                Id = doctor.ID,
                 About = doctor.About,
                 Address = doctor.Location,
                 Gender = doctor.Gender,
@@ -174,11 +191,11 @@ namespace MVC.Mappers
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 ImageURL = doctor.ImageURL,
-                Lat = (double)doctor.Lat,
-                Lng = (double)doctor.Lng,
+                Lat = doctor.Lat.Value,
+                Lng = doctor.Lng.Value,
                 Governorate = doctor.Governorate,
                 PhoneNumber = doctor.AppUser.PhoneNumber,
-                SpecialtyID = doctor.SpecialtyID,
+                Specialty = doctor.Specialty.Name,
                 WaitingTime = doctor.WaitingTime,
             };
     }

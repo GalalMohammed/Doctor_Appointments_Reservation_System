@@ -345,19 +345,6 @@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
-    @if (ViewBag?.Success ?? false)
-    {
-        <script type="module">
-            Swal.fire({
-                title: "Success",
-                text: "Your profile has been updated!",
-                color: "#004085",
-                confirmButtonColor: "#004085",
-                icon: "success"
-            });
-        </script>
-    }
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="~/lib/calenderJS/dist/calendar.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

@@ -8,8 +8,8 @@
         <h1 class="display-4 text-center mb-5">Payment</h1>
         <p>Pay with PayPal</p>
         <div class="form-group mb-3">
-            <label for="amount" class="form-label">Amount</label>
-            <input type="number" class="form-control" id="amount" placeholder="Enter amount" value="@ViewBag.amount" step="0.01" min="0" required/>
+            @* <label for="amount" class="form-label">Amount</label> *@
+            @* <input type="number" class="form-control" id="amount" placeholder="Enter amount" value="@ViewBag.amount" step="0.01" min="0" required/> *@
         </div>
         <div id="notification-container"></div>
         <div id="paypal-button-container"></div>
@@ -17,5 +17,7 @@
 </div>
 @section Scripts {
     <script src="https://www.paypal.com/sdk/js?client-id=@(ViewBag.clientId)&currency=USD"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/cookie.js"></script>
     <script src="~/js/payment.js"></script>
 }

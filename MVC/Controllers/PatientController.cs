@@ -47,8 +47,7 @@ namespace MVC.Controllers
             ViewBag.Success = false;
             return View("Profile", patient);
         }
-        [HttpPost("/patient/add-appointment")]
-        [ValidateAntiForgeryToken]
+        [HttpGet("/patient/add-appointment")]
         public async Task<IActionResult> AddAppointment(int patientId, int doctorReservationId)
         {
             var patient = await patientManager.GetPatientInfo(patientId);

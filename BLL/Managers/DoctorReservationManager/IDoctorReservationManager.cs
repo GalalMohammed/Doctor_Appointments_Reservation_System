@@ -14,5 +14,6 @@ namespace BLLServices.Managers.DoctorReservationManager
         public void AddDoctorReservation(DoctorReservation res);
         public Task<List<DoctorReservation>> GetReservationsByDocID(int id);
         public void GenerateCalanderReservation(Doctor doc, int MaxRes);
+        public DoctorReservation GetDoctorReservationByID(int id);
     }
 }

@@ -3,19 +3,20 @@ using DAL.Repositories.Orders;
 
 namespace BLLServices.Managers.OrderManager
 {
-    public class OrderManager : IOrderManager
+    public class OrderManager(IOrderRepository orderRepository) : IOrderManager
     {
-        private readonly IOrderRepository orderRepository;
-
-        public OrderManager(IOrderRepository orderRepository)
-        {
-            this.orderRepository = orderRepository;
-        }
         public void AddOrder(int patientId, int doctorReservationId)
             => orderRepository.Add(new Order() { PatientId = patientId, DoctorReservationId = doctorReservationId, Status = false });
 
         public void DeleteOrder(int patientId, int doctorReservationId)
             => orderRepository.Delete(orderRepository.GetOrder(patientId, doctorReservationId));
+
+        public Order? GetOrder(int patientId, int doctorReservationId)
+        {
+            return orderRepository.GetOrder(patientId, doctorReservationId);
+        }
+
+        public Order? GetOrderById(int orderId) => orderRepository.GetByID(orderId).Result;
 
         public async Task<bool> IsOrderPaid(int patientId, int doctorReservationId)
             => orderRepository.GetOrder(patientId, doctorReservationId).Status;

@@ -1,4 +1,5 @@
 ﻿using BLLServices.Managers.AppointmentManager;
+using BLLServices.Managers.OrderManager;
 using BLLServices.Managers.PatientManger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,17 @@ namespace MVC.Controllers
         private readonly IPatientManger patientManager;
         private readonly PatientMapper patientMapper;
         private readonly IAppointmentManager appointmentManager;
+        private readonly IOrderManager orderManager;
 
-        public PatientController(IPatientManger patientManager, PatientMapper patientMapper, IAppointmentManager appointmentManager)
+        public PatientController(IPatientManger patientManager,
+                                 PatientMapper patientMapper,
+                                 IAppointmentManager appointmentManager,
+                                 IOrderManager orderManager)
         {
             this.patientManager = patientManager;
             this.patientMapper = patientMapper;
             this.appointmentManager = appointmentManager;
+            this.orderManager = orderManager;
         }
         public async Task<IActionResult> Profile()
         {
@@ -39,6 +45,21 @@ namespace MVC.Controllers
                 return View("Profile", modifiedPatient);
             }
             ViewBag.Success = false;
+            return View("Profile", patient);
+        }
+        [HttpPost("/patient/add-appointment")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAppointment(int patientId, int doctorReservationId)
+        {
+            var patient = await patientManager.GetPatientInfo(patientId);
+            if (await orderManager.IsOrderPaid(patientId, doctorReservationId))
+            {
+                await appointmentManager.AddAppointment(patientId, doctorReservationId);
+                ViewBag.OrderSucceeded = true;
+                return View("Profile", patient);
+            }
+            ViewBag.OrderSucceeded = false;
+            orderManager.DeleteOrder(patientId, doctorReservationId);
             return View("Profile", patient);
         }
         public async Task<IActionResult> CancelAppointment(int appointmentId)

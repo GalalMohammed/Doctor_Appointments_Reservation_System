@@ -109,5 +109,29 @@
             });
         </script>
     }
+    @if (ViewBag.OrderSucceeded is not null && ViewBag.OrderSucceeded)
+    {
+        <script type="module">
+            Swal.fire({
+                title: "Success",
+                text: "Your appointment has been booked!",
+                color: "#004085",
+                confirmButtonColor: "#004085",
+                icon: "success"
+            });
+        </script>
+    }
+    else if (ViewBag.OrderSucceeded is not null && ViewBag.OrderSucceeded == false)
+    {
+        <script type="module">
+            Swal.fire({
+                title: "Error",
+                text: "An error has occurred while booking your appointment, please try again!",
+                color: "#004085",
+                confirmButtonColor: "#004085",
+                icon: "error"
+            });
+        </script>
+    }
     <partial name="_ValidationScriptsPartial" />
 }

@@ -1,5 +1,9 @@
-﻿document.getElementById("Gender").firstElementChild.remove();
-document.getElementById("Governorate").firstElementChild.remove();
+﻿let gender = document.getElementById("Gender")
+let governorate = document.getElementById("Governorate").firstElementChild.remove();
+if (gender.localName == null)
+    gender.firstElementChild.remove();
+if (governorate != null)
+    governorate.firstElementChild.remove();
 document.querySelectorAll(".accordion-button")[1].onclick = function () {
     map.invalidateSize();
     userMarker.openPopup();

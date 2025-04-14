@@ -22,6 +22,33 @@ namespace DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DAL.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DoctorReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorReservationId");
+
+                    b.HasIndex("PatientId", "DoctorReservationId")
+                        .IsUnique();
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -471,6 +498,25 @@ namespace DAL.Migrations
                     b.ToTable("Specialties");
                 });
 
+            modelBuilder.Entity("DAL.Models.Order", b =>
+                {
+                    b.HasOne("vezeetaApplicationAPI.Models.DoctorReservation", "DoctorReservation")
+                        .WithMany("Orders")
+                        .HasForeignKey("DoctorReservationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("vezeetaApplicationAPI.Models.Patient", "Patient")
+                        .WithMany("Orders")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DoctorReservation");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -607,11 +653,15 @@ namespace DAL.Migrations
             modelBuilder.Entity("vezeetaApplicationAPI.Models.DoctorReservation", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("vezeetaApplicationAPI.Models.Patient", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("Orders");
 
                     b.Navigation("Reviews");
                 });

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MVC.Enums;
 using MVC.Mappers;
 using MVC.ViewModels;
+using System.Text.Json;
 
 namespace MVC.Controllers
 {
@@ -23,19 +24,37 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile(int ID, int pageNum = 0, int pageSize = 10, bool? reviews = false)
+        public IActionResult Profile(int ID, int pageNum = 0, int pageSize = 10, string? tab = "details")
         {
             var doctor = _doctorManager.GetDoctorByID(ID).Result;
             if (doctor == null) return NotFound();
             var doctorVM = _doctorMapper.MapToDoctorProfileVM(doctor).Result;
-            doctorVM.Appointments = doctorVM.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
-                                   .Concat(doctorVM.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
-                                   .ToList();
 
-            ViewBag.reviews = reviews;
+            ViewBag.tab = tab;
             ViewBag.pageNums = Math.Ceiling((double)doctorVM.Ratings.Count / pageSize);
             ViewBag.currentPage = pageNum + 1;
 
+            ViewBag.cal = JsonSerializer.Serialize(new
+            {
+                from = DateTime.Now.AddDays(1),
+                to = DateTime.Now.AddDays(1),
+                title = "Vaction",
+                color = "#004085",
+                colorBorder = "#B3E5FC",
+                status = "Done"
+            });
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (!doctorVM.Appointments.Any(app => app.Day == i))
+                {
+                    doctorVM.Appointments.Add(new DoctorReservationViewModel() { Day = i, Time = null });
+                }
+            }
+            doctorVM.Appointments.Sort((a, b) => a.Day - b.Day);
+            doctorVM.Appointments = doctorVM.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
+                                   .Concat(doctorVM.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
+                                   .ToList();
             doctorVM.Ratings = doctorVM.Ratings.Skip(pageNum * pageSize).Take(pageSize).ToList();
             return View(doctorVM);
 

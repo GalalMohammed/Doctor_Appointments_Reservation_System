@@ -27,8 +27,9 @@ namespace MVC.Mappers
         {
             return new DoctorReservationViewModel
             {
-                Day = (int)reservation.EndTime.DayOfWeek,
-                Time = $"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}"
+                Day =  (int)reservation.EndTime.DayOfWeek,
+                Time = $"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}",
+                ResID = reservation.ID
             };
         }
         //public DoctorReservation MapFromDoctorReservationViewModel(DoctorReservationViewModel reservationVM)
@@ -103,7 +104,7 @@ namespace MVC.Mappers
                 Experience = 0, // remember to change it or remove it
                 Governorate = 0, // remember to change it or remove it
                 Location = doctor.Location,
-                Phone = doctor.FirstName.ToString(),//.AppUser.PhoneNumber,
+                Phone = "123-456-789",//.AppUser.PhoneNumber,
                 Appointments = appointments,
                 Ratings = ratings,
                 Latitude = (double)doctor.Lat, // change it to float

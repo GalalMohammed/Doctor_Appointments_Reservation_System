@@ -128,9 +128,10 @@ namespace MVC.Controllers
                         emailService.SendEmail(new Email
                         {
                             To = registerUser.Email,
-                            Subject = "Confirm your email",
-                            Body = Url.Action("ConfirmEmail", "Account", new { email = registerUser.Email, token = await userManager.GenerateEmailConfirmationTokenAsync(appUser) }, Request.Scheme)
-                        });
+                            Subject = "Confirm Your Email",
+                            Link = Url.Action("ConfirmEmail", "Account", new { email = registerUser.Email, token = await userManager.GenerateEmailConfirmationTokenAsync(appUser) }, Request.Scheme),
+                            Template = MailTemplates.ConfirmEmailTemplate
+                        }, $"{registerUser.FirstName} {registerUser.LastName}");
                         return RedirectToAction("NeedToConfirm");
                     }
                     foreach (var error in created.Errors)
@@ -179,9 +180,10 @@ namespace MVC.Controllers
                         emailService.SendEmail(new Email
                         {
                             To = doctorRegister.Email,
-                            Subject = "Confirm your email",
-                            Body = Url.Action("ConfirmEmail", "Account", new { email = doctorRegister.Email, token = await userManager.GenerateEmailConfirmationTokenAsync(appUser) }, Request.Scheme)
-                        });
+                            Subject = "Confirm Your Email",
+                            Link = Url.Action("ConfirmEmail", "Account", new { email = doctorRegister.Email, token = await userManager.GenerateEmailConfirmationTokenAsync(appUser) }, Request.Scheme),
+                            Template = MailTemplates.ConfirmEmailTemplate
+                        }, $"{doctorRegister.FirstName} {doctorRegister.LastName}");
                         return RedirectToAction("NeedToConfirm");
                     }
                     foreach (var error in created.Errors)
@@ -224,7 +226,7 @@ namespace MVC.Controllers
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
                 string url = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token }, Request.Scheme);
 
-                emailService.SendEmail(new Email { To = forgetPasswordVM.Email, Subject = "Reset Your Password", Body = url });
+                emailService.SendEmail(new Email { To = forgetPasswordVM.Email, Subject = "Reset Your Password", Link = url, Template = MailTemplates.ForgotPasswordTemplate }, $"{user.FirstName} {user.LastName}");
 
             }
 
@@ -296,6 +298,35 @@ namespace MVC.Controllers
                     ModelState.AddModelError("", error.Description);
             }
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeImage(ChangeImageVM image)
+        {
+            if (ModelState.IsValid)
+            {
+                var doc = await doctorManager.GetDoctorByID(image.ID);
+                if (doc == null) TempData["Error"] = $"Doctor with ID {image.ID} was not found";
+
+
+                doc.ImageURL = await uploadService.UploadFile(image.File);
+
+
+                await doctorManager.UpdateDoctor(doc);
+
+                TempData["Updated"] = "Image was updated successfully";
+                return RedirectToAction("profile","doctor",new {id = 1});
+            }
+            else
+            {
+                TempData["Error"] = string.Join("\n",
+                    ModelState
+                        .Where(m => m.Value.Errors.Any())
+                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}"))
+                );
+                return RedirectToAction("profile", "doctor", new { id = 1 });
+            }
         }
     }
 }

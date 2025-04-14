@@ -1,4 +1,5 @@
 "use strict";
+document.getElementById("Governorate").firstElementChild.remove();
 let nextButton = document.getElementById("register-next");
 let backButton = document.getElementById("register-back");
 let step1 = document.getElementById("register-step-1");

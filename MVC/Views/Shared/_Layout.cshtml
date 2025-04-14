@@ -12,7 +12,7 @@
 </head>
 
 @{
-    var customNav = ViewData["Title"] == "Home" ? "bg-primary-color-75 py-2" : "bg-primary-color py-3";
+    var customNav = ViewData["Title"] == "Home" ? "bg-primary-color-75 py-1" : "bg-primary-color py-2";
 }
 @{
     var CurrentPage =  ViewContext.RouteData.Values["action"]?.ToString();
@@ -20,8 +20,8 @@
 <body class="m-0">
     <nav id="MainNav" class="position-fixed w-100 navbar navbar-dark navbar-expand-lg @customNav">
         <div class="container-fluid px-5">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                <img src="/images/Vezeeta.jpeg" alt="" />
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index" >
+                <img src="/images/MainLogo.png" height="50" style="filter: drop-shadow(1px 1px 2px var(--secondary-color));" />
             </a>
 
             <button class="navbar-toggler"

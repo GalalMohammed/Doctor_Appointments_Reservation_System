@@ -1,4 +1,5 @@
 using BLLServices.Common.EmailService;
+using BLLServices.Common.PaymentService;
 using BLLServices.Common.UploadService;
 using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
@@ -56,6 +57,7 @@ namespace MVC
 
             #region Common Services
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
 
             builder.Services.AddScoped<IUploadService, UploadService>(provider =>
             {

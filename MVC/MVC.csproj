@@ -16,8 +16,12 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="wwwroot\uploads\images\" />
     <Folder Include="wwwroot\images\home\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\calenderJS\dist\.DS_Store" />
+    <None Include="wwwroot\lib\calenderJS\dist\translations\.DS_Store" />
   </ItemGroup>
 
   <ItemGroup>

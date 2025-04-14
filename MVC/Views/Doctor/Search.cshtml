@@ -116,6 +116,18 @@
                             {
                                 <div class="card d-flex text-center swiper-slide">
                                     <div class="card-header SP-bookHeader p-1">
+                                        @* @if (app.Day.Date == DateTime.Now.Date)
+                                        {
+                                            @:Today
+                                        }
+                                        else if (app.Day.Date == DateTime.Now.AddDays(1).Date)
+                                        {
+                                            @:Tomorrow
+                                        }
+                                        else
+                                        {
+                                            app.Day.ToString("ddd d/M");
+                                        } *@
                                         @GetNextDate(app.Day)
                                     </div>
                                 

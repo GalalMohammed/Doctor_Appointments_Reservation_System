@@ -69,7 +69,7 @@ namespace BLLServices.Managers.DoctorReservationManager
                 DR_manager.Update(newReservation);
             }
         }
-        private static DateTime GetCorrespondingNextDay(DateTime date, WorkingDays day)
+        public static DateTime GetCorrespondingNextDay(DateTime date, WorkingDays day)
         {
             int dayValue = (int)day;
             int bitPosition = (int)Math.Log(dayValue, 2);

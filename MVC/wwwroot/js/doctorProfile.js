@@ -24,11 +24,15 @@ function GoToPage() {
 }
 
 document.getElementById("details-tab").addEventListener("click", function () {
-    updateQueryString("reviews", "false");
+    updateQueryString("tab", "details");
 });
 
 document.getElementById("reviews-tab").addEventListener("click", function () {
-    updateQueryString("reviews", "true");
+    updateQueryString("tab", "reviews");
+});
+
+document.getElementById("calender-tab").addEventListener("click", function () {
+    updateQueryString("tab", "calender");
 });
 
 function updateQueryString(key, value) {
@@ -63,3 +67,117 @@ if (!isNaN(latitude) && !isNaN(longitude)) {
 } else {
     console.error("Invalid coordinates");
 }
+
+
+// Image Code
+
+let imageForm = document.querySelector("#imageForm")
+let imgFile = document.querySelector(".SP-file");
+
+imageForm.addEventListener("click", function () {
+    imgFile.click()
+})
+
+imgFile.addEventListener("change", function () {
+    imageForm.submit();
+})
+
+
+
+// Calender Code
+
+let currentDate = new Date();
+let currentYear = currentDate.getFullYear();
+let currentMonth = currentDate.getMonth();
+let nextMonth = new Date(currentYear, currentMonth + 1, 1);
+
+const calendar = new calendarJs("SP-Calendar",{ // Target element
+    initialDateTime: currentDate,
+
+    // Restrict year range to current and next year (if next month is in next year)
+    minimumYear: currentYear,
+    maximumYear: nextMonth.getFullYear(),
+
+    // Allow event creation
+    manualEditingEnabled: false,
+
+    // View configuration
+    views: {
+        fullMonth: {
+            enabled: true,              // Enable full-month view
+            isPinUpViewEnabled: false,  // Disable pin-up images
+            showExtraTitleBarButtons: false, // Hide extra buttons
+            showPreviousNextMonthNames: false // Hide month names in navigation
+        },
+        fullDay: { enabled: false },
+        fullWeek: { enabled: false },
+        fullYear: { enabled: false },
+        timeline: { enabled: false },
+        allEvents: { enabled: false }
+    },
+
+    // Disable features not needed
+    fullScreenModeEnabled: false,
+    exportEventsEnabled: false,
+    importEventsEnabled: false,
+    configurationDialogEnabled: false,
+    jumpToDateEnabled: false,
+    dragAndDropForEventsEnabled: false,
+    
+    sideMenu: {
+        showDays: false,
+        showEventTypes: false,
+        showGroups: false,
+        showWorkingDays: false,
+        showWeekendDays: false
+    },
+    events: {
+        onPreviousMonth: function (displayDate) {
+            calendar.setCurrentDisplayDate(new Date(currentYear, currentMonth, 1));
+
+        },
+        onNextMonth: function (displayDate) {
+            calendar.setCurrentDisplayDate(new Date(currentYear, currentMonth + 1, 1));
+        },
+        onDayClick: function (date, event) {
+            var dateString = date.toDateString();
+            // Log the click
+            console.log("Clicked day:", dateString);
+
+        },
+        onBeforeEventAddEdit(event) {
+            
+            console.log(event)
+
+
+        },
+        onEventClick: function (event) {
+            console.log(event)
+        }
+
+
+    }
+});
+
+let events = []
+
+for (let i = 1; i <= 30; i++) {
+    let date = new Date();
+    date.setDate(date.getDate() + i)
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(),0,0,0,0);
+
+    let event = {
+        from: date,
+        to: date,
+        title: "Add Work +",
+        color : "#004085",
+        colorBorder: "#B3E5FC",
+        description:"Vacation Day",
+        status: "Done",
+        isAllDay: true
+    }
+    calendar.addEvent(event);
+}
+
+calendar.addEvent(cal);
+

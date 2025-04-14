@@ -21,7 +21,7 @@ namespace MVC.Mappers
         public Review MapFromRating(Rating rating);
 
         public Doctor MapToDoctorFromRegister(DoctorRegisterViewModel doctorRegisterVM);
-
+        public DoctorRegisterViewModel MapToDoctorRegister(Doctor doctor);
 
     }
 }

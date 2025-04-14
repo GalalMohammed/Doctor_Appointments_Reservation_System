@@ -1,6 +1,8 @@
-﻿using AspNetCoreGeneratedDocument;
-using BLLServices.Managers.DoctorManger;
+﻿using BLLServices.Managers.DoctorManger;
+using BLLServices.Managers.SpecialtyManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Enums;
 using MVC.Mappers;
 using MVC.ViewModels;
@@ -12,11 +14,13 @@ namespace MVC.Controllers
     {
         private IDoctorManager _doctorManager;
         private IDoctorMapper _doctorMapper;
+        private readonly ISpecialtyManager specialtyManager;
 
-        public DoctorController(IDoctorManager doctorManager ,IDoctorMapper doctorMapper)
+        public DoctorController(IDoctorManager doctorManager, IDoctorMapper doctorMapper, ISpecialtyManager specialtyManager)
         {
             _doctorManager = doctorManager;
             _doctorMapper = doctorMapper;
+            this.specialtyManager = specialtyManager;
         }
         public IActionResult Index()
         {
@@ -24,9 +28,10 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile(int ID, int pageNum = 0, int pageSize = 10, string? tab = "details")
+        public IActionResult Profile(int? ID, int pageNum = 0, int pageSize = 10, string? tab = "details")
         {
-            var doctor = _doctorManager.GetDoctorByID(ID).Result;
+            if (ID == null) ID = int.Parse(User.FindFirst("currentId").Value);
+            var doctor = _doctorManager.GetDoctorByID(ID.Value).Result;
             if (doctor == null) return NotFound();
             var doctorVM = _doctorMapper.MapToDoctorProfileVM(doctor).Result;
 
@@ -95,9 +100,9 @@ namespace MVC.Controllers
 
         [HttpGet]
         public IActionResult Search(
-            int pageNum = 0,int pageSize = 10,string docSearch = "", 
-            Governorate governorate = Governorate.All,Gender gender = Gender.All,int minYear = 0,
-            double minPrice = 0 , double maxPrice = 10000)
+            int pageNum = 0, int pageSize = 10, string docSearch = "",
+            Governorate governorate = Governorate.All, Gender gender = Gender.All, int minYear = 0,
+            double minPrice = 0, double maxPrice = 10000)
         {
             List<docSearchVM> doctors = DoctorMockData.GetDoctors()
             .Where(d =>
@@ -138,7 +143,34 @@ namespace MVC.Controllers
             }
             return View(doctors);
         }
-
+        [Authorize(Roles = "doctor")]
+        public async Task<IActionResult> Edit()
+        {
+            var doctor = await _doctorManager.GetDoctorByID(int.Parse(User.FindFirst("currentId").Value));
+            var viewModel = _doctorMapper.MapToDoctorRegister(doctor);
+            var specialties = await specialtyManager.GetAllSpecialties();
+            ViewBag.CurrentSpecialty = doctor.Specialty.Name;
+            TempData["CurrentSpecialty"] = doctor.Specialty.Name;
+            ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
+            return View("DoctorRegister", viewModel);
+        }
+        [Authorize(Roles = "doctor")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(DoctorRegisterViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var doctor = _doctorMapper.MapToDoctorFromRegister(viewModel);
+                await _doctorManager.UpdateDoctor(doctor);
+                ViewBag.Success = true;
+                return RedirectToAction("Profile", doctor.ID);
+            }
+            var specialties = await specialtyManager.GetAllSpecialties();
+            ViewBag.CurrentSpecialty = TempData["CurrentSpecialty"] as string;
+            ViewBag.Specialties = new SelectList(specialties, "ID", "Name");
+            return View("DoctorRegister", viewModel);
+        }
         public static class DoctorMockData
         {
             public static List<docSearchVM> GetDoctors()
@@ -199,7 +231,7 @@ namespace MVC.Controllers
                     Qualifications = "MBBS, MD",
                     Fees = random.Next(50, 10000),
                     Specialties = new List<string> { specialties[random.Next(specialties.Count)] },
-                    Rating = (float)Math.Round(random.NextDouble() * 2 + 3, 1), // Random rating between 3.0 and 5.0 with 1 decimal place
+                    Rating = (float)Math.Round((random.NextDouble() * 2) + 3, 1), // Random rating between 3.0 and 5.0 with 1 decimal place
                     Experience = random.Next(1, 30),
                     Governorate = governorates[random.Next(governorates.Count)],
                     Location = "Random City",
@@ -208,7 +240,7 @@ namespace MVC.Controllers
                 }).ToList();
             }
 
-            
+
         }
         private static List<DoctorReservationViewModel> GenerateAppointments()
         {

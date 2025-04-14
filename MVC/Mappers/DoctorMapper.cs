@@ -27,7 +27,7 @@ namespace MVC.Mappers
         {
             return new DoctorReservationViewModel
             {
-                Day =  (int)reservation.EndTime.DayOfWeek,
+                Day = (int)reservation.EndTime.DayOfWeek,
                 Time = $"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}",
                 ResID = reservation.ID
             };
@@ -160,6 +160,26 @@ namespace MVC.Mappers
                 Lat = (float)doctorRegisterVM.Lat,
                 DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(9, 0)),
                 DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(10, 0)),
+            };
+
+        public DoctorRegisterViewModel MapToDoctorRegister(Doctor doctor)
+            => new DoctorRegisterViewModel()
+            {
+                About = doctor.About,
+                Address = doctor.Location,
+                Gender = doctor.Gender,
+                BirthDate = DateOnly.FromDateTime(doctor.BirthDate),
+                Email = doctor.AppUser.Email,
+                Fees = doctor.Fees,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                ImageURL = doctor.ImageURL,
+                Lat = (double)doctor.Lat,
+                Lng = (double)doctor.Lng,
+                Governorate = doctor.Governorate,
+                PhoneNumber = doctor.AppUser.PhoneNumber,
+                SpecialtyID = doctor.SpecialtyID,
+                WaitingTime = doctor.WaitingTime,
             };
     }
 }

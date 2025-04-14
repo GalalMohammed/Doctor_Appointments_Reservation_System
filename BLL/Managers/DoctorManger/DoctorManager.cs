@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Repositories.Doctors;
+using System.Linq.Expressions;
 using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.DoctorManger
@@ -66,6 +67,17 @@ namespace BLLServices.Managers.DoctorManger
         {
             var doctors = await Repository.GetAllByConditon(condition);
             return doctors;
+        }
+
+        public async Task<List<Doctor>?> GetDoctorConditionByPage(int pageNum, int pageSize, Expression<Func<Doctor, bool>> condition)
+        {
+            var doctors = await Repository.GetFilteredByConditonPages(condition, pageNum, pageSize);
+            return doctors;
+        }
+        public async Task<int> GetDoctorConditionCount(Expression<Func<Doctor, bool>> condition)
+        {
+            var count = await Repository.GetFilteredByConditonCount(condition);
+            return count;
         }
     }
 

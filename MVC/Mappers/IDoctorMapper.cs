@@ -5,7 +5,12 @@ namespace MVC.Mappers
 {
     public interface IDoctorMapper
     {
-        public DoctorReservationViewModel MapToDoctorReservationViewModel(DoctorReservation reservation);
+
+        public SpecialityVM MapToSpecialityVM(Specialty specialty);
+        public CalenderReservationVM MapToCalenderReservationVM(DoctorReservation reservation);
+
+
+        public Task<DoctorReservationViewModel> MapToDoctorReservationViewModelAsync(DoctorReservation reservation);
 
 
         public Task<docSearchVM> MapToDocSearchVMAsync(Doctor doctor);

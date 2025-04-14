@@ -1,6 +1,6 @@
 ﻿// Initialize Years of Experience Slider
-var YOESlider = document.querySelector('.SP-YOESlider');
-let minYearInput = document.querySelector(".SP-filters .minYear");
+var WaitSlider = document.querySelector('.SP-waitSlider');
+let minWaitInput = document.querySelector(".SP-filters .minWait");
 let minPriceInput = document.querySelector(".SP-filters .minPrice");
 let maxPriceInput = document.querySelector(".SP-filters .maxPrice");
 var priceSlider = document.querySelector('.SP-priceSlider');
@@ -9,15 +9,15 @@ var priceSlider = document.querySelector('.SP-priceSlider');
 AOS.init();
 
 
-noUiSlider.create(YOESlider, {
-    start: [minYearInput.value ?? 0],
-    step: 1,
+noUiSlider.create(WaitSlider, {
+    start: [minWaitInput.value ?? 60],
+    step: 5,
     connect: "lower",
-    range: { min: 0, max: 10 },
+    range: { min: 0, max: 60 },
     format: wNumb({ decimals: 0, prefix: "" }),
     pips: {
         mode: 'values',
-        values: [...Array(11).keys()], // [0, 1, 2, ..., 10]
+        values: [5,10,15,20,25,30,35,40,45,50,55,60], // [0, 1, 2, ..., 10]
         density: 2
     }
 });
@@ -41,8 +41,8 @@ noUiSlider.create(priceSlider, {
 
 // Update Inputs on Slider Change
 
-YOESlider.noUiSlider.on("update", values => {
-    minYearInput.value = values;
+WaitSlider.noUiSlider.on("update", values => {
+    minWaitInput.value = values;
 });
 
 
@@ -93,14 +93,15 @@ resetBTN.addEventListener("click", function (event) {
     event.preventDefault(); // Prevent default reset
 
     priceSlider.noUiSlider.set([50,10000]);
-    YOESlider.noUiSlider.set(0);
+    WaitSlider.noUiSlider.set(60);
     document.querySelector("#All").checked = true;
     document.querySelector("#Male").checked = false;
     document.querySelector("#Female").checked = false;
     document.querySelector("#All").dispatchEvent(new Event("change", { bubbles: true }));
 
     document.querySelector(".SP-docSearch").value = "";
-    document.querySelector(".SP-select").value = 0;
+    document.querySelector(".SP-govSelect").value = 0;
+    document.querySelector(".SP-specialitySelect").value = 0;
 })
 
 let filterBTN = document.querySelector(".SP-filterBTN")

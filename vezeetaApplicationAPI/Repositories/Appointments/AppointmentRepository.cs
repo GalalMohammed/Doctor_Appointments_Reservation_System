@@ -36,5 +36,14 @@ namespace DAL.Repositories.Appointments
             }
             return res;
         }
+
+        public async Task<int> GetCountByDate(int doctorID, DateTime? date)
+        {
+            if (date == null) date = DateTime.Now.Date;
+            else
+                date = date?.Date;
+            return context.Appointments
+                .Where(x => x.DoctorReservation.DoctorID == doctorID && x.AppointmentDate.Date == date).Count();
+        }
     }
 }

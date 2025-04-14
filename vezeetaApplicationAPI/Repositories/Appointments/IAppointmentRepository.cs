@@ -10,5 +10,7 @@ namespace DAL.Repositories.Appointments
 {
     public interface IAppointmentRepository:IGenericRepository<Appointment>
     {
+        public Task<int> GetCountByDate(int doctorID, DateTime? date);
+
     }
 }

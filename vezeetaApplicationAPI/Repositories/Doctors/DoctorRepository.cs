@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
@@ -41,5 +42,23 @@ namespace DAL.Repositories.Doctors
             }
             return res;
         }
+
+        public async Task<List<Doctor>> GetFilteredByConditonPages(Expression<Func<Doctor, bool>> condition, int pageNum = 0,int pageSize = 10, bool WithAsNoTracking = true)
+        {
+            if (WithAsNoTracking)
+            {
+                var res = context.Doctors.AsNoTracking().Where(condition).Skip(pageNum * pageSize).Take(pageSize);
+                return res.ToList();
+            }
+            return context.Doctors.Where(condition).Skip(pageNum * pageSize).Take(pageSize).ToList();
+
+        }
+
+        public async Task<int> GetFilteredByConditonCount(Expression<Func<Doctor, bool>> condition)
+        {
+            return context.Doctors.Where(condition).Count();
+        }
+
+
     }
 }

@@ -36,18 +36,22 @@ namespace DAL.Repositories.DoctorReservations
             }
             return res;
         }
-        public async Task<List<DoctorReservation>> GetReservationsByDocID(int doctorID, bool WithAsNoTracking = true)
+        public async Task<List<DoctorReservation>> GetReservationsByDocID(int doctorID, int resCount = 14, bool WithAsNoTracking = true)
         {
             if (WithAsNoTracking)
             {
                 return await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
-                    .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID)
+                    .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID && x.StartTime >= DateTime.Now)
+                    .OrderBy(x => x.StartTime.Date).Take(resCount)
                     .AsNoTracking().ToListAsync();
             }
             return await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
-                    .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID)
+                    .Include(x => x.Appointments).Where(x => x.DoctorID == doctorID && x.StartTime >= DateTime.Now)
+                    .OrderBy(x => x.StartTime.Date).Take(resCount)
                     .ToListAsync();
         }
+
+        
 
         
     }

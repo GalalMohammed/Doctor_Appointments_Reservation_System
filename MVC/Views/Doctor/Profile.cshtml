@@ -12,9 +12,9 @@
     public static string GetNextDate(int day)
     {
         DateTime today = DateTime.Now;
-        int todayIndex = (int)today.DayOfWeek;
+        int todayIndex = (int)today.Day;
 
-        int daysToAdd = (day - todayIndex + 7) % 7;
+        int daysToAdd = (day - todayIndex);
         if (daysToAdd == 0) return "Today";
         if (daysToAdd == 1) return "Tomorrow";
 
@@ -34,43 +34,17 @@
 }
 
 <div class="container-fluid" style="padding-top:80px">
-    <!-- #region Alerts -->
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Error!</strong> @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    @if (TempData["Added"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> @TempData["Added"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    @if (TempData["Updated"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong> @TempData["Updated"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    @if (TempData["Deleted"] != null)
-    {
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Warning!</strong> @TempData["Deleted"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    <!-- #endregion -->
+    <partial name="_AlertValidationPartial"></partial>
     <div class="row">
         <div class="col-md-4">
             <div class=" sticky-md-top text-center" style="padding-top:89px">
                 <form asp-action="ChangeImage" asp-controller="Account" class="position-relative d-inline-block" id="imageForm" enctype="multipart/form-data">
                     
-                    <img src="~/uploads/images/@Model.Image" class="rounded-circle img-thumbnail SP-photo" height="150" width="150" alt="Doctor Image">
+                    <div>
+                        <img src="~/uploads/images/@Model.Image" class="rounded-circle img-thumbnail SP-photo" alt="Doctor Image">
+                    </div>
                     <input type="file" name="File" class="SP-file d-none"/>
+                    <input type="hidden" name="ID" value="@Model.ID" class="d-none"/>
                     <div class="SP-upload"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
                 </form>
 
@@ -80,6 +54,14 @@
                 <a href="tel:@Model.Phone" class="btn col-12 SP-callBTN">
                     <i class="fa-solid fa-phone-volume me-2"></i>
                     @Model.Phone
+                </a>
+                <a asp-action="edit" asp-controller="Doctor" class="btn col-12 SP-callBTN mt-3">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Edit Profile
+                </a>
+                <a asp-action="changePassword" asp-controller="Account" class="btn col-12 SP-callBTN mt-3">
+                    <i class="fa-solid fa-key"></i>                    
+                    Change Password
                 </a>
             </div>
         </div>
@@ -103,61 +85,20 @@
                     <div class="col-12 flex-wrap justify-content-center my-3 gap-2 SP-bookCards">
                         <div class="swiper mySwiper">
                             <div class="swiper-wrapper">
-                                @foreach (var app in Model.Appointments)
-                                {
-                                    <div class="card d-flex text-center swiper-slide">
-                                        <div class="card-header SP-bookHeader p-1">
-                                            @* @if(app.Day.Date == DateTime.Now.Date)
-                                            {
-                                                @:Today
-                                            }
-                                            else if(app.Day.Date == DateTime.Now.AddDays(1).Date)
-                                            {
-                                                @:Tomorrow
-                                            }
-                                            else
-                                            {
-                                                app.Day.ToString("ddd d/M");
-                                            } *@
-                                            @GetNextDate(app.Day)
-                                        </div>
-
-                                        <div class="card-body SP-primaryText flex-column justify-content-center p-2">
-                                            @if (app.Time != null && app.IsAvailable)
-                                            {
-                                                <p class="mb-1">From <strong>@app.Time.Split("|")[0]</strong></p>
-                                                <p class="mb-1">To <strong>@app.Time.Split("|")[1]</strong></p>
-                                            }
-                                            else if (!app.IsAvailable)
-                                            {
-                                                <p class="mb-1">All Appointments</p>
-                                                <p class="mb-1">Reserved</p>
-                                            }
-                                            else
-                                            {
-                                                <p class="mb-1">No Available</p>
-                                                <p class="mb-1">Appointments</p>
-                                            }
-                                        </div>
-                                        <a href="#" class="card-footer btn @(app.Time == null ? "disabled" : "")  SP-bookBTN p-1">Book</a>
-                                    </div>
-                                }
+                                <partial name="_ReservationCardsPartial" , model="Model.Appointments"></partial>
                             </div>
                             <div class="swiper-scrollbar position-static mt-2"></div>
                         </div>
                     </div>
 
-                    <h4>Specialties</h4>
+                    <h4>Speciality</h4>
                     <ul>
                         <div class="SP-badge-scroll d-flex flex-wrap gap-1">
-                            @foreach (var spec in Model.Specialties)
-                            {
-                                <span class="badge rounded-pill SP-badge">@spec</span>
-                            }
+                            <span class="badge rounded-pill SP-badge">@Model.Speciality</span>
                         </div>
                     </ul>
-                    <h4>Experience</h4>
-                    <p class="offset-1"><i class="fa-solid fa-calendar-days SP-icon"></i><span class="ms-2">@Model.Experience+ Years</span></p>
+                    <h4>Waiting Time</h4>
+                    <p class="offset-1"><i class="fa-solid fa-stopwatch SP-icon"></i><span class="ms-2">@Model.WaitingTime+ Minutes</span></p>
                     <h4>Location</h4>
                     <p class="offset-1"><i class="fa-solid fa-location-dot SP-icon"></i><span class="ms-2">@Model.Governorate : @Model.Location</span></p>
 
@@ -169,41 +110,7 @@
                         Rating
                     </h4>
                     <p class="SP-primaryText offset-1">
-                        @if (Model.Rating <= 1)
-                        {
-                            <i class="fa-regular fa-face-frown SP-icon me-2"></i>
-                        }
-                        else if (Model.Rating <= 2.5)
-                        {
-                            <i class="fa-regular fa-face-frown-open SP-icon me-2"></i>
-                        }
-                        else if (Model.Rating <= 3)
-                        {
-                            <i class="fa-regular fa-face-meh SP-icon me-2"></i>
-                        }
-                        else if (Model.Rating < 4.5)
-                        {
-                            <i class="fa-regular fa-face-smile SP-icon me-2"></i>
-                        }
-                        else
-                        {
-                            <i class="fa-regular fa-face-smile-beam SP-icon me-2"></i>
-                        }
-
-                        @for (i = 0; i < (int)Model.Rating; i++)
-                        {
-                            <i class="fa-solid fa-star"></i>
-                        }
-                        @if (Model.Rating != (int)Model.Rating)
-                        {
-                            i++;
-                            <i class="fa-solid fa-star-half-stroke"></i>
-                        }
-                        @for (i = i; i < 5; i++)
-                        {
-                            <i class="fa-regular fa-star"></i>
-                        }
-                        <span>@Model.Rating</span>
+                        <partial name="_RatingPartial" model="@Model.Rating"></partial>
                     </p>
                     <h4>Map</h4>
                     <div class=" col-12"
@@ -336,6 +243,45 @@
                     <div id="SP-Calendar"></div>
                 </div>
 
+                <div class="modal fade" id="SP-CalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Working Day Form</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form asp-action="AddReservation" asp-controller="Doctor">
+                                <div class="modal-body">
+                                
+                                        <input type="hidden" name="ResID" class="SP-resID"/>
+                                        <input type="hidden" name="ID" value="@Model.ID"/>
+                                        <div class="mb-3 d-none">
+                                            <input type="date" class="form-control SP-calDate" id="date" name="date" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="startTime" class="form-label">Start Time</label>
+                                            <input type="time" class="form-control SP-startTime" id="startTime" name="StartTime" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="endTime" class="form-label">End Time</label>
+                                            <input type="time" class="form-control SP-endTime" id="endTime" name="EndTime" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="count" class="form-label">Max Reservations</label>
+                                            <input type="number" class="form-control SP-maxRes" id="count" name="MaxRes" min="1" max="50" required>
+                                        </div>                                
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn SP-bookBTN col-12 SP-CalSubmit">Add</button>
+                                    <button type="button" class="btn SP-bookBTN col-12" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- #endregion -->
                 
             </div>
@@ -348,9 +294,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="~/lib/calenderJS/dist/calendar.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         var cal = @Html.Raw(ViewBag.cal)
-        console.log(cal);
     </script>
     <script src="~/js/doctorProfile.js"></script>
 }

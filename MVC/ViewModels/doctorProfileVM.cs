@@ -17,11 +17,11 @@ namespace MVC.ViewModels
 
         public int Fees { get; set; }
 
-        public List<string> Specialties { get; set; }
+        public string Speciality { get; set; }
 
         public float Rating { get; set; }
 
-        public int Experience { get; set; }
+        public int WaitingTime { get; set; }
 
         public Governorate Governorate { get; set; }
         public string Location { get; set; }
@@ -30,7 +30,7 @@ namespace MVC.ViewModels
 
         public List<Rating> Ratings { get; set; }
         public List<DoctorReservationViewModel> Appointments { get; set; }
-        public double Latitude { get; internal set; }
-        public double Longitude { get; internal set; }
+        public float Latitude { get; internal set; }
+        public float Longitude { get; internal set; }
     }
 }

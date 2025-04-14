@@ -12,7 +12,9 @@ namespace MVC.Validation
         public override bool IsValid(object? value)
         {
             var file = value as IFormFile;
-            return file != null && file.Length <= _maxSize * 1024 * 1024;
+            if (file == null)
+                return true;
+            return file.Length <= _maxSize * 1024 * 1024;
         }
     }
 }

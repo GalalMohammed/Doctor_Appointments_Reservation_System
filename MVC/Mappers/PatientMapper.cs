@@ -45,12 +45,8 @@ namespace MVC.Mappers
             if (patientViewModel.Id != 0)
             {
                 var patient = await patientManager.GetPatientInfo(patientViewModel.Id);
-                patient.FirstName = patientViewModel.FirstName;
-                patient.LastName = patientViewModel.LastName;
-                patient.AppUser.Email = patientViewModel.Email;
                 patient.AppUser.PhoneNumber = patientViewModel.PhoneNumber;
                 patient.Governorate = patientViewModel.Governorate;
-                patient.BirthDate = patientViewModel.BirthDate.ToDateTime(new TimeOnly(0, 0));
                 return patient;
             }
             return new Patient

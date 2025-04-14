@@ -1,0 +1,40 @@
+﻿@model float
+@{
+    var i = 0;
+}
+
+@if (Model<= 1)
+{
+    <i class="fa-regular fa-face-frown SP-icon me-2"></i>
+}
+else if (Model<= 2.5)
+{
+    <i class="fa-regular fa-face-frown-open SP-icon me-2"></i>
+}
+else if (Model<= 3)
+{
+    <i class="fa-regular fa-face-meh SP-icon me-2"></i>
+}
+else if (Model< 4.5)
+{
+    <i class="fa-regular fa-face-smile SP-icon me-2"></i>
+}
+else
+{
+    <i class="fa-regular fa-face-smile-beam SP-icon me-2"></i>
+}
+
+@for (i = 0; i < (int)Model; i++)
+{
+    <i class="fa-solid fa-star"></i>
+}
+@if (Model!= (int)Model)
+{
+    i++;
+    <i class="fa-solid fa-star-half-stroke"></i>
+}
+@for (i = i; i < 5; i++)
+{
+    <i class="fa-regular fa-star"></i>
+}
+<span>@Model</span>

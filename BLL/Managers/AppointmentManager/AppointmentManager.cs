@@ -66,5 +66,10 @@ namespace BLLServices.Managers.AppointmentManager
                 appointments = appointments.Where(r => r != null && r.DoctorReservation != null && r.DoctorReservation.Doctor != null && ($"{r.DoctorReservation.Doctor.FirstName} {r.DoctorReservation.Doctor.LastName}".StartsWith(doctorName, StringComparison.OrdinalIgnoreCase) || (r.DoctorReservation.Doctor.FirstName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase)) || (r.DoctorReservation.Doctor.LastName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase))));
             return [..appointments];
         }
+
+        public async Task<int> GetAppointmentsCountByDate(int doctorID,DateTime? date)
+        {
+            return await appointmentRepository.GetCountByDate(doctorID, date);
+        }
     }
 }

@@ -1,0 +1,73 @@
+﻿@model List<DoctorReservationViewModel>
+@functions {
+    public static string GetNextDate(int day)
+    {
+        DateTime today = DateTime.Now;
+        int todayIndex = (int)today.DayOfWeek;
+
+        int daysToAdd = (day - todayIndex + 7) % 7;
+        if (daysToAdd == 0) return "Today";
+        if (daysToAdd == 1) return "Tomorrow";
+
+        DateTime nextDate = today.AddDays(daysToAdd);
+        return nextDate.ToString("ddd d/M"); // Example: "Tue 1/12"
+    }
+}
+@if (Model.Count != 0)
+{
+    @foreach (var app in Model)
+    {
+        <div class="card d-flex text-center swiper-slide @(Model.Count == 2 ? "w-50" : "")">
+            <div class="card-header SP-bookHeader p-1">
+                @GetNextDate(app.Day)
+            </div>
+
+            <div class="card-body SP-primaryText flex-column justify-content-center p-2">
+                @if (app.Time != null && app.IsAvailable)
+                {
+                    <p class="mb-1">From <strong>@app.Time.Split("|")[0]</strong></p>
+                    <p class="mb-1">To <strong>@app.Time.Split("|")[1]</strong></p>
+                }
+                else if (!app.IsAvailable)
+                {
+                    <p class="mb-1">All Appointments</p>
+                    <p class="mb-1">Reserved</p>
+                }
+                else
+                {
+                    <p class="mb-1">No Available</p>
+                    <p class="mb-1">Appointments</p>
+                }
+            </div>
+            @if (!User.IsInRole("doctor"))
+            {
+                <a asp-route-id="@app.ResID" class="card-footer btn @(app.Time == null || app.IsAvailable ? "disabled" : "")  SP-bookBTN p-1">Book</a>
+            }
+            else
+            {
+                <a class="card-footer btn disabled SP-bookBTN p-1">Doctors can't book in this release</a>
+            }
+        </div>
+    }
+}
+else
+{
+    <div class="card d-flex text-center swiper-slide w-100">
+        <div class="card-header SP-bookHeader p-1">
+            No Appointments
+        </div>
+
+        <div class="card-body SP-primaryText flex-column justify-content-center p-2">
+            <p class="mb-1">No Available</p>
+            <p class="mb-1">Appointments</p>
+        </div>
+        @if (!User.IsInRole("doctor"))
+        {
+            <a class="card-footer btn disabled SP-bookBTN p-1">Book</a>
+        }
+        else
+        {
+            <a class="card-footer btn disabled SP-bookBTN p-1">Doctors can't book in this release</a>
+        }
+    </div>
+}

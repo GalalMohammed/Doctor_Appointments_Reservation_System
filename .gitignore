@@ -7,3 +7,4 @@
 **/min
 /vezeetaApplicationAPI/Migrations
 /MVC/appsettings.json
+/MVC/wwwroot/log.txt

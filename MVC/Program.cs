@@ -86,8 +86,9 @@ namespace MVC
                 app.UseExceptionHandler("/Home/Error");
             else
             {
-                app.UseMiddleware<CustomExceptionHandler>();
-                app.UseStatusCodePagesWithReExecute("/Error");
+                //app.UseMiddleware<CustomExceptionHandler>();
+                //app.UseStatusCodePagesWithReExecute("/Error");
+                app.UseDeveloperExceptionPage();
             }
             // Middleware Configuration
             app.MapStaticAssets();

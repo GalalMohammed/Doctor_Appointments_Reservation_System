@@ -314,16 +314,16 @@ namespace MVC.Controllers
                 await doctorManager.UpdateDoctor(doc);
 
                 TempData["Updated"] = "Image was updated successfully";
-                return RedirectToAction("profile","doctor",new {id = 1});
+                return RedirectToAction("profile","doctor",new {id = image.ID});
             }
             else
             {
                 TempData["Error"] = string.Join("\n",
                     ModelState
                         .Where(m => m.Value.Errors.Any())
-                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}"))
+                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}\n"))
                 );
-                return RedirectToAction("profile", "doctor", new { id = 1 });
+                return RedirectToAction("profile", "doctor", new { id = image.ID });
             }
         }
     }

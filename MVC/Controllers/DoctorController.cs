@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Enums;
 using MVC.Mappers;
 using MVC.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -41,27 +42,35 @@ namespace MVC.Controllers
             ViewBag.pageNums = Math.Ceiling((double)doctorVM.Ratings.Count / pageSize);
             ViewBag.currentPage = pageNum + 1;
 
-            ViewBag.cal = JsonSerializer.Serialize(new
+            var calReserves = doctor.DoctorReservations
+                .Where(doc => doc.StartTime.Date > DateTime.Now.Date)
+                .Select(_doctorMapper.MapToCalenderReservationVM)
+                .ToList();
+            for (int i = 1; i <= 15; i++)
             {
-                from = DateTime.Now.AddDays(1),
-                to = DateTime.Now.AddDays(1),
-                title = "Vaction",
-                color = "#004085",
-                colorBorder = "#B3E5FC",
-                status = "Done"
-            });
-
-            for (int i = 0; i < 7; i++)
-            {
-                if (!doctorVM.Appointments.Any(app => app.Day == i))
+                var date = DateTime.Now.AddDays(i).Date;
+                if(!calReserves.Any(cal => cal.to.Date == date))
                 {
-                    doctorVM.Appointments.Add(new DoctorReservationViewModel() { Day = i, Time = null });
+                    calReserves.Add(new CalenderReservationVM()
+                    {
+                        to = date,
+                        from = date,
+                        title = "Add Work +",
+                        isAllDay = true,
+                    });
                 }
             }
+
+            ViewBag.cal = JsonSerializer.Serialize(calReserves);
+            //int today = DateTime.Now.Day;
+            //for (int i = today; i < today + 14; i++)
+            //{
+            //    if (!doctorVM.Appointments.Any(app => app.Day == i))
+            //    {
+            //        doctorVM.Appointments.Add(new DoctorReservationViewModel() { Day = i, Time = null,IsAvailable = true });
+            //    }
+            //}
             doctorVM.Appointments.Sort((a, b) => a.Day - b.Day);
-            doctorVM.Appointments = doctorVM.Appointments.Skip((int)DateTime.Now.DayOfWeek) // Start from today
-                                   .Concat(doctorVM.Appointments.Take((int)DateTime.Now.DayOfWeek)) // Append previous days at the end
-                                   .ToList();
             doctorVM.Ratings = doctorVM.Ratings.Skip(pageNum * pageSize).Take(pageSize).ToList();
             return View(doctorVM);
 
@@ -139,15 +148,46 @@ namespace MVC.Controllers
             ViewBag.maxPrice = search.MaxPrice;
             ViewBag.Specialites = new SelectList(specialites,"ID","Name",search.Speciality); //
 
-
-            var today = (int)DateTime.Now.DayOfWeek;
-            foreach (var doc in doctors)
-            {
-                doc.Appointments = doc.Appointments.Skip(today) // Start from today
-                                   .Concat(doc.Appointments.Take(today)) // Append previous days at the end
-                                   .ToList();
-            }
             return View(doctors);
+        }
+
+        [HttpPost("Add-Reservation")]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddReservation(NewResVM res)
+        {
+            if (res.StartTime >= res.EndTime)
+            {
+                ModelState.AddModelError("Start Time", "Start time must be before End time.");
+            }
+            else if (res.EndTime - res.StartTime < TimeSpan.FromMinutes(30))
+            {
+                ModelState.AddModelError("End Time", "The difference between Start time and End time must be at least 30 minutes.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var startTime = res.Date.Date.Add(res.StartTime);
+                var endTime = res.Date.Date.Add(res.EndTime);
+                // DB Logic
+                if(res.ResID == 0)
+                {
+                    TempData["Added"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")} is added";
+                }
+                else
+                {
+                    TempData["Updated"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} has been updated to be from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")}";
+                }
+                
+            }
+            else
+            {
+                TempData["Error"] = string.Join("\n",
+                    ModelState
+                        .Where(m => m.Value.Errors.Any())
+                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}\n"))
+                );
+            }
+                return RedirectToAction("profile", "Doctor", new { id = res.ID, tab = "calender" });
         }
 
         //public static class DoctorMockData

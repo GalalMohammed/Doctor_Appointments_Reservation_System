@@ -204,6 +204,8 @@ html {
 .SP-photo {
     object-fit: cover;
     object-position: center;
+    width: 150px;
+    height: 150px;
 }
 
 

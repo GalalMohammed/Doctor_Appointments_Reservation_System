@@ -33,7 +33,7 @@ namespace MVC.Controllers
             if (trackedOrder != null)
                 orderManager.DeleteOrder(patientId, reservationId);
             // Set the amount to be charged
-            int amount = reservationManager.GetDoctorReservationByID(reservationId).Doctor?.Fees ?? throw new Exception("Doctor Navigation Property is null");
+            int amount = (await reservationManager.GetDoctorReservationByID(reservationId)).Doctor?.Fees ?? throw new Exception("Doctor Navigation Property is null");
             //Create an order using the PayPal client
             CreateOrderResponse order = await client.CreateOrder(amount.ToString());
             if (order == null)

@@ -93,10 +93,5 @@ namespace BLLServices.Managers.DoctorReservationManager
             return reservations.Any(r => r.DoctorID == res.DoctorID
             && r.StartTime.Day == res.StartTime.Day);
         }
-
-        public DoctorReservation GetDoctorReservationByID(int id)
-        {
-            return DR_manager.GetByID(id).Result;
-        }
     }
 }

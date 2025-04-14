@@ -5,6 +5,9 @@ namespace MVC.Mappers
 {
     public interface IDoctorMapper
     {
+
+        public SpecialityVM MapToSpecialityVM(Specialty specialty);
+
         public DoctorReservationViewModel MapToDoctorReservationViewModel(DoctorReservation reservation);
 
 

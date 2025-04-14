@@ -23,6 +23,16 @@ namespace MVC.Mappers
             _reviewManager = reviewManager;
             _doctorManager = doctorManager;
         }
+
+        public SpecialityVM MapToSpecialityVM(Specialty specialty)
+        {
+            return new SpecialityVM()
+            {
+                ID = specialty.ID,
+                Name = specialty.Name,
+            };
+        }
+
         public DoctorReservationViewModel MapToDoctorReservationViewModel(DoctorReservation reservation)
         {
             return new DoctorReservationViewModel
@@ -42,7 +52,6 @@ namespace MVC.Mappers
         //}
         public async Task<docSearchVM> MapToDocSearchVMAsync(Doctor doctor)
         {
-            var specialties = await _specialtyManager.GetAllSpecialties();
             //var specialtiesList = specialties.Select(s=>s.Name).ToList();
             var avgRating = await _reviewManager.GetDoctorAverageRating(doctor.ID);
             var reservations = await _doctorReservationManager.GetReservationsByDocID(doctor.ID);
@@ -55,17 +64,17 @@ namespace MVC.Mappers
             {
                 ID = doctor.ID,
                 Name = $"{doctor.FirstName} {doctor.LastName}",
-                Title = null,
+                Title = string.Empty,
                 Gender = doctor.Gender, // unite in one enum
                 Image = doctor.ImageURL,
-                Qualifications = null,
+                Qualifications = string.Empty,
                 Fees = (int)doctor.Fees, // remember to change it to double
-                Specialties = new List<string>() { doctor.Specialty.Name }, // for later
+                Speciality = (await _specialtyManager.GetSpecialtyById(doctor.SpecialtyID)).Name,
                 Rating = avgRating,
-                Experience = 0, // remember to change it or remove it
-                Governorate = 0, // add to database
+                WaitingTime = doctor.WaitingTime,
+                Governorate = doctor.Governorate, // add to database
                 Location = doctor.Location,
-                Phone = doctor.AppUser.PhoneNumber,
+                Phone = doctor.AppUser?.PhoneNumber ?? "01203203320",
                 Appointments = appointments
             };
         }

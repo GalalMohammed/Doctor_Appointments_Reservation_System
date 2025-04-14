@@ -9,6 +9,7 @@ namespace vezeetaApplicationAPI.DataAccess
 
     public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser>(options)
     {
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
@@ -17,7 +18,7 @@ namespace vezeetaApplicationAPI.DataAccess
         public DbSet<Review> Reviews { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //    => optionsBuilder.UseSqlServer("Server=db16383.public.databaseasp.net; Database=db16383; User Id=db16383; Password=wP?2+3LdnD#5; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;");
+        //    => optionsBuilder.UseSqlServer("Server = .; Database = MVCProjTest2; Integrated Security = True; Encrypt = False");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,6 +56,20 @@ namespace vezeetaApplicationAPI.DataAccess
                 .HasOne(r => r.Doctor)
                 .WithMany(d => d.Reviews)
                 .HasForeignKey(r => r.DoctorID);
+
+            modelBuilder.Entity<Order>()
+                        .HasIndex(o => new { o.PatientId, o.DoctorReservationId })
+                        .IsUnique();
+
+            modelBuilder.Entity<Order>()
+                        .HasOne(o => o.Patient)
+                        .WithMany(p => p.Orders)
+                        .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Order>()
+                        .HasOne(o => o.DoctorReservation)
+                        .WithMany(p => p.Orders)
+                        .OnDelete(DeleteBehavior.NoAction);
         }
     }
 

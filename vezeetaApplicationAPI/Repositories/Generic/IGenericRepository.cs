@@ -16,6 +16,8 @@ namespace DAL.Repositories.Generic
         public void Delete(T entity);
         public Task<List<T>> GetAllByConditon(Func<T, bool> condition, bool WithAsNoTracking = true);
         public Task<List<T>> GetAllByConditonFiltterInDatabase(Expression<Func<T, bool>> condition, bool WithAsNoTracking = true);
+        public Task<List<T>> GetAllDynamicInclude(bool WithAsNoTracking = true, params Expression<Func<T, object>>[] includes);
+
 
 
 

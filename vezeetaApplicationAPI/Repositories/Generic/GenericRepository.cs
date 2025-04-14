@@ -68,5 +68,18 @@ namespace DAL.Repositories.Generic
             return await query.ToListAsync();
 
         }
+        public async Task<List<T>> GetAllDynamicInclude(bool WithAsNoTracking = true,params Expression<Func<T, object>>[] includes)
+        {
+            var query = context.Set<T>().AsQueryable();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            if (WithAsNoTracking)
+                query = query.AsNoTracking();
+
+            return await query.ToListAsync();
+        }
     }
 }

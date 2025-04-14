@@ -17,11 +17,11 @@ namespace MVC.ViewModels
 
         public int Fees { get; set; }
 
-        public List<string> Specialties { get; set; } = new();
+        public string Speciality { get; set; }
 
         public float Rating { get; set; }
 
-        public int Experience { get; set; }
+        public int WaitingTime { get; set; }
 
         public Governorate Governorate { get; set; }
         public string Location { get; set; }

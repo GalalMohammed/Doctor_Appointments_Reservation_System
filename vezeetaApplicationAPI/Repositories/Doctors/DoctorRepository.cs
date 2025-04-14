@@ -1,11 +1,6 @@
 ﻿using DAL.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
 
@@ -22,7 +17,7 @@ namespace DAL.Repositories.Doctors
         {
             if (WithAsNoTracking)
             {
-                return await context.Doctors.Include(d=>d.Specialty).Include(d=>d.AppUser)
+                return await context.Doctors.Include(d => d.Specialty).Include(d => d.AppUser)
                     .Include(d => d.DoctorReservations).Include(d => d.Reviews)
                     .AsNoTracking().ToListAsync();
             }
@@ -35,7 +30,7 @@ namespace DAL.Repositories.Doctors
         {
             var res = await context.Doctors.Include(d => d.Specialty).Include(d => d.AppUser)
                     .Include(d => d.DoctorReservations).Include(d => d.Reviews)
-                    .Where(d=>d.ID == id).FirstOrDefaultAsync();
+                    .Where(d => d.ID == id).FirstOrDefaultAsync();
             if (WithAsNoTracking)
             {
                 context.Entry(res).State = EntityState.Detached;
@@ -43,11 +38,11 @@ namespace DAL.Repositories.Doctors
             return res;
         }
 
-        public async Task<List<Doctor>> GetFilteredByConditonPages(Expression<Func<Doctor, bool>> condition, int pageNum = 0,int pageSize = 10, bool WithAsNoTracking = true)
+        public async Task<List<Doctor>> GetFilteredByConditonPages(Expression<Func<Doctor, bool>> condition, int pageNum = 0, int pageSize = 10, bool WithAsNoTracking = true)
         {
             if (WithAsNoTracking)
             {
-                var res = context.Doctors.AsNoTracking().Where(condition).Skip(pageNum * pageSize).Take(pageSize);
+                var res = context.Doctors.Include(d => d.AppUser).AsNoTracking().Where(condition).Skip(pageNum * pageSize).Take(pageSize);
                 return res.ToList();
             }
             return context.Doctors.Where(condition).Skip(pageNum * pageSize).Take(pageSize).ToList();
@@ -56,7 +51,7 @@ namespace DAL.Repositories.Doctors
 
         public async Task<int> GetFilteredByConditonCount(Expression<Func<Doctor, bool>> condition)
         {
-            return context.Doctors.Where(condition).Count();
+            return context.Doctors.Include(d => d.AppUser).Where(condition).Count();
         }
 
 

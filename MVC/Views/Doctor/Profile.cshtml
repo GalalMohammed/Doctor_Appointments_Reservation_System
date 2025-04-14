@@ -24,13 +24,13 @@
 }
 
 @section Styles {
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<link href="~/lib/calenderJS/dist/calendar.js.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="~/css/doctorProfile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="~/lib/calenderJS/dist/calendar.js.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="~/css/doctorProfile.css">
 }
 
 <div class="container-fluid" style="padding-top:80px">
@@ -39,13 +39,16 @@
         <div class="col-md-4">
             <div class=" sticky-md-top text-center" style="padding-top:89px">
                 <form asp-action="ChangeImage" asp-controller="Account" class="position-relative d-inline-block" id="imageForm" enctype="multipart/form-data">
-                    
+
                     <div>
                         <img src="~/uploads/images/@Model.Image" class="rounded-circle img-thumbnail SP-photo" alt="Doctor Image">
                     </div>
-                    <input type="file" name="File" class="SP-file d-none"/>
-                    <input type="hidden" name="ID" value="@Model.ID" class="d-none"/>
-                    <div class="SP-upload"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                    @if(User.IsInRole("doctor"))
+                    {
+                        <input type="file" name="File" class="SP-file d-none" />
+                        <input type="hidden" name="ID" value="@Model.ID" class="d-none" />
+                        <div class="SP-upload"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+                    }
                 </form>
 
                 <h3 class="mt-2">Dr. @Model.Name</h3>
@@ -55,14 +58,17 @@
                     <i class="fa-solid fa-phone-volume me-2"></i>
                     @Model.Phone
                 </a>
-                <a asp-action="edit" asp-controller="Doctor" class="btn col-12 SP-callBTN mt-3">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    Edit Profile
-                </a>
-                <a asp-action="changePassword" asp-controller="Account" class="btn col-12 SP-callBTN mt-3">
-                    <i class="fa-solid fa-key"></i>                    
-                    Change Password
-                </a>
+                @if(User.IsInRole("doctor"))
+                {
+                    <a asp-action="edit" asp-controller="Doctor" class="btn col-12 SP-callBTN mt-3">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Edit Profile
+                    </a>
+                    <a asp-action="changePassword" asp-controller="Account" class="btn col-12 SP-callBTN mt-3">
+                        <i class="fa-solid fa-key"></i>
+                        Change Password
+                    </a>
+                }
             </div>
         </div>
         <div class="col-md-8">
@@ -73,19 +79,22 @@
                 <li class="nav-item">
                     <a class="nav-link SP-primaryText @(ViewBag.tab == "reviews" ? "active" : "")" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reviews</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link SP-primaryText @(ViewBag.tab == "calender" ? "active" : "")" id="calender-tab" data-bs-toggle="tab" href="#calender">Calender</a>
-                </li>
+                @if(User.IsInRole("doctor"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link SP-primaryText @(ViewBag.tab == "calender" ? "active" : "")" id="calender-tab" data-bs-toggle="tab" href="#calender">Calender</a>
+                    </li>
+                }
             </ul>
             <div class="tab-content my-3 ">
-                
+
                 <!-- #region Details Section -->
 
                 <div class="tab-pane fade @(ViewBag.tab == "details" ? "show active" : "")" id="details">
                     <div class="col-12 flex-wrap justify-content-center my-3 gap-2 SP-bookCards">
                         <div class="swiper mySwiper">
                             <div class="swiper-wrapper">
-                                <partial name="_ReservationCardsPartial" , model="Model.Appointments"></partial>
+                                    <partial name="_ReservationCardsPartial" , model="Model.Appointments"></partial>
                             </div>
                             <div class="swiper-scrollbar position-static mt-2"></div>
                         </div>
@@ -110,13 +119,13 @@
                         Rating
                     </h4>
                     <p class="SP-primaryText offset-1">
-                        <partial name="_RatingPartial" model="@Model.Rating"></partial>
+                            <partial name="_RatingPartial" model="@Model.Rating"></partial>
                     </p>
                     <h4>Map</h4>
                     <div class=" col-12"
-                         style="height:400px"
-                         id="map"
-                         data-latitude="@Model.Latitude" data-longitude="@Model.Longitude"></div>
+                    style="height:400px"
+                    id="map"
+                    data-latitude="@Model.Latitude" data-longitude="@Model.Longitude"></div>
                 </div>
 
                 <!-- #endregion -->
@@ -236,23 +245,24 @@
                 </div>
 
                 <!-- #endregion -->
-                
+
                 <!-- #region Calender Section -->
+                @if (User.IsInRole("doctor"))
+                {
+                    <div class="tab-pane fade @(ViewBag.tab == "calender" ? "show active" : "")" id="calender">
+                        <div id="SP-Calendar"></div>
+                    </div>
 
-                <div class="tab-pane fade @(ViewBag.tab == "calender" ? "show active" : "")" id="calender">
-                    <div id="SP-Calendar"></div>
-                </div>
+                    <div class="modal fade" id="SP-CalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Working Day Form</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form asp-action="AddReservation" asp-controller="Doctor">
+                                    <div class="modal-body">
 
-                <div class="modal fade" id="SP-CalForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Working Day Form</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form asp-action="AddReservation" asp-controller="Doctor">
-                                <div class="modal-body">
-                                
                                         <input type="hidden" name="ResID" class="SP-resID"/>
                                         <input type="hidden" name="ID" value="@Model.ID"/>
                                         <div class="mb-3 d-none">
@@ -272,16 +282,16 @@
                                             <label for="count" class="form-label">Max Reservations</label>
                                             <input type="number" class="form-control SP-maxRes" id="count" name="MaxRes" min="1" max="50" required>
                                         </div>                                
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn SP-bookBTN col-12 SP-CalSubmit">Add</button>
-                                    <button type="button" class="btn SP-bookBTN col-12" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn SP-bookBTN col-12 SP-CalSubmit">Add</button>
+                                        <button type="button" class="btn SP-bookBTN col-12" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                }
                 <!-- #endregion -->
                 
             </div>

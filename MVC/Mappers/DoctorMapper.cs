@@ -5,7 +5,6 @@ using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
 using DAL.Enums;
 using MVC.ViewModels;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Mappers
@@ -54,16 +53,16 @@ namespace MVC.Mappers
         {
             return new DoctorReservationViewModel
             {
-                Day =  reservation.EndTime.Day,
+                Day = reservation.EndTime.Day,
                 Time = $"{reservation.StartTime.ToString("hh:mm tt")}|{reservation.EndTime.ToString("hh:mm tt")}",
                 ResID = reservation.ID,
-                IsAvailable = reservation.MaxReservation == await _appointmentManager.GetAppointmentsCountByDate(reservation.DoctorID,reservation.StartTime)
+                IsAvailable = reservation.MaxReservation == await _appointmentManager.GetAppointmentsCountByDate(reservation.DoctorID, reservation.StartTime)
             };
         }
         public Task<DoctorReservation> MapFromDoctorReservationViewModel(DoctorReservationViewModel reservationVM)
         {
             return _doctorReservationManager.GetDoctorReservationByID(reservationVM.ResID);
-             
+
         }
         public async Task<docSearchVM> MapToDocSearchVMAsync(Doctor doctor)
         {

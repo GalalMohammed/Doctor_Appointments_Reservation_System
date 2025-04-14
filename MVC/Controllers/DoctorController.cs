@@ -1,5 +1,6 @@
 ﻿using BLLServices.Common.UploadService;
 using BLLServices.Managers.DoctorManger;
+using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.SpecialtyManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Enums;
 using MVC.Mappers;
 using MVC.ViewModels;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text.Json;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
-using DAL.Repositories.Specialties;
 
 namespace MVC.Controllers
 {
@@ -22,20 +20,19 @@ namespace MVC.Controllers
         private IDoctorMapper _doctorMapper;
         private readonly ISpecialtyManager _specialityManager;
         private readonly IUploadService uploadService;
+        private readonly IDoctorReservationManager doctorReservationManager;
 
         public DoctorController(IDoctorManager doctorManager,
                                 IDoctorMapper doctorMapper,
                                 ISpecialtyManager _specialityManager,
-                                IUploadService uploadService)
+                                IUploadService uploadService,
+                                IDoctorReservationManager doctorReservationManager)
         {
             _doctorManager = doctorManager;
             _doctorMapper = doctorMapper;
             this._specialityManager = _specialityManager;
             this.uploadService = uploadService;
-        }
-        public IActionResult Index()
-        {
-            return View();
+            this.doctorReservationManager = doctorReservationManager;
         }
 
         [HttpGet]
@@ -159,6 +156,7 @@ namespace MVC.Controllers
             return View(doctors);
         }
 
+        [Authorize(Roles = "doctor")]
         [HttpPost("Add-Reservation")]
         [ValidateAntiForgeryToken]
         public IActionResult AddReservation(NewResVM res)
@@ -185,7 +183,6 @@ namespace MVC.Controllers
                 {
                     TempData["Updated"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} has been updated to be from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")}";
                 }
-
             }
             else
             {
@@ -197,7 +194,6 @@ namespace MVC.Controllers
             }
             return RedirectToAction("profile", "Doctor", new { id = res.ID, tab = "calender" });
         }
-
 
         [Authorize(Roles = "doctor")]
         public async Task<IActionResult> Edit()

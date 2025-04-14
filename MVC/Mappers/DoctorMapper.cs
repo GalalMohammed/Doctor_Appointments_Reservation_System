@@ -4,6 +4,7 @@ using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
 using DAL.Enums;
 using MVC.ViewModels;
+using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Mappers
@@ -32,14 +33,11 @@ namespace MVC.Mappers
                 ResID = reservation.ID
             };
         }
-        //public DoctorReservation MapFromDoctorReservationViewModel(DoctorReservationViewModel reservationVM)
-        //{
-        //    //return new DoctorReservation
-        //    //{
-        //    //    StartTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, reservationVM.Day, 0, 0, 0),
-        //    //    EndTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, reservationVM.Day, int.Parse(reservationVM.Time.Split(':')[0]), int.Parse(reservationVM.Time.Split(':')[1].Split(' ')[0]), 0)
-        //    //};
-        //}
+        public Task<DoctorReservation> MapFromDoctorReservationViewModel(DoctorReservationViewModel reservationVM)
+        {
+            return _doctorReservationManager.GetDoctorReservationByID(reservationVM.ResID);
+             
+        }
         public async Task<docSearchVM> MapToDocSearchVMAsync(Doctor doctor)
         {
             var specialties = await _specialtyManager.GetAllSpecialties();
@@ -63,7 +61,7 @@ namespace MVC.Mappers
                 Specialties = new List<string>() { doctor.Specialty.Name }, // for later
                 Rating = avgRating,
                 Experience = 0, // remember to change it or remove it
-                Governorate = 0, // add to database
+                Governorate = doctor.Governorate,
                 Location = doctor.Location,
                 Phone = doctor.AppUser.PhoneNumber,
                 Appointments = appointments
@@ -76,7 +74,7 @@ namespace MVC.Mappers
         public async Task<doctorProfileVM> MapToDoctorProfileVM(Doctor doctor)
         {
             var specialties = await _specialtyManager.GetAllSpecialties();
-            var specialtiesList = specialties.Select(s => s.Name).ToList();
+            //var specialtiesList = specialties.Select(s => s.Name).ToList();
             var avgRating = await _reviewManager.GetDoctorAverageRating(doctor.ID);
             var reservations = await _doctorReservationManager.GetReservationsByDocID(doctor.ID);
             List<DoctorReservationViewModel> appointments = new List<DoctorReservationViewModel>();
@@ -95,14 +93,14 @@ namespace MVC.Mappers
                 ID = doctor.ID,
                 Name = $"{doctor.FirstName} {doctor.LastName}",
                 Title = null,
-                Gender = (Enums.Gender)doctor.Gender, // unite in one enum
+                Gender = doctor.Gender,
                 Image = doctor.ImageURL,
                 Qualifications = null,
                 Fees = (int)doctor.Fees, // remember to change it to double
-                Specialties = specialtiesList,
+                Specialties = new List<string>(){ doctor.Specialty.Name},
                 Rating = avgRating,
                 Experience = 0, // remember to change it or remove it
-                Governorate = 0, // remember to change it or remove it
+                Governorate = doctor.Governorate,
                 Location = doctor.Location,
                 Phone = "123-456-789",//.AppUser.PhoneNumber,
                 Appointments = appointments,

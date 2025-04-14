@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Threading;
 using vezeetaApplicationAPI.DataAccess;
 
 namespace DAL.Repositories.Generic
@@ -56,6 +58,14 @@ namespace DAL.Repositories.Generic
                 return res.ToList();
             }
             return context.Set<T>().Where(condition).ToList();
+
+        }
+        public virtual async Task<List<T>> GetAllByConditonFiltterInDatabase(Expression<Func<T, bool>> condition, bool WithAsNoTracking = true)
+        {
+            var query = context.Set<T>().Where(condition);
+            if (WithAsNoTracking)
+                query = query.AsNoTracking();
+            return await query.ToListAsync();
 
         }
     }

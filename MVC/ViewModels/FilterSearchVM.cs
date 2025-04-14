@@ -10,7 +10,7 @@ namespace MVC.ViewModels
         public int Speciality { get; set; } = 0;
         public Governorate Governorate { get; set; } = Governorate.All;
         public Gender Gender { get; set; } = Gender.All;
-        public int WaitingTime { get; set; } = 0;
+        public int WaitingTime { get; set; } = 60;
         public double MinPrice { get; set; } = 0;
         public double MaxPrice { get; set; } = 10000;
     }

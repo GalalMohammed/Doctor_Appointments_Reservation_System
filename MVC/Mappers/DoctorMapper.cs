@@ -156,8 +156,8 @@ namespace MVC.Mappers
                 Governorate = doctorRegisterVM.Governorate,
                 Location = doctorRegisterVM.Address,
                 Gender = doctorRegisterVM.Gender,
-                Lng = (float)doctorRegisterVM.Lng,
-                Lat = (float)doctorRegisterVM.Lat,
+                Lng = doctorRegisterVM.Lng,
+                Lat = doctorRegisterVM.Lat,
                 DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(9, 0)),
                 DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(10, 0)),
             };

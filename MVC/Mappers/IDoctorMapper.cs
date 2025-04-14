@@ -7,8 +7,10 @@ namespace MVC.Mappers
     {
 
         public SpecialityVM MapToSpecialityVM(Specialty specialty);
+        public CalenderReservationVM MapToCalenderReservationVM(DoctorReservation reservation);
 
-        public DoctorReservationViewModel MapToDoctorReservationViewModel(DoctorReservation reservation);
+
+        public Task<DoctorReservationViewModel> MapToDoctorReservationViewModelAsync(DoctorReservation reservation);
 
 
         public Task<docSearchVM> MapToDocSearchVMAsync(Doctor doctor);

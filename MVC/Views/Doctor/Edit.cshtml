@@ -1,12 +1,10 @@
 ﻿@using DAL.Enums
-@model DoctorRegisterViewModel
+@model DoctorEditViewModel
 @{
-    // var currentAction = ViewContext.RouteData.Values["action"].ToString().ToLower();
-    var currentAction = "edit";
-    ViewData["Title"] = currentAction == "doctorregister" ? "Doctor Register" : "Edit Profile";
+    ViewData["Title"] = "Edit Profile";
 }
 
-<form asp-action="@currentAction" class="d-flex flex-column gap-2 col-10 col-md-6 mx-auto" method="post" style="padding: 100px 20px 20px; color: var(--primary-color)" enctype="multipart/form-data">
+<form asp-action="Edit" class="d-flex flex-column gap-2 col-10 col-md-6 mx-auto" method="post" style="padding: 100px 20px 20px; color: var(--primary-color)" enctype="multipart/form-data">
     <h2>Enter Your Information</h2>
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="accordion form-container" id="doctorRegisterAccordion">
@@ -23,30 +21,23 @@
                     <div class="row gap-1 gap-md-0">
                         <div class="col-md-6 col-sm-12">
                             <label asp-for="FirstName" class="my-1"></label>
-                            <input asp-for="FirstName" class="login-form-input rounded-1" readonly="@(currentAction == "edit" ? "readonly" : "")" />
+                            <input asp-for="FirstName" class="login-form-input rounded-1" readonly="readonly" />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label asp-for="LastName" class="my-1"></label>
-                            <input asp-for="LastName" class="login-form-input rounded-1" readonly="@(currentAction == "edit" ? "readonly" : "")" />
+                            <input asp-for="LastName" class="login-form-input rounded-1" readonly="readonly" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row gap-1 gap-md-0">
                         <div class="col-md-6 col-sm-12">
                             <label asp-for="Gender" class="form-label"></label>
-                            @if (currentAction == "doctorregister")
-                            {
-                                <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="login-form-input rounded-1 form-select"></select>
-                            }
-                            else
-                            {
-                                <input asp-for="Gender" class="login-form-input rounded-1" readonly="readonly" />
-                            }
+                            <input asp-for="Gender" class="login-form-input rounded-1" readonly="readonly" />
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label asp-for="BirthDate" class="form-label"></label>
-                            <input asp-for="BirthDate" class="login-form-input rounded-1 form-control" type="date" readonly="@(currentAction == "edit" ? "readonly" : "")" />
+                            <input asp-for="BirthDate" class="login-form-input rounded-1 form-control" type="date" readonly="readonly" />
                             <span asp-validation-for="BirthDate" class="text-danger"></span>
                         </div>
                     </div>
@@ -71,7 +62,7 @@
                     <div class="row gap-1 gap-md-0">
                         <div class="col-md-6 col-sm-12">
                             <label asp-for="Email" class="form-label"></label>
-                            <input asp-for="Email" class="login-form-input rounded-1 form-control" readonly="@(currentAction == "edit" ? "readonly" : "")" />
+                            <input asp-for="Email" class="login-form-input rounded-1 form-control" readonly="readonly" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -100,42 +91,6 @@
             </div>
         </div>
 
-        <!-- Account Credentials -->
-        @if (currentAction == "doctorregister")
-        {
-            <div class="accordion-item doctor-register-div">
-                <h2 class="accordion-header" id="headingCredentials">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCredentials">
-                        Account Credentials
-                    </button>
-                </h2>
-                <div id="collapseCredentials" class="accordion-collapse collapse" data-bs-parent="#doctorRegisterAccordion">
-                    <div class="accordion-body">
-                        <div class="mb-3">
-                            <label class="form-label SP-primaryText" asp-for="Password"></label>
-                            <div class="input-group">
-                                <input asp-for="Password" class="login-pass form-control" type="password">
-                                <button type="button" class="btn SP-toggle-password" data-target="#Password">
-                                    <i class="fa-solid fa-eye eye-icon"></i>
-                                </button>
-                            </div>
-                            <span class="text-danger" asp-validation-for="Password"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label SP-primaryText" asp-for="ConfirmPassword"></label>
-                            <div class="input-group">
-                                <input asp-for="ConfirmPassword" class="login-pass form-control" type="password">
-                                <button type="button" class="btn SP-toggle-password" data-target="#ConfirmPassword">
-                                    <i class="fa-solid fa-eye eye-icon"></i>
-                                </button>
-                            </div>
-                            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
         <!-- Professional Details -->
         <div class="accordion-item doctor-register-div">
             <h2 class="accordion-header" id="headingProfessional">
@@ -146,16 +101,8 @@
             <div id="collapseProfessional" class="accordion-collapse collapse" data-bs-parent="#doctorRegisterAccordion">
                 <div class="accordion-body register-input-group d-flex flex-column gap-3 justify-content-between">
                     <div class="mb-3">
-                        <label asp-for="SpecialtyID" class="form-label"></label>
-                        @if (currentAction == "doctorregister")
-                        {
-                            <select asp-for="SpecialtyID" class="login-form-input rounded-1 form-select" asp-items="@ViewBag.Specialties"></select>
-                        }
-                        else
-                        {
-                            <input asp-for="SpecialtyID" type="hidden" />
-                            <input type="text" value="@ViewBag.CurrentSpecialty" class="login-form-input rounded-1" readonly="readonly" />
-                        }
+                        <label asp-for="Specialty" class="form-label"></label>
+                        <input asp-for="Specialty" class="login-form-input rounded-1 form-control" readonly="readonly" />
                     </div>
                     <div class="row gap-2 gap-md-0">
                         <div class="col-md-6 col-sm-12">
@@ -223,9 +170,11 @@
         @* </div> *@
         <input asp-for="Lat" class="d-none" />
         <input asp-for="Lng" class="d-none" />
+        <input asp-for="Id" class="d-none" />
+        <input asp-for="ImageURL" class="d-none" />
     </div>
     <div class="d-flex justify-content-center m-3">
-        <input type="submit" class="btn login-submit mb-3 w-50" value="@(currentAction == "doctorregister" ? "Register" : "Edit")" />
+        <input type="submit" class="btn login-submit mb-3 w-50" value="Edit" />
     </div>
 </form>
 
@@ -253,5 +202,17 @@
             });
         });
     </script>
+    @if (ViewBag?.Success ?? false)
+    {
+        <script type="module">
+            Swal.fire({
+                title: "Success",
+                text: "Your profile has been updated!",
+                color: "#004085",
+                confirmButtonColor: "#004085",
+                icon: "success"
+            });
+        </script>
+    }
     <partial name="_ValidationScriptsPartial" />
 }

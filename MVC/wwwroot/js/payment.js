@@ -40,14 +40,16 @@
         if (details.status === "COMPLETED") {
             document.getElementById("notification-container").innerHTML = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Transaction Completed!</strong> Thank you for your payment.
+                    <strong>Transaction Completed!</strong> Thank you for your payment. You will be redirected shortly.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             `;
             const reservationId = document.getElementById("reservationId").value;
             const patientId = $c.displayCookie("currentId");
             // Redirect to success page
-            window.location.href = `/patient/add-appointment?reservationId=${reservationId}&patientId=${patientId}`;
+            setTimeout(() => {
+                window.location.href = `/patient/add-appointment?reservationId=${reservationId}&patientId=${patientId}`;
+            }, 2000);
         } else {
             document.getElementById("notification-container").innerHTML = `
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">

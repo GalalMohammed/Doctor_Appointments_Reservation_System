@@ -5,20 +5,6 @@
     var today = (int)DateTime.Now.DayOfWeek;
 
 }
-@functions {
-    public static string GetNextDate(int day)
-    {
-        DateTime today = DateTime.Now;
-        int todayIndex = (int)today.DayOfWeek;
-
-        int daysToAdd = (day - todayIndex + 7) % 7;
-        if (daysToAdd == 0) return "Today";
-        if (daysToAdd == 1) return "Tomorrow";
-
-        DateTime nextDate = today.AddDays(daysToAdd);
-        return nextDate.ToString("ddd d/M"); // Example: "Tue 1/12"
-    }
-}
 
 
 @section Styles {
@@ -30,8 +16,8 @@
 }
 
 <div style="padding-top:80px"  class="SP-contain container-fluid justify-content-center d-flex flex-wrap overflow-hidden">
-    <div class="SP-filters col-12 col-md-3 container-fluid border rounded shadow-sm" style="position:sticky">
-        <div class="sticky-md-top pt-2">
+    <div class="SP-filters col-12 col-lg-3 container-fluid border rounded shadow-sm" style="position:sticky">
+        <div class="sticky-lg-top pt-2">
             <h2>Filters</h2>
             <form asp-action="Search" asp-controller="Doctor" method="get">
                 <input type="hidden" name="pageNum" class="SP-pageNum" />
@@ -99,7 +85,7 @@
             </form>
         </div>
     </div>
-    <div class="SP-doctorsList col-12 col-md-9">
+    <div class="SP-doctorsList col-12 col-lg-9">
         @if(Model.Count == 0)
         {
             <h1 class="SP-primaryText text-center p-3">No Doctor Exists</h1>
@@ -107,71 +93,38 @@
         @foreach(var doc in Model)
         {
             <div class="SP-docCard d-flex flex-wrap align-items-center p-3 mb-2 border rounded shadow-sm" data-aos="fade-left">
-                <div class="col-12 col-md-2 text-center">
+                <div class="col-12 col-lg-2 text-center">
                     <img src="~/uploads/images/@doc.Image" class="rounded-circle img-thumbnail" height="100" width="100" alt="">
                 </div>
-                <div class="col-12 col-md-3 text-center text-md-start">
+                <div class="col-12 col-lg-3 text-center text-lg-start">
                     <p class="mb-1 fw-bold">Dr. @doc.Name</p>
                     <p class="mb-1 fw-bold">@doc.Title</p>
                     <p class="mb-1">@doc.Qualifications</p>
                     <p class="mb-1 fw-bold SP-fees">@doc.Fees E£ fees at the clinic</p>
                 </div>
-                <div class="col-12 col-md-7 flex-wrap justify-content-center gap-2 SP-bookCards">
+                <div class="col-12 col-lg-7 flex-wrap justify-content-center gap-2 SP-bookCards">
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
-                            @foreach(var app in doc.Appointments)
-                            {
-                                <div class="card d-flex text-center swiper-slide">
-                                    <div class="card-header SP-bookHeader p-1">
-                                        @* @if (app.Day.Date == DateTime.Now.Date)
-                                        {
-                                            @:Today
-                                        }
-                                        else if (app.Day.Date == DateTime.Now.AddDays(1).Date)
-                                        {
-                                            @:Tomorrow
-                                        }
-                                        else
-                                        {
-                                            app.Day.ToString("ddd d/M");
-                                        } *@
-                                        @GetNextDate(app.Day)
-                                    </div>
-                                
-                                    <div class="card-body SP-primaryText flex-column justify-content-center p-2">
-                                        @if(app.Time != null)
-                                        {
-                                            <p class="mb-1">From <strong>@app.Time.Split("|")[0]</strong></p>
-                                            <p class="mb-1">To <strong>@app.Time.Split("|")[1]</strong></p>
-                                        }
-                                        else
-                                        {
-                                            <p class="mb-1">No Available</p>
-                                            <p class="mb-1">Appointments</p>
-                                        }
-                                    </div>
-                                    <a href="#" class="card-footer btn @(app.Time == null ? "disabled" : "")  SP-bookBTN p-1">Book</a>
-                                </div>
-                            }
+                            <partial name="_ReservationCardsPartial", model="doc.Appointments"></partial>
                         </div>
                         <div class="swiper-scrollbar position-static mt-2"></div>
                     </div>
                 </div>
 
                 <div class="col-12">
-                    <p class="mb-1 text-center text-md-start">Speciality:</p>
+                    <p class="mb-1 text-center text-lg-start">Speciality:</p>
                     <div class="SP-badge-scroll d-flex flex-wrap gap-1">
                         <span class="badge rounded-pill SP-badge">@doc.Speciality</span>
                     </div>
                 </div>
                 <div class="w-100"></div>
                 <div class="d-flex flex-wrap col-12 align-items-center">
-                    <div class="flex-grow-1 col-12 col-md-8 d-flex justify-content-around mt-3">
+                    <div class="flex-grow-1 col-12 col-lg-8 d-flex justify-content-around mt-3">
                         <div><i class="fa-solid fa-star SP-icon"></i><span class="ms-2">@doc.Rating</span></div>
                         <div><i class="fa-solid fa-stopwatch SP-icon"></i><span class="ms-2">@doc.WaitingTime+ Minutes</span></div>
                         <div><i class="fa-solid fa-location-dot SP-icon"></i><span class="ms-2">@doc.Governorate : @doc.Location</span></div>
                     </div>
-                    <div class="col-12 col-md-4 d-flex mt-3 gap-1">
+                    <div class="col-12 col-lg-4 d-flex mt-3 gap-1">
                         <a href="tel:@doc.Phone" class="btn col-6 SP-callBTN">
                             <i class="fa-solid fa-phone-volume me-2"></i>
                             @doc.Phone

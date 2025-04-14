@@ -90,7 +90,7 @@
 
 
                     <div class="col-md-4 col-sm-6 " data-aos-duration="1500" data-aos="fade-right">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Angioplasty" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="1" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -167,7 +167,7 @@
                         </a>
                     </div>
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-up">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Cardiology" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="1" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -241,7 +241,7 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-left">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Dental" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="Dental" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -314,7 +314,7 @@
                         </a>
                     </div>
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-right">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Endocrinology" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="9" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -418,7 +418,7 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-up">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Eye" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="6" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -455,7 +455,7 @@
                                                       fill="var(--secondary-color)"></path>
                                             </svg>
                                         </div>
-                                        <h3 class="fs-5 text-primary-color fw-bold">Eye Care</h3>
+                                        <h3 class="fs-5 text-primary-color fw-bold">Ophthalmology</h3>
                                         <p class=" text-opacity-75 fw-semibold"
                                            style="
                         font-weight: 400;
@@ -520,7 +520,7 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-left">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Neurology" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="3" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -582,7 +582,7 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-right">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="Orthopedics" class="text-decoration-none"></a>
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="Orthopedics" class="text-decoration-none"></a>
                         <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                             <div>
                                 <div class="card-body">
@@ -664,7 +664,7 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-up">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-docSearch="RMI" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="RMI" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -797,16 +797,19 @@
                                 <a asp-controller="Doctor" asp-action="Profile" asp-route-ID="@Doctor.ID" class="text-decoration-none">
                                     <div class="slide-content card doctor-card  ">
                                         @*you need add the real path of the uploaded image  *@
-                                        <img src="images/home/doctor-ahmed-aboulghate-dermatology_20210110154100677.jpg" class="card-img-top rounded-circle mx-auto mt-3" alt="Doctor" style="width: 100px; height: 100px;">
+                                        <img src="~/uploads/images/@Doctor.Image" class="card-img-top rounded-circle mx-auto mt-3" alt="Doctor" style="width: 100px; height: 100px;">
                                         <div class="card-body text-center  ">
                                             <h5 class="card-title text-primary-color">@Doctor.Name</h5>
                                             <p class="card-text text-muted">@Doctor.Specialty</p>
                                             <span class="list-group-item"><i class="fas fa-map-marker-alt text-primary-color"></i> @Doctor.Location</span>
 
-                                            <div class="doctor-stars"
+                                            @* <div class="doctor-stars"
                                                  style="background-image:
                                         linear-gradient(to right,gold 0% @(Doctor.Rating/5*100)% ,rgba(41, 40, 40, 0.662) @(Doctor.Rating/5*100)% 100% );">
                                                 ★★★★★
+                                            </div> *@
+                                            <div class="SP-primaryText mt-2">
+                                                <partial name="_RatingPartial" model="@Doctor.Rating"></partial>
                                             </div>
 
                                         </div>

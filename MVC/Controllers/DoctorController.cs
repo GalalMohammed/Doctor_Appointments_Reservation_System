@@ -142,10 +142,11 @@ namespace MVC.Controllers
 
             var specialites = (await _specialityManager.GetAllSpecialties()).Select(_doctorMapper.MapToSpecialityVM).ToList();
             specialites.Insert(0, new SpecialityVM() { ID = 0, Name = "All" });
+            
 
             ViewBag.PageNums = Math.Ceiling(docNums / search.PageSize);
             ViewBag.currentPage = search.PageNum + 1;
-            ViewBag.Name = search.Name; // remember to change the view viewbags
+            ViewBag.Name = search.Name ?? string.Empty; // remember to change the view viewbags
             ViewBag.Speciality = search.Speciality;
             ViewBag.governorate = search.Governorate;
             ViewBag.gender = search.Gender;

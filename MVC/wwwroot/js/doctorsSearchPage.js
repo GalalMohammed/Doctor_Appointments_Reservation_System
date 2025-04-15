@@ -60,7 +60,10 @@ var swiper = new Swiper(".mySwiper", {
 });
 
 // Paganation Code
-let currentPage = Number(document.querySelector(".SP-active").innerText) || -1;
+//let currentPage = Number(document.querySelector(".SP-active").innerText) || -1;
+
+let activePage = document.querySelector(".SP-active");
+let currentPage = activePage ? Number(activePage.innerText) : -1;
 let nextBTN = document.querySelector(".SP-nextBTN");
 let prevBTN = document.querySelector(".SP-prevBTN");
 

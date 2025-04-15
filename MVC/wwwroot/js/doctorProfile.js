@@ -2,7 +2,7 @@
 AOS.init();
 
 // Paganation Code
-let currentPage = Number(document.querySelector(".SP-active").innerText) || -1;
+let currentPage = Number(document.querySelector(".SP-active")?.innerText) || -1;
 let nextBTN = document.querySelector(".SP-nextBTN");
 let prevBTN = document.querySelector(".SP-prevBTN");
 
@@ -31,7 +31,7 @@ document.getElementById("reviews-tab").addEventListener("click", function () {
     updateQueryString("tab", "reviews");
 });
 
-document.getElementById("calender-tab").addEventListener("click", function () {
+document.getElementById("calender-tab")?.addEventListener("click", function () {
     updateQueryString("tab", "calender");
 });
 

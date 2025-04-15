@@ -70,7 +70,7 @@
                     }
                     else{
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="@(User.IsInRole("patient") ? "Patient" : "Doctor")" asp-action="Profile">Profile</a>
+                            <a class="nav-link" asp-controller="@(User.IsInRole("patient") ? "Patient" : "Doctor")" asp-action="Profile" asp-route-id="@null">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout"> Logout </a>

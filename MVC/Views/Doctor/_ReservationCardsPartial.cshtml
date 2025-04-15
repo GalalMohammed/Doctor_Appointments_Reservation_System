@@ -39,10 +39,14 @@
                     <p class="mb-1">Appointments</p>
                 }
             </div>
-            @if (!User.IsInRole("doctor"))
+            @if (User.IsInRole("patient"))
             {
                 @* <a onclick asp-route-id="@app.ResID" class="card-footer btn @(app.Time == null || app.IsAvailable ? "" : "disabled")  SP-bookBTN p-1">Book</a> *@
                 <button onclick="ShowModal(@app.ResID)" class="card-footer btn @(app.Time == null || app.IsAvailable ? "" : "disabled")  SP-bookBTN p-1">Book</button>
+            }
+            else if(!User.Identity.IsAuthenticated)
+            {
+                <button onclick="ShowModal(@app.ResID)" class="card-footer btn disabled SP-bookBTN p-1">Book</button>
             }
             else
             {

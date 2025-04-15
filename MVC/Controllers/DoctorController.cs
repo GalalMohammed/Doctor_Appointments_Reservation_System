@@ -174,13 +174,16 @@ namespace MVC.Controllers
             {
                 var startTime = res.Date.Date.Add(res.StartTime);
                 var endTime = res.Date.Date.Add(res.EndTime);
+                var NewDoctorReservation = _doctorMapper.MapFromNewResVM(res).Result; 
                 // DB Logic
                 if (res.ResID == 0)
                 {
+                    doctorReservationManager.AddDoctorReservation(NewDoctorReservation);
                     TempData["Added"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")} is added";
                 }
                 else
                 {
+                    doctorReservationManager.EditDoctorReservation(NewDoctorReservation);
                     TempData["Updated"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} has been updated to be from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")}";
                 }
             }

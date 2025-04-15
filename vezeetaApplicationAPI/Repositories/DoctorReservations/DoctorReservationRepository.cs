@@ -30,7 +30,7 @@ namespace DAL.Repositories.DoctorReservations
         {
             var res = await context.DoctorReservations.Include(x => x.Doctor).ThenInclude(x => x!.Specialty)
                     .Include(x => x.Appointments).Where(x=>x.ID== id).FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res!=null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }

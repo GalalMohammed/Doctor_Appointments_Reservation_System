@@ -5,6 +5,8 @@ using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
 using DAL.Enums;
 using MVC.ViewModels;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Mappers
@@ -84,7 +86,7 @@ namespace MVC.Mappers
                 Image = doctor.ImageURL,
                 Qualifications = string.Empty,
                 Fees = (int)doctor.Fees, // remember to change it to double
-                Speciality = (await _specialtyManager.GetSpecialtyById(doctor.SpecialtyID)).Name,
+                Speciality = doctor.Specialty.Name,//(await _specialtyManager.GetSpecialtyById(doctor.SpecialtyID)).Name,
                 Rating = avgRating,
                 WaitingTime = doctor.WaitingTime,
                 Governorate = doctor.Governorate, // add to database
@@ -123,7 +125,7 @@ namespace MVC.Mappers
                 Image = doctor.ImageURL,
                 Qualifications = string.Empty,
                 Fees = (int)doctor.Fees, // remember to change it to double
-                Speciality = (await _specialtyManager.GetSpecialtyById(doctor.SpecialtyID)).Name,
+                Speciality = doctor.Specialty.Name, //(await _specialtyManager.GetSpecialtyById(doctor.SpecialtyID)).Name,
                 Rating = avgRating,
                 WaitingTime = doctor.WaitingTime, // remember to change it or remove it
                 Governorate = doctor.Governorate, // remember to change it or remove it
@@ -164,6 +166,32 @@ namespace MVC.Mappers
                 Date = DateTime.Parse(rating.Date),
                 DoctorID = rating.DocID
             };
+        }
+        public NewResVM MapToNewResVM(DoctorReservation doctorReservation)
+        {
+            return new NewResVM()
+            {
+                ResID = doctorReservation.ID,
+                ID = doctorReservation.DoctorID,
+                Date = doctorReservation.StartTime.Date,
+                StartTime = doctorReservation.StartTime.TimeOfDay,
+                EndTime = doctorReservation.EndTime.TimeOfDay,
+                MaxRes = doctorReservation.MaxReservation
+            };
+        }
+        public async Task<DoctorReservation> MapFromNewResVM(NewResVM newRes)
+        {
+            var res = await _doctorReservationManager.GetDoctorReservationByID(newRes.ResID);
+            if (res == null)
+            {
+                res = new DoctorReservation();
+            }
+            res.ID = newRes.ResID;
+            res.DoctorID = newRes.ID;
+            res.MaxReservation = newRes.MaxRes;
+            res.StartTime = newRes.Date.Date.Add(newRes.StartTime);
+            res.EndTime = newRes.Date.Date.Add(newRes.EndTime);
+            return res;
         }
         public Doctor MapToDoctorFromRegister(DoctorRegisterViewModel doctorRegisterVM)
             => new Doctor()
@@ -222,5 +250,7 @@ namespace MVC.Mappers
                 Specialty = doctor.Specialty.Name,
                 WaitingTime = doctor.WaitingTime,
             };
+       
     }
+
 }

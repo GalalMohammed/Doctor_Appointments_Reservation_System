@@ -179,6 +179,8 @@ namespace MVC.Controllers
                 // DB Logic
                 if (res.ResID == 0)
                 {
+                    NewDoctorReservation.StartTime = startTime.AddDays(1);
+                    NewDoctorReservation.EndTime = endTime.AddDays(1);
                     doctorReservationManager.AddDoctorReservation(NewDoctorReservation);
                     TempData["Added"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")} is added";
                 }

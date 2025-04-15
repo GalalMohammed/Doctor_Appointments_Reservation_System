@@ -1,14 +1,14 @@
 ﻿paypal.Buttons({
     async createOrder() {
         //const value = document.getElementById("amount").value;
-        const value = document.getElementById("reservationId").value;
+        //const value = document.getElementById("reservationId").value;
         const response = await fetch("/Payment/CreateOrder", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                reservationId: value,
+                reservationId: ResId,
             })
         });
 
@@ -44,11 +44,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             `;
-            const reservationId = document.getElementById("reservationId").value;
+            //const reservationId = document.getElementById("reservationId").value;
             const patientId = $c.displayCookie("currentId");
             // Redirect to success page
             setTimeout(() => {
-                window.location.href = `/patient/add-appointment?reservationId=${reservationId}&patientId=${patientId}`;
+                window.location.href = `/patient/add-appointment?reservationId=${ResId}&patientId=${patientId}`;
             }, 2000);
         } else {
             document.getElementById("notification-container").innerHTML = `

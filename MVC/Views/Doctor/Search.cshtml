@@ -195,7 +195,55 @@
 </div>
 
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered bg-opacity-10" style="width:fit-content">
+        <div class="modal-content bg-opacity-10">
+
+            <div class="modal-body bg-opacity-10 p-0" style="width:fit-content">
+                <div class="p-4 bg-white position-relative   rounded border shadow mx-auto" style="width: fit-content;">
+
+                    <article class=" text-center">
+                        <h1 class="display-4 text-center mb-5">Payment</h1>
+                        <p>Pay with PayPal</p>
+                        <div class="form-group mb-3">
+                            @* <label for="amount" class="form-label">Amount</label> *@
+                            @* <input type="number" class="form-control" id="amount" placeholder="Enter amount" value="@ViewBag.amount" step="0.01" min="0" required/> *@
+                        </div>
+                        <div id="notification-container"></div>
+                        <div id="paypal-button-container"></div>
+                    </article>
+
+                    <div class=" position-absolute top-0 end-0 m-2">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
 @section Scripts {
+
+    <script>
+        let ResId;
+        function ShowModal(resId){
+            ResId = resId;
+            const myModal = new bootstrap.Modal(document.getElementById('exampleModal')).show();
+        }
+
+    </script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AdimxsSnXMRj-2tEF5tUCV58FWwGIkcm-vUxSzChwOH8Ez1dnNNKkfqm9YyRU6ZKgf4ifzcGVN4wlt41&currency=USD"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/cookie.js"></script>
+   <script src="~/js/payment.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

@@ -1,17 +1,17 @@
-﻿using BLLServices.Payment;
-using BLLServices.Payment.DTOs;
-using BLLServices.Common.PaymentService;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Nodes;
+﻿using BLLServices.Common.PaymentService;
+using BLLServices.Common.ReCaptchaService;
 using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.OrderManager;
+using BLLServices.Payment;
+using BLLServices.Payment.DTOs;
 using DAL.Models;
-using BLLServices.Managers.AppointmentManager;
-using vezeetaApplicationAPI.Models;
-using BLLServices.Common.ReCaptchaService;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Nodes;
 
 namespace MVC.Controllers
 {
+    [Authorize(Roles = "patient")]
     public class PaymentController(PayPalClient client, IPaymentService paymentService, IDoctorReservationManager reservationManager, IOrderManager orderManager, ReCaptchaService reCaptcha) : Controller
     {
         [AcceptVerbs("GET", "POST")]
@@ -28,7 +28,7 @@ namespace MVC.Controllers
             ViewBag.ClientId = client.ClientId;
             ViewBag.amount = 100;
             return View();
-            
+
         }
 
         [HttpPost]
@@ -37,9 +37,9 @@ namespace MVC.Controllers
             // Validate the incoming JSON object
             if (!data.ContainsKey("reservationId") || data["reservationId"] == null || int.TryParse(data["reservationId"]!.ToString(), out int reservationId) == false)
                 return Json(new { error = "Invalid reservationId" });
-            
+
             var IsParsed = int.TryParse(User.FindFirst("currentId")?.Value, out int patientId);
-            
+
 
             Order? trackedOrder = orderManager.GetOrder(patientId, reservationId);
             if (trackedOrder != null && trackedOrder.Status)
@@ -63,8 +63,8 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CaptureOrder([FromBody]JsonObject orderId)
-{
+        public async Task<JsonResult> CaptureOrder([FromBody] JsonObject orderId)
+        {
             // Validate the incoming JSON object
             if (!orderId.ContainsKey("orderID") || orderId["orderID"] == null || orderId["orderID"]!.ToString() == null)
                 return Json(new { error = "Invalid order ID" });
@@ -85,6 +85,20 @@ namespace MVC.Controllers
             else
                 // Handle failed capture
                 return Json(new { success = false, error = "Failed to capture order", status = captureResponse.Status });
+        }
+        [HttpPost]
+        public async Task<JsonResult> IsBooked([FromBody] JsonObject data)
+        {
+            if (!data.ContainsKey("reservationId") || data["reservationId"] == null)
+                return Json(new { error = "Invalid order ID" });
+            if (int.TryParse(data["reservationId"].ToString(), out int resId))
+            {
+                var order = orderManager.GetOrder(int.Parse(User.FindFirst("currentId").Value), resId);
+                if (order == null || !order.Status)
+                    return Json(new { success = true });
+                return Json(new { success = false });
+            }
+            return Json(new { success = false });
         }
         [HttpPost("checkout")]
         [ValidateAntiForgeryToken]

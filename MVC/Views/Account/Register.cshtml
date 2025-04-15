@@ -7,106 +7,112 @@
     string siteKey = Configuration["ReCaptchaSettings:SiteKey"] ?? string.Empty;
 }
 
-<div class="register-div rounded-4 shadow-sm position-absolute top-50 start-50 translate-middle d-flex justify-content-between align-items-center">
-    <div class="register-welcome h-100 px-5 py-3 text-white text-center rounded-4 d-none d-md-flex flex-column justify-content-center align-items-center">
-        <h3>Create Your Account</h3>
-        <p class="py-2">Join us today! Create your account in just a few steps</p>
-        <a asp-controller="Account" asp-action="Login" class="login-register-button text-white rounded-5 px-4 py-3">Already have an account? Login Here</a>
+<div class="min-vh-100 position-relative d-flex flex-column justify-content-center align-items-center" style="padding-top: 70px">
+    <div class="register-div rounded-4 shadow-sm d-flex justify-content-center gap-4">
+        <div class="register-welcome px-5 py-3 text-white text-center rounded-4 d-none d-md-flex flex-column justify-content-center align-items-center">
+            <h3>Create Your Account</h3>
+            <p class="py-2">Join us today! Create your account in just a few steps</p>
+            <a asp-controller="Account" asp-action="Login" class="login-register-button text-white rounded-5 px-4 py-3">Already have an account? Login Here</a>
+        </div>
+        <form method="post" id="register-steps" class="register-form px-5 py-4 d-flex">
+            <div id="register-step-1" class="d-flex form-container py-1 w-100 flex-column justify-content-around gap-3">
+                <div>
+                    <h4>Account Information</h4>
+                    <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
+                </div>
+                <div class="register-input-group d-flex flex-column justify-content-between gap-4">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label asp-for="FirstName" class="my-1"></label>
+                            <span class="text-danger"> *</span>
+                            <input asp-for="FirstName" class="login-form-input rounded-1" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label asp-for="LastName" class="my-1"></label>
+                            <span class="text-danger"> *</span>
+                            <input asp-for="LastName" class="login-form-input rounded-1" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label class="form-label SP-primaryText" asp-for="Password"></label>
+                            <span class="text-danger"> *</span>
+                            <div class="input-group">
+                                <input asp-for="Password" class="login-pass form-control" type="password">
+                                <button type="button" class="btn SP-toggle-password" data-target="#Password">
+                                    <i class="fa-solid fa-eye eye-icon"></i>
+                                </button>
+                            </div>
+                            <span class="text-danger" asp-validation-for="Password"></span>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label class="form-label SP-primaryText" asp-for="ConfirmPassword"></label>
+                            <span class="text-danger"> *</span>
+                            <div class="input-group">
+                                <input asp-for="ConfirmPassword" class="login-pass form-control" type="password">
+                                <button type="button" class="btn SP-toggle-password" data-target="#ConfirmPassword">
+                                    <i class="fa-solid fa-eye eye-icon"></i>
+                                </button>
+                            </div>
+                            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                        </div>
+                    </div>
+                </div>
+                <span id="register-next" class="btn login-submit w-25 align-self-end">Next</span>
+            </div>
+            <div id="register-step-2" class="d-none form-container py-1 w-100 flex-column justify-content-around gap-3">
+                <div>
+                    <h4>Contact & Personal Details</h4>
+                    <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
+                </div>
+                <div class="register-input-group d-flex flex-column justify-content-between gap-4">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label asp-for="Email" class="my-1"></label>
+                            <span class="text-danger"> *</span>
+                            <input asp-for="Email" class="login-form-input rounded-1" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label asp-for="PhoneNumber" class="my-1"></label>
+                            <span class="text-danger"> *</span>
+                            <input asp-for="PhoneNumber" class="login-form-input rounded-1" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <label asp-for="Governorate" class="my-1"></label>
+                            <span class="text-danger"> *</span>
+                            <select id="Governorate" asp-for="Governorate" asp-items="@Html.GetEnumSelectList<Governorate>()" class="form-select"></select>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label asp-for="BirthDate" class="my-1"></label>
+                            <span class="text-danger"> *</span>
+                            <input asp-for="BirthDate" class="login-form-input rounded-1" type="date" />
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <button id="register-back" class="btn login-submit w-25">Back</button>
+                    <button id="login-submit"
+                            class="g-recaptcha btn register-submit"
+                            data-sitekey="@siteKey"
+                            data-callback='onSubmit'
+                            data-action='submit'>
+                        Register
+                    </button>
+                </div>
+            </div>
+        </form>
+        <p class="login-register-sm d-block d-md-none text-center">
+            Already have and account?
+            <a asp-controller="account" asp-action="Login"> Login Here</a>
+        </p>
     </div>
-    <form method="post" id="register-steps" class="register-form h-100 px-5 py-4 d-flex">
-        <div id="register-step-1" class="d-flex form-container py-1 w-100 flex-column justify-content-around">
-            <div>
-                <h4>Account Information</h4>
-                <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
-            </div>
-            <div class="register-input-group d-flex flex-column justify-content-between">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <label asp-for="FirstName" class="my-1"></label>
-                        <span class="text-danger"> *</span>
-                        <input asp-for="FirstName" class="login-form-input rounded-1" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label asp-for="LastName" class="my-1"></label>
-                        <span class="text-danger"> *</span>
-                        <input asp-for="LastName" class="login-form-input rounded-1" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <label class="form-label SP-primaryText" asp-for="Password"></label>
-                        <span class="text-danger"> *</span>
-                        <div class="input-group">
-                            <input asp-for="Password" class="login-pass form-control" type="password">
-                            <button type="button" class="btn SP-toggle-password" data-target="#Password">
-                                <i class="fa-solid fa-eye eye-icon"></i>
-                            </button>
-                        </div>
-                        <span class="text-danger" asp-validation-for="Password"></span>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label class="form-label SP-primaryText" asp-for="ConfirmPassword"></label>
-                        <span class="text-danger"> *</span>
-                        <div class="input-group">
-                            <input asp-for="ConfirmPassword" class="login-pass form-control" type="password">
-                            <button type="button" class="btn SP-toggle-password" data-target="#ConfirmPassword">
-                                <i class="fa-solid fa-eye eye-icon"></i>
-                            </button>
-                        </div>
-                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
-                    </div>
-                </div>
-            </div>
-            <span id="register-next" class="btn login-submit w-25 align-self-end">Next</span>
-        </div>
-        <div id="register-step-2" class="d-none form-container py-1 w-100 flex-column justify-content-around">
-            <div>
-                <h4>Contact & Personal Details</h4>
-                <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
-            </div>
-            <div class="register-input-group d-flex flex-column justify-content-between">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <label asp-for="Email" class="my-1"></label>
-                        <span class="text-danger"> *</span>
-                        <input asp-for="Email" class="login-form-input rounded-1" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label asp-for="PhoneNumber" class="my-1"></label>
-                        <span class="text-danger"> *</span>
-                        <input asp-for="PhoneNumber" class="login-form-input rounded-1" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <label asp-for="Governorate" class="my-1"></label>
-                        <span class="text-danger"> *</span>
-                        <select id="Governorate" asp-for="Governorate" asp-items="@Html.GetEnumSelectList<Governorate>()" class="form-select"></select>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <label asp-for="BirthDate" class="my-1"></label>
-                        <span class="text-danger"> *</span>
-                        <input asp-for="BirthDate" class="login-form-input rounded-1" type="date" />
-                        <span asp-validation-for="BirthDate" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <button id="register-back" class="btn login-submit w-25">Back</button>
-                <button id="login-submit"
-                        class="g-recaptcha btn register-submit"
-                        data-sitekey="@siteKey"
-                        data-callback='onSubmit'
-                        data-action='submit'>
-                    Register
-                </button>
-            </div>
-        </div>
-    </form>
 </div>
 
 @section Scripts {

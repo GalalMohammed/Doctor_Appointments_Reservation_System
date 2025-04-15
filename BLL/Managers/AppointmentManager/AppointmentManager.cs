@@ -1,10 +1,6 @@
-﻿using DAL.Repositories.Appointments;
+﻿using BLLServices.Enums;
+using DAL.Repositories.Appointments;
 using DAL.Repositories.DoctorReservations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.AppointmentManager
@@ -20,24 +16,23 @@ namespace BLLServices.Managers.AppointmentManager
                 return false;
             return true;
         }
-        public async Task AddAppointment(int patientId, int doctorReservationId)
+        public async Task<AppointmentCreationStatus> AddAppointment(int patientId, int doctorReservationId)
         {
             if (!await IsReservationFull(doctorReservationId))
             {
                 IEnumerable<Appointment> alreadyReserved = await appointmentRepository.GetAllByConditon(app => app.DoctorReservationID == doctorReservationId && app.PatientId == patientId);
                 if (alreadyReserved.Any())
-                    throw new Exception("You already have an appointment in this slot");
+                    return AppointmentCreationStatus.AlreadyReserved;
                 Appointment appointment = new()
                 {
                     PatientId = patientId,
                     DoctorReservationID = doctorReservationId
                 };
                 appointmentRepository.Add(appointment);
+                return AppointmentCreationStatus.Succeeded;
             }
             else
-            {
-                throw new Exception("No available slots");
-            }
+                return AppointmentCreationStatus.MaxReservationsExceeded;
         }
 
         public async Task DeleteAppointmentAsync(int appointmentId)
@@ -61,15 +56,20 @@ namespace BLLServices.Managers.AppointmentManager
             if (specialtyName != null)
                 appointments = await appointmentRepository.GetAllByConditon(r => r.PatientId == patientId && r != null && r.DoctorReservation != null && r.DoctorReservation.Doctor != null && r.DoctorReservation.Doctor.Specialty != null && r.DoctorReservation.Doctor.Specialty.Name == specialtyName && r.DoctorReservation.StartTime >= DateTime.Now);
             else
-                appointments = await appointmentRepository.GetAllByConditon( r => r.PatientId == patientId && r.DoctorReservation != null && r.DoctorReservation.StartTime >= DateTime.Now);
+                appointments = await appointmentRepository.GetAllByConditon(r => r.PatientId == patientId && r.DoctorReservation != null && r.DoctorReservation.StartTime >= DateTime.Now);
             if (doctorName != null)
-                appointments = appointments.Where(r => r != null && r.DoctorReservation != null && r.DoctorReservation.Doctor != null && ($"{r.DoctorReservation.Doctor.FirstName} {r.DoctorReservation.Doctor.LastName}".StartsWith(doctorName, StringComparison.OrdinalIgnoreCase) || (r.DoctorReservation.Doctor.FirstName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase)) || (r.DoctorReservation.Doctor.LastName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase))));
-            return [..appointments];
+                appointments = appointments.Where(r => r != null && r.DoctorReservation != null && r.DoctorReservation.Doctor != null && ($"{r.DoctorReservation.Doctor.FirstName} {r.DoctorReservation.Doctor.LastName}".StartsWith(doctorName, StringComparison.OrdinalIgnoreCase) || r.DoctorReservation.Doctor.FirstName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase) || r.DoctorReservation.Doctor.LastName.StartsWith(doctorName, StringComparison.OrdinalIgnoreCase)));
+            return [.. appointments];
         }
 
-        public async Task<int> GetAppointmentsCountByDate(int doctorID,DateTime? date)
+        public async Task<int> GetAppointmentsCountByDate(int doctorID, DateTime? date)
         {
             return await appointmentRepository.GetCountByDate(doctorID, date);
+        }
+        public async Task<int> GetReservationId(int appointmentId)
+        {
+            var appointment = await appointmentRepository.GetByID(appointmentId);
+            return appointment.DoctorReservationID;
         }
     }
 }

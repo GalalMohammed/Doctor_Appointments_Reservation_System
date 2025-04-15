@@ -57,19 +57,29 @@
         return details;
     },
     onError(err) {
-        console.error(err);
-        document.getElementById("notification-container").innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>An Error Occured! Please retry later.</strong> ${err.message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
+        //console.error(err);
+        if (err.message === "Expected an order id to be passed") {
+            Swal.fire({
+                title: "Info",
+                text: "You have already reserved in this slot!",
+                color: "#004085",
+                confirmButtonColor: "#004085",
+                icon: "info"
+            }).then(() => document.querySelector('#exampleModal button').click());
+        }
+        else
+            document.getElementById("notification-container").innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>An Error Occurred! Please retry later.</strong> ${err.message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
     },
     onCancel(data) {
-        alert('Transaction was cancelled.');
+        //alert('Transaction was cancelled.');
         document.getElementById("notification-container").innerHTML = `
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Transaction Cancelled!</strong> Please retry later.
+                <strong>Transaction Canceled!</strong> Please retry later.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         `;

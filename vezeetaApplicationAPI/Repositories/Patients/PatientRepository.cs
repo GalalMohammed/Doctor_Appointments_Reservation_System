@@ -1,10 +1,5 @@
 ﻿using DAL.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
 
@@ -28,7 +23,7 @@ namespace DAL.Repositories.Patients
         public override async Task<Patient> GetByID(int id, bool WithAsNoTracking = true)
         {
             var res = await context.Patients.Include(p => p.AppUser)
-                .Include(p => p.Appointments).Where(p => p.ID == id).FirstOrDefaultAsync();
+                .Include(p => p.Appointments).ThenInclude(a => a.DoctorReservation).ThenInclude(d => d.Doctor).ThenInclude(d => d.Specialty).Where(p => p.ID == id).FirstOrDefaultAsync();
             if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;

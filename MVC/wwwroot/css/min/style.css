@@ -711,7 +711,6 @@ body {
 
 .login-div {
     width: 750px;
-    height: 500px;
     border: 1px solid var(--secondary-color);
 }
 
@@ -732,11 +731,6 @@ body {
     background-color: white;
 }
 
-.login-register-sm {
-    transform: translateY(510px);
-    padding-top: 40px;
-}
-
 .login-register-sm > a {
     text-decoration: none;
     color: var(--primary-color);
@@ -745,7 +739,6 @@ body {
 @media(max-width: 768px) {
     .login-div {
         width: 80%;
-        height: 450px;
         border: none;
         box-shadow: none !important;
     }
@@ -825,10 +818,6 @@ body {
     top: 60%;
     left: 0;
     z-index: -1;
-}
-
-.input-div {
-    height: 150px;
 }
 
 #validation-summary > ul {
@@ -1020,7 +1009,7 @@ input[readonly='readonly'] {
 
 .register-div {
     width: 770px;
-    height: 520px;
+    height: 480px;
     border: 1px solid var(--secondary-color);
 }
 
@@ -1043,7 +1032,7 @@ input[readonly='readonly'] {
 @media(max-width: 768px) {
     .register-div {
         display: block !important;
-        width: 80%;
+        width: 90%;
         border: none;
         box-shadow: none !important;
     }
@@ -1066,10 +1055,6 @@ input[readonly='readonly'] {
 .validation-summary > ul {
     list-style: none;
     padding: 0;
-}
-
-.register-input-group {
-    height: 45%;
 }
 
 .register-submit {

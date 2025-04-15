@@ -1,6 +1,6 @@
 ﻿.register-div {
     width: 770px;
-    height: 520px;
+    height: 480px;
     border: 1px solid var(--secondary-color);
 }
 
@@ -23,7 +23,7 @@
 @media(max-width: 768px) {
     .register-div {
         display: block !important;
-        width: 80%;
+        width: 90%;
         border: none;
         box-shadow: none !important;
     }
@@ -46,10 +46,6 @@
 .validation-summary > ul {
     list-style: none;
     padding: 0;
-}
-
-.register-input-group {
-    height: 45%;
 }
 
 .register-submit {

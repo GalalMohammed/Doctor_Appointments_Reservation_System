@@ -41,8 +41,8 @@
             </div>
             @if (!User.IsInRole("doctor"))
             {
-                @* <a onclick asp-route-id="@app.ResID" class="card-footer btn @(app.Time == null || app.IsAvailable ? "disabled" : "")  SP-bookBTN p-1">Book</a> *@
-                <button onclick="ShowModal(@app.ResID)"  class="card-footer btn @(app.Time == null || app.IsAvailable ? "disabled" : "")  SP-bookBTN p-1">Book</button>
+                @* <a onclick asp-route-id="@app.ResID" class="card-footer btn @(app.Time == null || app.IsAvailable ? "" : "disabled")  SP-bookBTN p-1">Book</a> *@
+                <button onclick="ShowModal(@app.ResID)" class="card-footer btn @(app.Time == null || app.IsAvailable ? "" : "disabled")  SP-bookBTN p-1">Book</button>
             }
             else
             {

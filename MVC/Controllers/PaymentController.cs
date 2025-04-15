@@ -11,7 +11,7 @@ using vezeetaApplicationAPI.Models;
 
 namespace MVC.Controllers
 {
-    public class PaymentController(PayPalClient client, IPaymentService paymentService, IDoctorReservationManager reservationManager, IOrderManager orderManager, IAppointmentManager appointmentManager) : Controller
+    public class PaymentController(PayPalClient client, IPaymentService paymentService, IDoctorReservationManager reservationManager, IOrderManager orderManager) : Controller
     {
         public IActionResult Index()
         {
@@ -41,14 +41,10 @@ namespace MVC.Controllers
             int amount = (await reservationManager.GetDoctorReservationByID(reservationId)).Doctor?.Fees ?? throw new Exception("Doctor Navigation Property is null");
             //Create an order using the PayPal client
             CreateOrderResponse order = await client.CreateOrder(amount.ToString());
-            
-            
-            //TODO: create order here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            
             if (order == null)
-            {
                 return Json(new { error = "Failed to create order" });
-            }
+            // Create a new order in the database
+            orderManager.AddOrder(order.Id, patientId, reservationId);
             //Return the order ID and approval URL
             return Json(new
             {
@@ -70,10 +66,12 @@ namespace MVC.Controllers
             if (captureResponse.Status == "COMPLETED")
             {
                 // Handle successful capture
-                //Order trackedOrder = orderManager.GetOrderById(int.Parse(orderIdValue))
-                //    ?? throw new Exception("Order not found");
-                //orderManager.MarkAsPaid(int.Parse(User.FindFirst("currentId")?.Value ?? "0"), trackedOrder.DoctorReservationId);
-                return Json(new { success = true, captureId = captureResponse.Id, status = captureResponse.Status });
+                Order trackedOrder = orderManager.GetOrderById(orderIdValue)
+                    ?? throw new Exception("Order not found");
+                if (!int.TryParse(User.FindFirst("currentId")?.Value, out int patientId))
+                    return Json(new { error = "Invalid patient ID" });
+                orderManager.MarkAsPaid(patientId, trackedOrder.DoctorReservationId);
+                return Json(new { success = true, captureId = captureResponse.Id, status = captureResponse.Status, patientId });
             }
             else
                 // Handle failed capture

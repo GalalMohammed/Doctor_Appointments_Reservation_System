@@ -35,7 +35,7 @@ namespace BLLServices.Managers.SpecialtyManager
         {
             _specialtyRepository.Delete(specialty);
         }
-        public Task<ICollection<Doctor>?> GetSpecialtyDoctors(int id)
+        public Task<ICollection<Doctor>> GetSpecialtyDoctors(int id)
         {
             return _specialtyRepository.GetSpecialtyDoctors(id);
         }

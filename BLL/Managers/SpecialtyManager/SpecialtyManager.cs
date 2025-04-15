@@ -21,7 +21,7 @@ namespace BLLServices.Managers.SpecialtyManager
         }
         public Task<Specialty> GetSpecialtyById(int id)
         {
-            return _specialtyRepository.GetByID(id);
+            return _specialtyRepository.GetByID(id).;
         }
         public void AddSpecialty(Specialty specialty)
         {
@@ -35,7 +35,7 @@ namespace BLLServices.Managers.SpecialtyManager
         {
             _specialtyRepository.Delete(specialty);
         }
-        public Task<ICollection<Doctor>> GetSpecialtyDoctors(int id)
+        public Task<ICollection<Doctor>?> GetSpecialtyDoctors(int id)
         {
             return _specialtyRepository.GetSpecialtyDoctors(id);
         }

@@ -1,5 +1,6 @@
 using BLLServices.Common.EmailService;
 using BLLServices.Common.PaymentService;
+using BLLServices.Common.ReCaptchaService;
 using BLLServices.Common.UploadService;
 using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
@@ -58,6 +59,12 @@ namespace MVC
             builder.Services.AddScoped<IAppointmentManager, AppointmentManager>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
             builder.Services.AddScoped<HomeMapper, HomeMapper>();
+            builder.Services.AddScoped<ReCaptchaService, ReCaptchaService>(provider =>
+            {
+                string secretKey = builder.Configuration["ReCaptchaSettings:SecretKey"] ?? throw new Exception("SecretKey is not set");
+                string verificationUrl = builder.Configuration["ReCaptchaSettings:ApiUrl"] ?? throw new Exception("VerificationUrl is not set");
+                return new ReCaptchaService(secretKey, verificationUrl);
+            });
 
             #region Common Services
             builder.Services.AddScoped<IEmailService, EmailService>();

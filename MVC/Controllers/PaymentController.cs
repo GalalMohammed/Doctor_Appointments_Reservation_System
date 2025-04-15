@@ -8,14 +8,23 @@ using BLLServices.Managers.OrderManager;
 using DAL.Models;
 using BLLServices.Managers.AppointmentManager;
 using vezeetaApplicationAPI.Models;
+using BLLServices.Common.ReCaptchaService;
 
 namespace MVC.Controllers
 {
-    public class PaymentController(PayPalClient client, IPaymentService paymentService, IDoctorReservationManager reservationManager, IOrderManager orderManager) : Controller
+    public class PaymentController(PayPalClient client, IPaymentService paymentService, IDoctorReservationManager reservationManager, IOrderManager orderManager, ReCaptchaService reCaptcha) : Controller
     {
-        public IActionResult Index()
+        [AcceptVerbs("GET", "POST")]
+        public async Task<IActionResult> Index()
         {
-            
+            if (Request.Method == "POST")
+            {
+                // Handle the form submission here
+                string googleReCaptchaResponse = Request.Form["g-recaptcha-response"].ToString();
+                // Verify the token
+                bool isValidCaptcha = await reCaptcha.ValidateReCaptcha(googleReCaptchaResponse);
+            }
+
             ViewBag.ClientId = client.ClientId;
             ViewBag.amount = 100;
             return View();

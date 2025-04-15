@@ -31,7 +31,7 @@ namespace DAL.Repositories.Doctors
             var res = await context.Doctors.Include(d => d.Specialty).Include(d => d.AppUser)
                     .Include(d => d.DoctorReservations).Include(d => d.Reviews)
                     .Where(d => d.ID == id).FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }
@@ -42,16 +42,19 @@ namespace DAL.Repositories.Doctors
         {
             if (WithAsNoTracking)
             {
-                var res = context.Doctors.Include(d => d.AppUser).AsNoTracking().Where(condition).Skip(pageNum * pageSize).Take(pageSize);
+                var res = context.Doctors.Include(d => d.AppUser).Include(d => d.Specialty).Include(d => d.DoctorReservations)
+                    .Include(d => d.Reviews).AsNoTracking().Where(condition).Skip(pageNum * pageSize).Take(pageSize);
                 return res.ToList();
             }
-            return context.Doctors.Where(condition).Skip(pageNum * pageSize).Take(pageSize).ToList();
+            return context.Doctors.Include(d => d.AppUser).Include(d => d.Specialty).Include(d => d.DoctorReservations)
+                    .Include(d => d.Reviews).Where(condition).Skip(pageNum * pageSize).Take(pageSize).ToList();
 
         }
 
         public async Task<int> GetFilteredByConditonCount(Expression<Func<Doctor, bool>> condition)
         {
-            return context.Doctors.Include(d => d.AppUser).Where(condition).Count();
+            return context.Doctors.Include(d => d.AppUser).Include(d => d.Specialty)
+                .Include(d => d.DoctorReservations).Include(d => d.Reviews).Where(condition).Count();
         }
 
 

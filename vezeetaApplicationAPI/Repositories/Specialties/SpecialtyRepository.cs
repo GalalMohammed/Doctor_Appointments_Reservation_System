@@ -28,7 +28,7 @@ namespace DAL.Repositories.Specialties
         {
             var res = await context.Specialties.Include(s => s.Doctors).Where(s => s.ID == id)
                 .FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }
@@ -38,7 +38,7 @@ namespace DAL.Repositories.Specialties
         {
             var res = await context.Specialties.Include(s => s.Doctors).Where(s => s.Name == name)
                 .FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }

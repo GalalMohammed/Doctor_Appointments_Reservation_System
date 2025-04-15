@@ -29,7 +29,7 @@ namespace DAL.Repositories.Patients
         {
             var res = await context.Patients.Include(p => p.AppUser)
                 .Include(p => p.Appointments).Where(p => p.ID == id).FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }

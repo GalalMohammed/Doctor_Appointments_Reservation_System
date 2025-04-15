@@ -1,6 +1,6 @@
 ﻿let gender = document.getElementById("Gender")
 let governorate = document.getElementById("Governorate").firstElementChild.remove();
-if (gender.localName == null)
+if (gender != null)
     gender.firstElementChild.remove();
 if (governorate != null)
     governorate.firstElementChild.remove();
@@ -32,6 +32,8 @@ pickLocationButton.onclick = function () {
     navigator.geolocation.getCurrentPosition((position) => {
         lngInput.value = position.coords.longitude;
         latInput.value = position.coords.latitude;
+
+        console.log(position.coords);
 
         userMarker.setLatLng([latInput.value, lngInput.value]).openPopup();
 

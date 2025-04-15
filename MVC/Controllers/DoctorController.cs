@@ -38,6 +38,7 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult Profile(int? ID, int pageNum = 0, int pageSize = 10, string? tab = "details")
         {
+            ViewBag.ID = ID == null || ID == int.Parse(User.FindFirst("currentId").Value);
             if (ID == null) ID = int.Parse(User.FindFirst("currentId").Value);
             var doctor = _doctorManager.GetDoctorByID(ID.Value).Result;
             if (doctor == null) return NotFound();
@@ -174,10 +175,12 @@ namespace MVC.Controllers
             {
                 var startTime = res.Date.Date.Add(res.StartTime);
                 var endTime = res.Date.Date.Add(res.EndTime);
-                var NewDoctorReservation = _doctorMapper.MapFromNewResVM(res).Result; 
+                var NewDoctorReservation = _doctorMapper.MapFromNewResVM(res).Result;
                 // DB Logic
                 if (res.ResID == 0)
                 {
+                    NewDoctorReservation.StartTime = startTime.AddDays(1);
+                    NewDoctorReservation.EndTime = endTime.AddDays(1);
                     doctorReservationManager.AddDoctorReservation(NewDoctorReservation);
                     TempData["Added"] = $"Reservation on {res.Date.ToString("dddd, dd MMMM yyyy")} from {startTime.ToString("hh:mm tt")} to {endTime.ToString("hh:mm tt")} is added";
                 }

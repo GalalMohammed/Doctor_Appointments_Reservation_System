@@ -231,17 +231,16 @@
 
 
 @section Scripts {
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let ResId;
         function ShowModal(resId){
             ResId = resId;
             const myModal = new bootstrap.Modal(document.getElementById('exampleModal')).show();
+            document.getElementById("notification-container").innerHTML = "";
         }
-
     </script>
     <script src="https://www.paypal.com/sdk/js?client-id=AdimxsSnXMRj-2tEF5tUCV58FWwGIkcm-vUxSzChwOH8Ez1dnNNKkfqm9YyRU6ZKgf4ifzcGVN4wlt41&currency=USD"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/cookie.js"></script>
    <script src="~/js/payment.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>

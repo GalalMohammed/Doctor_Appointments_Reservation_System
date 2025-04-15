@@ -37,7 +37,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -107,9 +107,9 @@ namespace MVC
                 app.UseExceptionHandler("/Home/Error");
             else
             {
-                //app.UseMiddleware<CustomExceptionHandler>();
-                //app.UseStatusCodePagesWithReExecute("/Error");
-                app.UseDeveloperExceptionPage();
+                app.UseMiddleware<CustomExceptionHandler>();
+                app.UseStatusCodePagesWithReExecute("/Error");
+                //app.UseDeveloperExceptionPage();
             }
             // Middleware Configuration
             app.MapStaticAssets();

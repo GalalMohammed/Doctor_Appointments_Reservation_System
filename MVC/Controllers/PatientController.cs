@@ -57,14 +57,16 @@ namespace MVC.Controllers
                 ViewBag.OrderSucceeded = true;
             }
             var patient = await patientManager.GetPatientInfo(patientId);
-            if (ViewBag.OrderSucceeded != true)
-                return View("Profile", patientMapper.MapToPatientViewModel(patient));
-            ViewBag.OrderSucceeded = false;
-            orderManager.DeleteOrder(patientId, doctorReservationId);
-            return View("Profile", patient);
+            if (!ViewBag.OrderSucceeded)
+            {
+                orderManager.DeleteOrder(patientId, doctorReservationId);
+                ViewBag.OrderSucceeded = false;
+            }
+            return View("Profile", patientMapper.MapToPatientViewModel(patient));
         }
         public async Task<IActionResult> CancelAppointment(int appointmentId)
         {
+            orderManager.DeleteOrder(int.Parse(User.FindFirst("currentId").Value), await appointmentManager.GetReservationId(appointmentId));
             await appointmentManager.DeleteAppointmentAsync(appointmentId);
             return RedirectToAction("Profile");
         }

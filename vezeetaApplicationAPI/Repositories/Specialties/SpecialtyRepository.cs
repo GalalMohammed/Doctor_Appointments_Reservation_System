@@ -47,7 +47,7 @@ namespace DAL.Repositories.Specialties
         public async Task<ICollection<Doctor>> GetSpecialtyDoctors(int specialtyId)
         {
             Specialty specialty = await GetByID(specialtyId);
-            return specialty.Doctors;
+            return specialty?.Doctors;
         }
 
     }

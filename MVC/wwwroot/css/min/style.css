@@ -547,6 +547,8 @@ body {
 
 .home .services .card {
     --bg-icon-opacity: 0.025;
+
+    height :100%
 }
 
 

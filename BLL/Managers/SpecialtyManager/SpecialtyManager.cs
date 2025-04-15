@@ -21,7 +21,7 @@ namespace BLLServices.Managers.SpecialtyManager
         }
         public Task<Specialty> GetSpecialtyById(int id)
         {
-            return _specialtyRepository.GetByID(id).;
+            return _specialtyRepository.GetByID(id);
         }
         public void AddSpecialty(Specialty specialty)
         {

@@ -18,7 +18,7 @@ namespace MVC.Mappers
         {
             throw new NotImplementedException();
         }
-        public async HomeVM MapToHomeVM()
+        public async Task<HomeVM> MapToHomeVM()
         {
             return new HomeVM()
             {
@@ -36,14 +36,16 @@ namespace MVC.Mappers
                 }).ToList(),
                 DoctorsPerSpecialtyConunt = new()
                 {
-                    { 0,  _specialtyManager.GetSpecialtyDoctors(0).Result.Count},
-                    { 1,  _specialtyManager.GetSpecialtyDoctors(1).Result.Count},
-                    { 2,  _specialtyManager.GetSpecialtyDoctors(2).Result.Count},
-                    { 3,  _specialtyManager.GetSpecialtyDoctors(3).Result.Count},
-                    { 4,  _specialtyManager.GetSpecialtyDoctors(4).Result.Count},
-                    { 5,  _specialtyManager.GetSpecialtyDoctors(5).Result.Count},
-                    { 6,  _specialtyManager.GetSpecialtyDoctors(6).Result.Count},
-                    { 7,  _specialtyManager.GetSpecialtyDoctors(7).Result.Count},
+                    { 0,  _specialtyManager.GetSpecialtyDoctors(0).Result?.Count},
+                    { 1,  _specialtyManager.GetSpecialtyDoctors(1).Result?.Count},
+                    { 2,  _specialtyManager.GetSpecialtyDoctors(2).Result?.Count},
+                    { 3,  _specialtyManager.GetSpecialtyDoctors(3).Result?.Count},
+                    { 4,  _specialtyManager.GetSpecialtyDoctors(4).Result?.Count},
+                    { 5,  _specialtyManager.GetSpecialtyDoctors(5).Result?.Count},
+                    { 6,  _specialtyManager.GetSpecialtyDoctors(6).Result?.Count},
+                    { 7,  _specialtyManager.GetSpecialtyDoctors(7).Result?.Count},
+                    { 8,  _specialtyManager.GetSpecialtyDoctors(8).Result?.Count},
+                    { 9,  _specialtyManager.GetSpecialtyDoctors(9).Result?.Count},
                     
                 }
 

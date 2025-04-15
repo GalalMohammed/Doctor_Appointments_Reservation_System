@@ -69,15 +69,16 @@
                         <span>
                             <i class="fa-solid fa-plus fa-2xs"
                                style="color: var(--secondary-color) !important"></i><i class="fa-solid fa-plus fa-xs"
-                                                                                       style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-sm"
-                                                                                                                                    style="color: var(--secondary-color)"></i>
+                                                                                       style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-sm"                                                                                                       style="color: var(--secondary-color)"></i>
                         </span>
+
                         <span class="text-primary-color fw-bold">SERVICES</span>
+                        
                         <span>
                             <i class="fa-solid fa-plus fa-sm"
                                style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-xs"
                                                                             style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-2xs"
-                                                                                                                         style="color: var(--secondary-color)"></i>
+                                                                                                           style="color: var(--secondary-color)"></i>
                         </span>
                     </h2>
                     <p class="fs-5 pb-4 position-relative w-50 m-auto fw-semibold text-secondary">
@@ -160,7 +161,8 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                                        <span> @(Model.DoctorsPerSpecialtyConunt[1].HasValue ? @Model.DoctorsPerSpecialtyConunt[1].Value : "0") + Doctor</span>
+
                                     </div>
                                 </div>
                             </div>
@@ -233,7 +235,8 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                                        <span> @(Model.DoctorsPerSpecialtyConunt[1].HasValue ? @Model.DoctorsPerSpecialtyConunt[1].Value : "0") + Doctor</span>
+
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +244,7 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-left">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="Dental" class="text-decoration-none">
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="11" class="text-decoration-none">
                             <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                                 <div>
                                     <div class="card-body">
@@ -307,7 +310,11 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                          @* <span> @(Model.DoctorsPerSpecialtyConunt[11].HasValue ? @Model.DoctorsPerSpecialtyConunt[11].Value : "0") + Doctor
+
+                          </span> *@
+                                        Add Dental Specialty To DB
+                                    
                                     </div>
                                 </div>
                             </div>
@@ -410,7 +417,8 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                                        <span> @(Model.DoctorsPerSpecialtyConunt[9].HasValue ? @Model.DoctorsPerSpecialtyConunt[9].Value : "0") + Doctor</span>
+
                                     </div>
                                 </div>
                             </div>
@@ -512,7 +520,7 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                                        <span> @(Model.DoctorsPerSpecialtyConunt[6].HasValue?@Model.DoctorsPerSpecialtyConunt[6].Value:"0") + Doctor</span>
                                     </div>
                                 </div>
                             </div>
@@ -574,7 +582,8 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                            <span> @(Model.DoctorsPerSpecialtyConunt[3].HasValue ? @Model.DoctorsPerSpecialtyConunt[3].Value : "0") + Doctor</span>
+
                                     </div>
                                 </div>
                             </div>
@@ -582,7 +591,8 @@
                     </div>
 
                     <div class="col-md-4 col-sm-6" data-aos-duration="1500" data-aos="fade-right">
-                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="Orthopedics" class="text-decoration-none"></a>
+
+                        <a asp-controller="Doctor" asp-action="Search" asp-route-Speciality="5" class="text-decoration-none"></a>
                         <div class="card position-relative p-4 bg-white shadow rounded overflow-hidden item">
                             <div>
                                 <div class="card-body">
@@ -656,7 +666,8 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                    <span> 25+ Doctor</span>
+                                    <span> @(Model.DoctorsPerSpecialtyConunt[5].HasValue ? @Model.DoctorsPerSpecialtyConunt[5].Value : "0") + Doctor</span>
+
                                 </div>
                             </div>
                         </div>
@@ -680,7 +691,7 @@
                                                       fill="var(--secondary-color)"></path>
                                             </svg>
                                         </div>
-                                        <h3 class="fs-5 text-primary-color fw-bold">RMI</h3>
+                                        <h3 class="fs-5 text-primary-color fw-bold" style="padding-top:2px">RMI</h3>
                                         <p class=" text-opacity-75 fw-semibold"
                                            style="
                         font-weight: 400;
@@ -715,7 +726,7 @@
                         border-radius: 50%;
                         background-color: var(--secondary-color);
                       "></span>
-                                        <span> 25+ Doctor</span>
+                                        <span>Soon...</span>
                                     </div>
                                 </div>
                             </div>

@@ -28,6 +28,10 @@ namespace MVC.Mappers
         public Doctor MapToDoctorFromRegister(DoctorRegisterViewModel doctorRegisterVM);
         public Task<Doctor> MapToDoctorFromEdit(DoctorEditViewModel doctorRegisterVM);
         public DoctorEditViewModel MapToDoctorEdit(Doctor doctor);
+        public NewResVM MapToNewResVM(DoctorReservation doctorReservation);
+
+        public Task<DoctorReservation> MapFromNewResVM(NewResVM newRes);
+
 
     }
 }

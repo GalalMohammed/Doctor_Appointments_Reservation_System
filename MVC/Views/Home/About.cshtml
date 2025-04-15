@@ -1,3 +1,8 @@
 ﻿@{
-	ViewData["Title"] = "About";
+    ViewData["Title"] = "About";
 }
+
+<form asp-controller="payment" asp-action="Checkout" method="post">
+    <input name="doctorId" value="12" type="hidden" />
+    <button type="submit" style="margin-top: 500px;">Checkout</button>
+</form>

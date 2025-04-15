@@ -31,7 +31,7 @@ namespace DAL.Repositories.Reviews
         {
             var res = await context.Reviews.Include(r => r.Patient).Include(r => r.Doctor)
                     .Where(r=>r.ID==id).FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }
@@ -41,7 +41,7 @@ namespace DAL.Repositories.Reviews
         {
             var res = await context.Reviews.Include(r => r.Patient).Include(r => r.Doctor)
                     .Where(r => r.DoctorID == doctorId).ToListAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 foreach (var review in res)
                 {

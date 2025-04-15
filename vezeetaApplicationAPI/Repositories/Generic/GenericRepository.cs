@@ -37,7 +37,7 @@ namespace DAL.Repositories.Generic
         public virtual async Task<T> GetByID(int id, bool WithAsNoTracking = true)
         {
             var res = await context.Set<T>().FindAsync(id);
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }

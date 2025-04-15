@@ -1,8 +1,10 @@
 ﻿@using MVC.Enums
 @model RegisterViewModel
+@inject IConfiguration Configuration
 
 @{
     ViewData["title"] = "Register";
+    string siteKey = Configuration["ReCaptchaSettings:SiteKey"] ?? string.Empty;
 }
 
 <div class="register-div rounded-4 shadow-sm position-absolute top-50 start-50 translate-middle d-flex justify-content-between align-items-center">
@@ -95,7 +97,13 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <button id="register-back" class="btn login-submit w-25">Back</button>
-                <input id="login-submit" type="submit" class="btn register-submit" value="Register" />
+                <button id="login-submit"
+                        class="g-recaptcha btn register-submit"
+                        data-sitekey="@siteKey"
+                        data-callback='onSubmit'
+                        data-action='submit'>
+                    Register
+                </button>
             </div>
         </div>
     </form>
@@ -120,4 +128,10 @@
         });
     </script>
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+          document.getElementById("register-steps").submit();
+        }
+    </script>
 }

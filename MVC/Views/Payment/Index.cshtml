@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@inject IConfiguration Configuration
+@{
+    string siteKey = Configuration["ReCaptchaSettings:SiteKey"] ?? string.Empty;
+}<form method="post" id="register-steps" class="register-form h-100 px-5 py-4 d-flex">
+            <button id="login-submit"
+                    class="g-recaptcha btn register-submit"
+                    data-sitekey="@siteKey"
+                    data-callback='onSubmit'
+                    data-action='submit'>
+                Register
+            </button>
+</form>
+<div class="text-center mx-auto p-4 rounded border shadow" style="width: 500px;">
+    <article>
+        <h1 class="display-4 text-center mb-5">Payment</h1>
+        <p>Pay with PayPal</p>
+        <div class="form-group mb-3">
+            @* <label for="amount" class="form-label">Amount</label> *@
+            @* <input type="number" class="form-control" id="amount" placeholder="Enter amount" value="@ViewBag.amount" step="0.01" min="0" required/> *@
+        </div>
+        <div id="notification-container"></div>
+        <div id="paypal-button-container"></div>
+    </article>
+</div>
+@section Scripts {
+    <script src="https://www.paypal.com/sdk/js?client-id=@(ViewBag.clientId)&currency=USD"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/cookie.js"></script>
+    <script src="~/js/payment.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+          document.getElementById("register-steps").submit();
+        }
+    </script>
+}

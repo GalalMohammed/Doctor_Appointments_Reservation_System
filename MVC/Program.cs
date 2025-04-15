@@ -1,4 +1,6 @@
 using BLLServices.Common.EmailService;
+using BLLServices.Common.PaymentService;
+using BLLServices.Common.ReCaptchaService;
 using BLLServices.Common.UploadService;
 using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
@@ -7,6 +9,7 @@ using BLLServices.Managers.OrderManager;
 using BLLServices.Managers.PatientManger;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
+using BLLServices.Payment;
 using DAL.Repositories.Appointments;
 using DAL.Repositories.DoctorReservations;
 using DAL.Repositories.Doctors;
@@ -34,7 +37,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -56,9 +59,16 @@ namespace MVC
             builder.Services.AddScoped<IAppointmentManager, AppointmentManager>();
             builder.Services.AddScoped<PatientMapper, PatientMapper>();
             builder.Services.AddScoped<HomeMapper, HomeMapper>();
+            builder.Services.AddScoped<ReCaptchaService, ReCaptchaService>(provider =>
+            {
+                string secretKey = builder.Configuration["ReCaptchaSettings:SecretKey"] ?? throw new Exception("SecretKey is not set");
+                string verificationUrl = builder.Configuration["ReCaptchaSettings:ApiUrl"] ?? throw new Exception("VerificationUrl is not set");
+                return new ReCaptchaService(secretKey, verificationUrl);
+            });
 
             #region Common Services
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
 
             builder.Services.AddScoped<IUploadService, UploadService>(provider =>
             {
@@ -79,6 +89,13 @@ namespace MVC
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton(x =>
+            new PayPalClient(
+                clientId: builder.Configuration["PayPalOptions:ClientId"] ?? throw new Exception("ClientId is not set"),
+                clientSecret: builder.Configuration["PayPalOptions:ClientSecret"] ?? throw new Exception("ClientSecret is not set"),
+                baseUrl: builder.Configuration["PayPalOptions:Url"] ?? throw new Exception("BaseUrl is not set")
+            )
+            );
             var app = builder.Build();
 
             // Exception Handling

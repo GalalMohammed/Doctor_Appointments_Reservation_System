@@ -38,8 +38,11 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult Profile(int? ID, int pageNum = 0, int pageSize = 10, string? tab = "details")
         {
-            ViewBag.ID = ID == null || ID == int.Parse(User.FindFirst("currentId").Value);
-            if (ID == null) ID = int.Parse(User.FindFirst("currentId").Value);
+            if (User.IsInRole("doctor"))
+            {
+                ViewBag.ID = ID == null || ID == int.Parse(User.FindFirst("currentId").Value);
+                if (ID == null) ID = int.Parse(User.FindFirst("currentId").Value);
+            }
             var doctor = _doctorManager.GetDoctorByID(ID.Value).Result;
             if (doctor == null) return NotFound();
             var doctorVM = _doctorMapper.MapToDoctorProfileVM(doctor).Result;

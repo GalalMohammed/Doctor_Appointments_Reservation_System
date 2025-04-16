@@ -126,48 +126,34 @@
         </div>
 
         <!-- Availability -->
-        @* <div class="accordion-item doctor-register-div"> *@
-        @*     <h2 class="accordion-header" id="headingAvailability"> *@
-        @*         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailability"> *@
-        @*             Availability *@
-        @*         </button> *@
-        @*     </h2> *@
-        @*     <div id="collapseAvailability" class="accordion-collapse collapse" data-bs-parent="#doctorRegisterAccordion"> *@
-        @*         <div class="accordion-body register-input-group d-flex flex-column gap-3 justify-content-between"> *@
+        <div class="accordion-item doctor-register-div">
+            <h2 class="accordion-header" id="headingAvailability">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailability">
+                    Availability
+                </button>
+            </h2>
+            <div id="collapseAvailability" class="accordion-collapse collapse" data-bs-parent="#doctorRegisterAccordion">
+                <div class="accordion-body register-input-group d-flex flex-column gap-3 justify-content-between">
+                    <div class="d-flex justify-conent-between align-items-center">
+                        <div>
+                            <input asp-for="Days[0].Exists" class="form-check-input" />
+                            <label asp-for="Days[0].Exists" class="form-check-label">Saturday</label>
+                        </div>
+                        <div>
+                            <div>
+                                <label asp-for="Days[0].StartTime" class="form-label"></label>
+                                <input asp-for="Days[0].StartTime" class="form-control" />
+                            </div>
+                            <div>
+                                <label asp-for="Days[0].EndTime" class="form-label"></label>
+                                <input asp-for="Days[0].EndTime" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-        @*             <div class="row gap-2 gap-md-0"> *@
-        @*                 <div class="col-md-6 col-sm-12"> *@
-        @*                     <label asp-for="StartTime" class="form-label"></label> *@
-        @*                     <input asp-for="StartTime" class="form-control" type="time" /> *@
-        @*                     <span asp-validation-for="StartTime" class="text-danger"></span> *@
-        @*                 </div> *@
-        @*                 <div class="col-md-6 col-sm-12"> *@
-        @*                     <label asp-for="EndTime" class="form-label"></label> *@
-        @*                     <input asp-for="EndTime" class="form-control" type="time" /> *@
-        @*                     <span asp-validation-for="EndTime" class="text-danger"></span> *@
-        @*                 </div> *@
-        @*             </div> *@
-        @*             <div class="mb-3"> *@
-        @*                 <label asp-for="WorkingDays" class="form-label"></label> *@
-        @*                 <div class="p-2 d-flex justify-content-between flex-wrap gap-2"> *@
-        @*                     @foreach(var day in Enum.GetNames<WorkingDays>()) *@
-        @*                     { *@
-        @*                         <div class="doctor-register-days col-5 col-md-3"> *@
-        @*                             <input type="checkbox" id="@day" name="@day" class="form-check-inline" /> *@
-        @*                             <label for="@day" class="form-check-label">@day</label> *@
-        @*                         </div> *@
-        @*                     } *@
-        @*                 </div> *@
-        @*             </div> *@
-        @*             <div class="mb-3 col-12 col-md-6"> *@
-        @*                 <label asp-for="ReservationQuota" class="form-label"></label> *@
-        @*                 <input asp-for="ReservationQuota" class="form-control" /> *@
-        @*                 <span asp-validation-for="ReservationQuota" class="text-danger"></span> *@
-        @*             </div> *@
-        @*         </div> *@
-        @*     </div> *@
-        @* </div> *@
         <input asp-for="Lat" class="d-none" />
         <input asp-for="Lng" class="d-none" />
         <input asp-for="Id" class="d-none" />

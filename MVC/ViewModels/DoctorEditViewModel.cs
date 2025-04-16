@@ -43,5 +43,6 @@ namespace MVC.ViewModels
         public Gender Gender { get; set; }
         public float Lat { get; set; } = 30.0594629f;
         public float Lng { get; set; } = 31.3406953f;
+        public DayVM[] Days { get; set; } = new DayVM[7];
     }
 }

@@ -78,7 +78,8 @@ namespace MVC.Controllers
             ViewBag.IconClasses = new Dictionary<string, string>
             {
                 { "Google", "fa-brands fa-google-plus-g" },
-                { "Facebook", "fa-brands fa-facebook-f" }
+                { "Facebook", "fa-brands fa-facebook-f" },
+                { "Microsoft", "fa-brands fa-windows" }
             };
             return View(loginUser);
         }
@@ -90,7 +91,8 @@ namespace MVC.Controllers
             ViewBag.IconClasses = new Dictionary<string, string>
             {
                 { "Google", "fa-brands fa-google-plus-g" },
-                { "Facebook", "fa-brands fa-facebook-f" }
+                { "Facebook", "fa-brands fa-facebook-f" },
+                { "Microsoft", "fa-brands fa-windows" }
             };
             if (ModelState.IsValid)
             {
@@ -113,7 +115,7 @@ namespace MVC.Controllers
             ModelState.AddModelError("", "Invalid email or password");
             return View(loginUser);
         }
-        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl = "")
+        public IActionResult ExternalLogin(string provider, string returnUrl = "")
         {
             // Request a redirect to the external login provider
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
@@ -129,7 +131,8 @@ namespace MVC.Controllers
             ViewBag.IconClasses = new Dictionary<string, string>
             {
                 { "Google", "fa-brands fa-google-plus-g" },
-                { "Facebook", "fa-brands fa-facebook-f" }
+                { "Facebook", "fa-brands fa-facebook-f" },
+                { "Microsoft", "fa-brands fa-windows" }
             };
             if (!string.IsNullOrEmpty(remoteError))
             {

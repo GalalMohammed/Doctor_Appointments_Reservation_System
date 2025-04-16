@@ -18,6 +18,8 @@ using DAL.Repositories.Orders;
 using DAL.Repositories.Patients;
 using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC.Claims;
@@ -115,6 +117,14 @@ namespace MVC
                     {
                         options.AppId = builder.Configuration["Facebook:AppId"] ?? throw new Exception("AppId is not set");
                         options.AppSecret = builder.Configuration["Facebook:AppSecret"] ?? throw new Exception("AppSecret is not set");
+                    }
+                );
+            builder.Services.AddAuthentication()
+                .AddMicrosoftAccount(
+                    options =>
+                    {
+                        options.ClientId = builder.Configuration["Microsoft:ClientId"] ?? throw new Exception("ClientId is not set");
+                        options.ClientSecret = builder.Configuration["Microsoft:ClientSecret"] ?? throw new Exception("ClientSecret is not set");
                     }
                 );
             var app = builder.Build();

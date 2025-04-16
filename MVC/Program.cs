@@ -37,7 +37,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("LocalTest")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -96,6 +96,11 @@ namespace MVC
                 baseUrl: builder.Configuration["PayPalOptions:Url"] ?? throw new Exception("BaseUrl is not set")
             )
             );
+            builder.Services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 443;
+            });
             var app = builder.Build();
 
             // Exception Handling
@@ -112,6 +117,9 @@ namespace MVC
                 //app.UseDeveloperExceptionPage();
             }
             // Middleware Configuration
+            app.UseHttpsRedirection();
+            app.UseHsts(); // HTTP Strict Transport Security Protocol
+
             app.MapStaticAssets();
             app.UseRouting();
             app.UseAuthentication();

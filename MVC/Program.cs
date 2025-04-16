@@ -37,7 +37,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("LocalTest")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

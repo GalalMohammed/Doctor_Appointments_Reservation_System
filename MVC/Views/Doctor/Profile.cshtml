@@ -1,12 +1,13 @@
-﻿@model doctorProfileVM
+﻿@using DAL.Enums
+@model doctorProfileVM
 @{
     ViewData["Title"] = $"{Model.Name}'s Profile";
     var i = 0;
 }
 @{
-    ViewData["Title"] = "Search Doctors";
+    // ViewData["Title"] = "Search Doctors";
     var today = (int)DateTime.Now.DayOfWeek;
-
+    var days = new string[] { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
 }
 @functions {
     public static string GetNextDate(int day)
@@ -249,6 +250,45 @@
                 <!-- #region Calender Section -->
                 @if (User.IsInRole("doctor") && ViewBag.ID)
                 {
+                    <form asp-action="EditSchedule" style="color: var(--primary-color)">
+                        <h3>Assign Default Schedule</h3>
+                        <div class="d-flex flex-column gap-3 justify-content-between">
+                            <div class="row gap-2 gap-md-0">
+                                <div class="col-md-6 col-sm-12">
+                                    <label for="StartTime" class="form-label">From</label>
+                                    <input name="StartTime" id="StartTime" class="form-control" type="time" value="@Model.Schedule.StartTime.ToString("HH:mm")" />
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <label for="EndTime" class="form-label">To</label>
+                                    <input name="EndTime" id="EndTime" class="form-control" type="time" value="@Model.Schedule.EndTime.ToString("HH:mm")" />
+                                    <span asp-validation-for="Schedule.EndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Days</label>
+                                <div class="p-2 d-flex justify-content-between flex-wrap gap-2">
+                                    @for (var j = 0; j < 7; j++)
+                                    {
+                                        <div class="doctor-register-days col-5 col-md-3">
+                                            <input name="Days[@j]" id="Days[@j]" class="form-check-inline" type="checkbox" checked="@Model.Schedule.Days[j]" />
+                                            <label for="Days[@j]" class="form-check-label">@days[j]</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="w-50">
+                                    <div class="d-flex align-items-center w-100">
+                                        <label for="ReservationQuota" class="form-label text-center p-2">Reservation Quota</label>
+                                        <input name="ReservationQuota" id="ReservationQuota" class="form-control" min="0" type="number" value="@Model.Schedule.ReservationQuota" />
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn login-submit w-25" value="Edit" />
+                            </div>
+                            <h5 class="text-center">Or Customize Your Calendar</h5>
+                        </div>
+                    </form>
+
                     <div class="tab-pane fade @(ViewBag.tab == "calender" ? "show active" : "")" id="calender">
                         <div id="SP-Calendar"></div>
                     </div>
@@ -349,5 +389,6 @@
         var cal = @Html.Raw(ViewBag.cal)
     </script>
     <script src="~/js/doctorProfile.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }
 

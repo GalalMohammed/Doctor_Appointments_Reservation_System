@@ -114,7 +114,7 @@ namespace MVC.Mappers
             {
                 ratings.Add(MapToRating(review));
             }
-            return new doctorProfileVM
+            var viewModel = new doctorProfileVM
             {
                 ID = doctor.ID,
                 Name = $"{doctor.FirstName} {doctor.LastName}",
@@ -132,8 +132,17 @@ namespace MVC.Mappers
                 Appointments = appointments,
                 Ratings = ratings,
                 Latitude = (float)doctor.Lat, // change it to float
-                Longitude = (float)doctor.Lng
+                Longitude = (float)doctor.Lng,
+                Schedule = new()
+                {
+                    StartTime = TimeOnly.FromDateTime(doctor.DefaultStartTime),
+                    EndTime = TimeOnly.FromDateTime(doctor.DefaultEndTime),
+                }
             };
+            var workingDayString = Convert.ToString((int)doctor.WorkingDays, 2).PadLeft(7, '0');
+            for (int i = 0; i < 7; i++)
+                viewModel.Schedule.Days[i] = (workingDayString[i] == '1') ? "1" : "0";
+            return viewModel;
         }
         public async Task<Doctor> MapFromDoctorProfileVM(doctorProfileVM doctorVM)
         {

@@ -32,5 +32,6 @@ namespace MVC.ViewModels
         public List<DoctorReservationViewModel> Appointments { get; set; }
         public float Latitude { get; internal set; }
         public float Longitude { get; internal set; }
+        public ScheduleViewModel Schedule { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿let gender = document.getElementById("Gender")
 let governorate = document.getElementById("Governorate").firstElementChild.remove();
 if (gender != null)
-    gender.firstElementChild.remove();
+    gender?.firstElementChild?.remove();
 if (governorate != null)
     governorate.firstElementChild.remove();
 document.querySelectorAll(".accordion-button")[1].onclick = function () {

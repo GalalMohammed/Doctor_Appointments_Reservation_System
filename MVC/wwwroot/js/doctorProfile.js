@@ -2,7 +2,7 @@
 AOS.init();
 
 // Paganation Code
-let currentPage = Number(document.querySelector(".SP-active").innerText) || -1;
+let currentPage = Number(document.querySelector(".SP-active")?.innerText) || -1;
 let nextBTN = document.querySelector(".SP-nextBTN");
 let prevBTN = document.querySelector(".SP-prevBTN");
 
@@ -31,7 +31,7 @@ document.getElementById("reviews-tab").addEventListener("click", function () {
     updateQueryString("tab", "reviews");
 });
 
-document.getElementById("calender-tab").addEventListener("click", function () {
+document.getElementById("calender-tab")?.addEventListener("click", function () {
     updateQueryString("tab", "calender");
 });
 
@@ -86,6 +86,15 @@ imgFile.addEventListener("change", function () {
 
 // Calender Code
 
+const modal = new bootstrap.Modal(document.getElementById("SP-CalForm"))
+
+const date = document.querySelector(".SP-calDate");
+const resID = document.querySelector(".SP-resID");
+const startTime = document.querySelector(".SP-startTime");
+const endTime = document.querySelector(".SP-endTime");
+const maxRes = document.querySelector(".SP-maxRes");
+const calFormBTN = document.querySelector(".SP-CalSubmit");
+
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
 let currentMonth = currentDate.getMonth();
@@ -139,45 +148,52 @@ const calendar = new calendarJs("SP-Calendar",{ // Target element
         onNextMonth: function (displayDate) {
             calendar.setCurrentDisplayDate(new Date(currentYear, currentMonth + 1, 1));
         },
-        onDayClick: function (date, event) {
-            var dateString = date.toDateString();
-            // Log the click
-            console.log("Clicked day:", dateString);
-
-        },
-        onBeforeEventAddEdit(event) {
-            
-            console.log(event)
-
-
-        },
         onEventClick: function (event) {
-            console.log(event)
+            date.value = event.from.toISOString().split('T')[0]
+            resID.value = event.ResID;
+            maxRes.value = event.MaxRes;
+
+            if (event.isAllDay) {
+                calFormBTN.innerText = "Add"
+                startTime.value = "09:00";
+                endTime.value = "17:00";
+            }
+            else {
+                calFormBTN.innerText = "Update"
+                startTime.value = event.from.toTimeString().slice(0, 5);
+                endTime.value = event.to.toTimeString().slice(0, 5);
+            }
+            modal.show();
         }
 
 
     }
 });
 
-let events = []
+//let events = []
 
-for (let i = 1; i <= 30; i++) {
-    let date = new Date();
-    date.setDate(date.getDate() + i)
-    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(),0,0,0,0);
+//for (let i = 1; i <= 15; i++) {
+//    let date = new Date();
+//    date.setDate(date.getDate() + i)
+//    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(),0,0,0,0);
 
-    let event = {
-        from: date,
-        to: date,
-        title: "Add Work +",
-        color : "#004085",
-        colorBorder: "#B3E5FC",
-        description:"Vacation Day",
-        status: "Done",
-        isAllDay: true
-    }
-    calendar.addEvent(event);
-}
+//    let event = {
+//        from: date,
+//        to: date,
+//        title: "Add Work +",
+//        color : "#004085",
+//        colorBorder: "#B3E5FC",
+//        description:"Vacation Day",
+//        status: "Done",
+//        isAllDay: true
+//    }
+//    calendar.addEvent(event);
+//}
 
-calendar.addEvent(cal);
+cal.forEach(item => {
+
+    calendar.addEvent(item);
+});
+
+
 

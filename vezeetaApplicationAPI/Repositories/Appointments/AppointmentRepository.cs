@@ -1,10 +1,5 @@
 ﻿using DAL.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.DataAccess;
 using vezeetaApplicationAPI.Models;
 
@@ -30,11 +25,20 @@ namespace DAL.Repositories.Appointments
         {
             var res = await context.Appointments.Include(a => a.DoctorReservation).ThenInclude(a => a!.Doctor).ThenInclude(a => a!.Specialty)
                     .Include(a => a.Patient).Where(a => a.ID == id).FirstOrDefaultAsync();
-            if (WithAsNoTracking)
+            if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;
             }
             return res;
+        }
+
+        public async Task<int> GetCountByDate(int doctorID, DateTime? date)
+        {
+            if (date == null) date = DateTime.Now.Date;
+            else
+                date = date?.Date;
+            return context.Appointments
+                .Where(x => x.DoctorReservation.DoctorID == doctorID && x.AppointmentDate.Date == date).Count();
         }
     }
 }

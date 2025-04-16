@@ -1,7 +1,7 @@
 ﻿let gender = document.getElementById("Gender")
 let governorate = document.getElementById("Governorate").firstElementChild.remove();
-if (gender.localName == null)
-    gender.firstElementChild.remove();
+if (gender != null)
+    gender?.firstElementChild?.remove();
 if (governorate != null)
     governorate.firstElementChild.remove();
 document.querySelectorAll(".accordion-button")[1].onclick = function () {
@@ -32,6 +32,8 @@ pickLocationButton.onclick = function () {
     navigator.geolocation.getCurrentPosition((position) => {
         lngInput.value = position.coords.longitude;
         latInput.value = position.coords.latitude;
+
+        console.log(position.coords);
 
         userMarker.setLatLng([latInput.value, lngInput.value]).openPopup();
 

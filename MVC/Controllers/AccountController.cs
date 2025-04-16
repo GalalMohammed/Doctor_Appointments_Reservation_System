@@ -1,4 +1,5 @@
 ﻿using BLLServices.Common.EmailService;
+using BLLServices.Common.ReCaptchaService;
 using BLLServices.Common.UploadService;
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
@@ -26,6 +27,7 @@ namespace MVC.Controllers
         private readonly ISpecialtyManager specialtyManager;
         private readonly IUploadService uploadService;
         private readonly IDoctorReservationManager reservationManager;
+        private readonly ReCaptchaService reCaptchaService;
 
         public AccountController(
             SignInManager<AppUser> signInManager,
@@ -37,7 +39,9 @@ namespace MVC.Controllers
             IDoctorMapper doctorMapper,
             ISpecialtyManager specialtyManager,
             IUploadService uploadService,
-            IDoctorReservationManager reservationManager)
+            IDoctorReservationManager reservationManager,
+            ReCaptchaService reCaptchaService
+            )
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -49,6 +53,7 @@ namespace MVC.Controllers
             this.specialtyManager = specialtyManager;
             this.uploadService = uploadService;
             this.reservationManager = reservationManager;
+            this.reCaptchaService = reCaptchaService;
         }
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
@@ -106,6 +111,17 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Validate reCAPTCHA
+                string googleReCaptchaResponse = Request.Form["g-recaptcha-response"].ToString();
+
+                // Verify the token
+                bool isValidCaptcha = await reCaptchaService.ValidateReCaptcha(googleReCaptchaResponse);
+                if (!isValidCaptcha)
+                {
+                    ModelState.AddModelError("", "Invalid reCAPTCHA. Please try again.");
+                    return View(registerUser);
+                }
+                // Proceed with user registration
                 var appUser = new AppUser()
                 {
                     FirstName = registerUser.FirstName,
@@ -316,16 +332,16 @@ namespace MVC.Controllers
                 await doctorManager.UpdateDoctor(doc);
 
                 TempData["Updated"] = "Image was updated successfully";
-                return RedirectToAction("profile","doctor",new {id = 1});
+                return RedirectToAction("profile","doctor",new {id = image.ID});
             }
             else
             {
                 TempData["Error"] = string.Join("\n",
                     ModelState
                         .Where(m => m.Value.Errors.Any())
-                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}"))
+                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}\n"))
                 );
-                return RedirectToAction("profile", "doctor", new { id = 1 });
+                return RedirectToAction("profile", "doctor", new { id = image.ID });
             }
         }
     }

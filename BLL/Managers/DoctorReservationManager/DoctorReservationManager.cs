@@ -29,6 +29,10 @@ namespace BLLServices.Managers.DoctorReservationManager
         {
             DR_manager.Add(res);
         }
+        public async Task<DoctorReservation> GetDoctorReservationByID(int id)
+        {
+            return await DR_manager.GetByID(id);
+        }
         public Task<List<DoctorReservation>> GetReservationsByDocID(int id)
         {
             return DR_manager.GetReservationsByDocID(id);

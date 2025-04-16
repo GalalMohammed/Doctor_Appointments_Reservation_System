@@ -26,7 +26,7 @@ namespace MVC.ViewModels
         [MaxLength(200)]
         public string Address { get; set; }
         public Gender Gender { get; set; }
-        public double Lat { get; set; } = 30.0594629;
-        public double Lng { get; set; } = 31.3406953;
+        public float Lat { get; set; } = 30.0594629f;
+        public float Lng { get; set; } = 31.3406953f;
     }
 }

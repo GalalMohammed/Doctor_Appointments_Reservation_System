@@ -10,7 +10,7 @@ namespace DAL.Repositories.DoctorReservations
 {
     public interface IDoctorReservationRepository : IGenericRepository<DoctorReservation>
     {
-        public Task<List<DoctorReservation>> GetReservationsByDocID(int id, bool WithAsNoTracking = true);
+        public Task<List<DoctorReservation>> GetReservationsByDocID(int doctorID, int resCount = 14, bool WithAsNoTracking = true);
 
 
     }

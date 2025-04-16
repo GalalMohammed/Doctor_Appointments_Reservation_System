@@ -20,7 +20,8 @@ namespace MVC.Controllers
         public PatientController(IPatientManger patientManager,
                                  PatientMapper patientMapper,
                                  IAppointmentManager appointmentManager,
-                                 IOrderManager orderManager)
+                                 IOrderManager orderManager
+                                 )
         {
             this.patientManager = patientManager;
             this.patientMapper = patientMapper;
@@ -47,23 +48,25 @@ namespace MVC.Controllers
             ViewBag.Success = false;
             return View("Profile", patient);
         }
-        [HttpPost("/patient/add-appointment")]
-        [ValidateAntiForgeryToken]
+        [HttpGet("/patient/add-appointment")]
         public async Task<IActionResult> AddAppointment(int patientId, int doctorReservationId)
         {
-            var patient = await patientManager.GetPatientInfo(patientId);
-            if (await orderManager.IsOrderPaid(patientId, doctorReservationId))
+            if (orderManager.IsOrderPaid(patientId, doctorReservationId))
             {
                 await appointmentManager.AddAppointment(patientId, doctorReservationId);
                 ViewBag.OrderSucceeded = true;
-                return View("Profile", patient);
             }
-            ViewBag.OrderSucceeded = false;
-            orderManager.DeleteOrder(patientId, doctorReservationId);
-            return View("Profile", patient);
+            var patient = await patientManager.GetPatientInfo(patientId);
+            if (!ViewBag.OrderSucceeded)
+            {
+                orderManager.DeleteOrder(patientId, doctorReservationId);
+                ViewBag.OrderSucceeded = false;
+            }
+            return View("Profile", patientMapper.MapToPatientViewModel(patient));
         }
         public async Task<IActionResult> CancelAppointment(int appointmentId)
         {
+            orderManager.DeleteOrder(int.Parse(User.FindFirst("currentId").Value), await appointmentManager.GetReservationId(appointmentId));
             await appointmentManager.DeleteAppointmentAsync(appointmentId);
             return RedirectToAction("Profile");
         }

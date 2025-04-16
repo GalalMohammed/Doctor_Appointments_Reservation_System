@@ -1,6 +1,6 @@
 ﻿@model AppointmentViewModel
 
-<img src="~/images/@Model.DoctorImagePath" alt="Doctor" class="appointment-doctor-image rounded-circle object-fit-cover m-2">
+<img src="~/uploads/images/@Model.DoctorImagePath" alt="Doctor" class="appointment-doctor-image rounded-circle object-fit-cover m-2">
 <div class="w-75 patient-appointment-card-content d-flex justify-content-between">
     <div class="d-flex flex-column">
         <h5 class="mb-1">Dr. @Model.Doctor</h5>
@@ -8,7 +8,7 @@
     </div>
     <div class="d-flex flex-column mt-sm-1">
         <span class="patient-appointment-details">
-            <i class="fas fa-map-marker-alt me-1"></i> @Model.Location
+            <i class="fas fa-map-marker-alt me-1"></i> @Model.Governorate: @Model.Location
         </span>
         <span class="patient-appointment-details mt-sm-2">
             <i class="far fa-calendar-alt me-1"></i> @Model.DateTime.ToString("MMMM d, yyyy 'at' h:mm tt")

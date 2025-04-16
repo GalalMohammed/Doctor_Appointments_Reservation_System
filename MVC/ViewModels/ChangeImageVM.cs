@@ -6,7 +6,7 @@ namespace MVC.ViewModels
     public class ChangeImageVM
     {
         [Required]
-        public int ID { get; set; } = 1;
+        public int ID { get; set; }
 
         [Required]
         [MaxSize(2, ErrorMessage = "Maximum allowed size is 2 MB")]

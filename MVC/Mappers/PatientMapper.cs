@@ -18,7 +18,7 @@ namespace MVC.Mappers
             return new AppointmentViewModel
             {
                 Id = appointment.ID,
-                DateTime = appointment.AppointmentDate,
+                DateTime = appointment.DoctorReservation.StartTime,
                 Doctor = appointment.DoctorReservation?.Doctor?.FirstName + " " + appointment.DoctorReservation?.Doctor?.LastName,
                 Specialty = appointment.DoctorReservation?.Doctor?.Specialty?.Name ?? "Not Available",
                 Governorate = appointment.DoctorReservation?.Doctor?.Governorate ?? Governorate.All,

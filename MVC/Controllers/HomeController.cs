@@ -18,15 +18,12 @@ namespace MVC.Controllers
 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             HomeVM homeVM;
-            #region CodeFromDB
-            homeVM = homeMapper.MapToHomeVM();
-            #endregion
 
-
-
+            homeVM = await homeMapper.MapToHomeVM();
+   
             return View(homeVM);
         }
 

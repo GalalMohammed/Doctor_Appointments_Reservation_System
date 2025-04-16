@@ -101,6 +101,22 @@ namespace MVC
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
                 options.HttpsPort = 443;
             });
+            builder.Services.AddAuthentication()
+                .AddGoogle(
+                    options =>
+                    {
+                        options.ClientId = builder.Configuration["Google:ClientId"] ?? throw new Exception("ClientId is not set");
+                        options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? throw new Exception("ClientSecret is not set");
+                    }
+                );
+            builder.Services.AddAuthentication()
+                .AddFacebook(
+                    options =>
+                    {
+                        options.AppId = builder.Configuration["Facebook:AppId"] ?? throw new Exception("AppId is not set");
+                        options.AppSecret = builder.Configuration["Facebook:AppSecret"] ?? throw new Exception("AppSecret is not set");
+                    }
+                );
             var app = builder.Build();
 
             // Exception Handling

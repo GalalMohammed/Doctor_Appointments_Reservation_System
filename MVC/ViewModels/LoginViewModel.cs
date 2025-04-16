@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVC.ViewModels
 {
@@ -8,5 +9,6 @@ namespace MVC.ViewModels
         public string Email { get; set; }
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        public IEnumerable<AuthenticationScheme>? ExternalLogins { get; set; }
     }
 }

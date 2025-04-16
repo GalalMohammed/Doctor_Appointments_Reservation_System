@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MVC.Mappers;
 using MVC.ViewModels;
+using System.Security.Claims;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Controllers
@@ -69,12 +71,27 @@ namespace MVC.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            LoginViewModel loginUser = new()
+            {
+                ExternalLogins = signInManager.GetExternalAuthenticationSchemesAsync().Result
+            };
+            ViewBag.IconClasses = new Dictionary<string, string>
+            {
+                { "Google", "fa-brands fa-google-plus-g" },
+                { "Facebook", "fa-brands fa-facebook-f" }
+            };
+            return View(loginUser);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel loginUser)
         {
+            loginUser.ExternalLogins = signInManager.GetExternalAuthenticationSchemesAsync().Result;
+            ViewBag.IconClasses = new Dictionary<string, string>
+            {
+                { "Google", "fa-brands fa-google-plus-g" },
+                { "Facebook", "fa-brands fa-facebook-f" }
+            };
             if (ModelState.IsValid)
             {
                 var appUser = await userManager.FindByEmailAsync(loginUser.Email);
@@ -95,6 +112,58 @@ namespace MVC.Controllers
             }
             ModelState.AddModelError("", "Invalid email or password");
             return View(loginUser);
+        }
+        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl = "")
+        {
+            // Request a redirect to the external login provider
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+        public async Task<IActionResult> ExternalLoginCallback(string _ = "", string remoteError = "")
+        {
+            LoginViewModel loginUser = new()
+            {
+                ExternalLogins = signInManager.GetExternalAuthenticationSchemesAsync().Result
+            };
+            ViewBag.IconClasses = new Dictionary<string, string>
+            {
+                { "Google", "fa-brands fa-google-plus-g" },
+                { "Facebook", "fa-brands fa-facebook-f" }
+            };
+            if (!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external login provider: {remoteError}");
+                return View("Login", loginUser);
+            }
+            var loginInfo = await signInManager.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error loading external login information.");
+                return View("Login", loginUser);
+            }
+            string? email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+            if (email == null) {
+                ModelState.AddModelError(string.Empty, "Email not found in external login.");
+                return View("Login", loginUser);
+            }
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Email not found. Please register first.");
+                return RedirectToAction(nameof(Register));
+            }
+            Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: false);
+            if (!signInResult.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View("Login", loginUser);
+            }
+            if (!user.EmailConfirmed)
+            {
+                await userManager.ConfirmEmailAsync(user, await userManager.GenerateEmailConfirmationTokenAsync(user));
+            }
+            return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> Logout()
         {

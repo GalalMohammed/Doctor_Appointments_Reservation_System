@@ -134,19 +134,19 @@
             </h2>
             <div id="collapseAvailability" class="accordion-collapse collapse" data-bs-parent="#doctorRegisterAccordion">
                 <div class="accordion-body register-input-group d-flex flex-column gap-3 justify-content-between">
-                    <div class="d-flex justify-conent-between align-items-center">
-                        <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-2">
                             <input asp-for="Days[0].Exists" class="form-check-input" />
                             <label asp-for="Days[0].Exists" class="form-check-label">Saturday</label>
                         </div>
-                        <div>
-                            <div>
-                                <label asp-for="Days[0].StartTime" class="form-label"></label>
-                                <input asp-for="Days[0].StartTime" class="form-control" />
+                        <div class="d-flex">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label asp-for="Days[0].StartTime"></label>
+                                <input asp-for="Days[0].StartTime" class="form-control w-25" type="time" />
                             </div>
-                            <div>
-                                <label asp-for="Days[0].EndTime" class="form-label"></label>
-                                <input asp-for="Days[0].EndTime" class="form-control" />
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label asp-for="Days[0].EndTime"></label>
+                                <input asp-for="Days[0].EndTime" class="form-control w-25" type="time" />
                             </div>
                         </div>
                     </div>

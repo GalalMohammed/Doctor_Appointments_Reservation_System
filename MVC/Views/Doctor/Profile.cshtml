@@ -267,11 +267,15 @@
                             <div>
                                 <label class="form-label">Days</label>
                                 <div class="p-2 d-flex justify-content-between flex-wrap gap-2">
-                                    @for (var j = 0; j < 7; j++)
+                                    @for (var j = 0; j < days.Length; j++)
                                     {
                                         <div class="doctor-register-days col-5 col-md-3">
-                                            <input name="Days[@j]" id="Days[@j]" class="form-check-inline" type="checkbox" checked="@Model.Schedule.Days[j]" />
-                                            <label for="Days[@j]" class="form-check-label">@days[j]</label>
+                                            <input type="checkbox"
+                                                   name="Days"
+                                                   @* value="@days[j]" *@
+                                                   value="@j"
+                                                   @(Model.Schedule.Days[j] == "1" ? "checked" : "")/>
+                                            <label>@days[j]</label>
                                         </div>
                                     }
                                 </div>

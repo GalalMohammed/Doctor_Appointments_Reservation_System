@@ -238,7 +238,9 @@ namespace MVC.Controllers
                 var doctor = await _doctorManager.GetDoctorByID(int.Parse(User.FindFirst("currentId").Value));
                 doctor.DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), viewModel.StartTime);
                 doctor.DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), viewModel.EndTime);
-                doctor.WorkingDays = (WorkingDays)Convert.ToInt32(string.Join("", viewModel.Days), 2);
+                //doctor.WorkingDays = (WorkingDays)Convert.ToInt32(string.Join("", viewModel.Days), 2);
+                doctor.WorkingDays = (WorkingDays)viewModel.Days.Select(x=>Math.Pow(2,int.Parse(x))).Sum();
+                doctor.DefaultMaxReservations = viewModel.ReservationQuota;
                 await _doctorManager.UpdateDoctor(doctor);
                 TempData["Updated"] = "Schedule Updated!";
                 return RedirectToAction("profile", "Doctor", new { tab = "calender" });

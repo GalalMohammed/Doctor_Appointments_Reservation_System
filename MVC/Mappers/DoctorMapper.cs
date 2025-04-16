@@ -119,14 +119,14 @@ namespace MVC.Mappers
                 ID = doctor.ID,
                 Name = $"{doctor.FirstName} {doctor.LastName}",
                 Title = string.Empty,
-                Gender = (Enums.Gender)doctor.Gender, // unite in one enum
+                Gender = doctor.Gender,
                 Image = doctor.ImageURL,
                 Qualifications = string.Empty,
-                Fees = (int)doctor.Fees, // remember to change it to double
+                Fees = doctor.Fees, 
                 Speciality = doctor.Specialty.Name, //(await _specialtyManager.GetSpecialtyById(doctor.SpecialtyID)).Name,
                 Rating = avgRating,
-                WaitingTime = doctor.WaitingTime, // remember to change it or remove it
-                Governorate = doctor.Governorate, // remember to change it or remove it
+                WaitingTime = doctor.WaitingTime, 
+                Governorate = doctor.Governorate,
                 Location = doctor.Location,
                 Phone = doctor.AppUser?.PhoneNumber ?? "01203203320",
                 Appointments = appointments,
@@ -135,11 +135,12 @@ namespace MVC.Mappers
                 Longitude = (float)doctor.Lng,
                 Schedule = new()
                 {
+                    ReservationQuota = doctor.DefaultMaxReservations,
                     StartTime = TimeOnly.FromDateTime(doctor.DefaultStartTime),
                     EndTime = TimeOnly.FromDateTime(doctor.DefaultEndTime),
                 }
             };
-            var workingDayString = Convert.ToString((int)doctor.WorkingDays, 2).PadLeft(7, '0');
+            var workingDayString = Convert.ToString((int)doctor.WorkingDays, 2).PadLeft(7, '0').Reverse().ToArray();
             for (int i = 0; i < 7; i++)
                 viewModel.Schedule.Days[i] = (workingDayString[i] == '1') ? "1" : "0";
             return viewModel;
@@ -219,6 +220,7 @@ namespace MVC.Mappers
                 Lat = doctorRegisterVM.Lat,
                 DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(9, 0)),
                 DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), new TimeOnly(10, 0)),
+                DefaultMaxReservations = 10,
             };
 
         public async Task<Doctor> MapToDoctorFromEdit(DoctorEditViewModel doctorEditVM)

@@ -3,7 +3,6 @@ using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
-using DAL.Enums;
 using MVC.ViewModels;
 using vezeetaApplicationAPI.Models;
 
@@ -202,7 +201,7 @@ namespace MVC.Mappers
                 WaitingTime = doctorRegisterVM.WaitingTime,
                 ImageURL = doctorRegisterVM.ImageURL,
                 About = doctorRegisterVM.About,
-                WorkingDays = WorkingDays.Saturday | WorkingDays.Sunday | WorkingDays.Monday | WorkingDays.Tuesday | WorkingDays.Wednesday | WorkingDays.Thursday | WorkingDays.Friday,
+                WorkingDays = 0,
                 Governorate = doctorRegisterVM.Governorate,
                 Location = doctorRegisterVM.Address,
                 Gender = doctorRegisterVM.Gender,

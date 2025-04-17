@@ -3,9 +3,9 @@
     public static string GetNextDate(int day)
     {
         DateTime today = DateTime.Now;
-        int todayIndex = (int)today.DayOfWeek;
+        int todayIndex = today.Day;
 
-        int daysToAdd = (day - todayIndex + 7) % 7;
+        int daysToAdd = (day - todayIndex);
         if (daysToAdd == 0) return "Today";
         if (daysToAdd == 1) return "Tomorrow";
 
@@ -17,7 +17,7 @@
 {
     @foreach (var app in Model)
     {
-        <div class="card d-flex text-center swiper-slide @(Model.Count == 2 ? "w-50" : "")">
+        <div class="card d-flex text-center swiper-slide @(Model.Count == 2 ? "w-50" : Model.Count == 1 ? "w-100" : "")">
             <div class="card-header SP-bookHeader p-1">
                 @GetNextDate(app.Day)
             </div>
@@ -46,7 +46,7 @@
             }
             else if(!User.Identity.IsAuthenticated)
             {
-                <button onclick="ShowModal(@app.ResID)" class="card-footer btn disabled SP-bookBTN p-1">Book</button>
+                <a asp-action="Login" asp-controller="Account" class="card-footer btn SP-bookBTN p-1">Book</a>
             }
             else
             {

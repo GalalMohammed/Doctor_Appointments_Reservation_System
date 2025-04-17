@@ -167,6 +167,11 @@
     background-color: transparent;
     border: 1px solid var(--primary-color);
 }
+@media(max-width: 768px) {
+    .doctor-edit-time {
+        width: 70px !important;
+    }
+}
 :root {
     --primary-color: #004085;
     --primary-color-rgb: 0, 64, 133;

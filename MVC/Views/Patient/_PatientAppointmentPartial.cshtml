@@ -11,10 +11,13 @@
             <i class="fas fa-map-marker-alt me-1"></i> @Model.Governorate: @Model.Location
         </span>
         <span class="patient-appointment-details mt-sm-2">
-            <i class="far fa-calendar-alt me-1"></i> @Model.DateTime.ToString("MMMM d, yyyy 'at' h:mm tt")
+            <i class="far fa-calendar-alt me-1 @(Model.DateTime < DateTime.Now ? "text-danger" : "")"></i> @Model.DateTime.ToString("MMMM d, yyyy 'at' h:mm tt")
         </span>
     </div>
 </div>
-<i class="fas fa-times appointment-cancel-icon position-absolute" title="Cancel Appointment"></i>
+@if (Model.DateTime >= DateTime.Now)
+{
+    <i class="fas fa-times appointment-cancel-icon position-absolute" title="Cancel Appointment"></i>
+}
 
 <a asp-controller="Patient" asp-action="CancelAppointment" asp-route-appointmentId="@Model.Id" class="profile-appointment-id d-none"></a>

@@ -264,7 +264,7 @@ namespace MVC.Controllers
                         newDoctor.ImageURL = imageURL;
                         await doctorManager.AddDoctor(newDoctor);
                         await userManager.AddToRoleAsync(appUser, "doctor");
-                        reservationManager.GenerateCalanderReservation(newDoctor, 20);
+                        reservationManager.GenerateCalanderReservation(newDoctor, newDoctor.DefaultMaxReservations);
                         emailService.SendEmail(new Email
                         {
                             To = doctorRegister.Email,

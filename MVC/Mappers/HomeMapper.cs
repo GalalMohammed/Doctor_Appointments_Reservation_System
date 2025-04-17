@@ -46,10 +46,15 @@ namespace MVC.Mappers
                     { 7,  _specialtyManager.GetSpecialtyDoctors(7).Result?.Count},
                     { 8,  _specialtyManager.GetSpecialtyDoctors(8).Result?.Count},
                     { 9,  _specialtyManager.GetSpecialtyDoctors(9).Result?.Count},
-                    
+                    { 10, _specialtyManager.GetSpecialtyDoctors(10).Result?.Count},
+                    { 11, _specialtyManager.GetSpecialtyDoctors(11).Result?.Count},
+                    { 12, _specialtyManager.GetSpecialtyDoctors(12).Result?.Count},
+                    { 13, _specialtyManager.GetSpecialtyDoctors(13).Result?.Count},
+                    { 14, _specialtyManager.GetSpecialtyDoctors(14).Result?.Count},
+
                 }
 
-                
+
             };
         }
     }

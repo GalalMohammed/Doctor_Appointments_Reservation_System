@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MVC.Mappers;
 using MVC.ViewModels;
 using System.Security.Claims;
@@ -79,7 +78,7 @@ namespace MVC.Controllers
             {
                 { "Google", "fa-brands fa-google-plus-g" },
                 { "Facebook", "fa-brands fa-facebook-f" },
-                { "Microsoft", "fa-brands fa-windows" }
+                { "Microsoft", "fa-brands fa-microsoft" }
             };
             return View(loginUser);
         }
@@ -92,7 +91,7 @@ namespace MVC.Controllers
             {
                 { "Google", "fa-brands fa-google-plus-g" },
                 { "Facebook", "fa-brands fa-facebook-f" },
-                { "Microsoft", "fa-brands fa-windows" }
+                { "Microsoft", "fa-brands fa-microsoft" }
             };
             if (ModelState.IsValid)
             {
@@ -146,7 +145,8 @@ namespace MVC.Controllers
                 return View("Login", loginUser);
             }
             string? email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
-            if (email == null) {
+            if (email == null)
+            {
                 ModelState.AddModelError(string.Empty, "Email not found in external login.");
                 return View("Login", loginUser);
             }
@@ -423,7 +423,7 @@ namespace MVC.Controllers
                 await doctorManager.UpdateDoctor(doc);
 
                 TempData["Updated"] = "Image was updated successfully";
-                return RedirectToAction("profile","doctor",new {id = image.ID});
+                return RedirectToAction("profile", "doctor", new { id = image.ID });
             }
             else
             {

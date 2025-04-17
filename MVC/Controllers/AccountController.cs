@@ -29,6 +29,12 @@ namespace MVC.Controllers
         private readonly IUploadService uploadService;
         private readonly IDoctorReservationManager reservationManager;
         private readonly ReCaptchaService reCaptchaService;
+        private readonly static Dictionary<string, string> Icons = new Dictionary<string, string>
+            {
+                { "Google", "fa-brands fa-google-plus-g" },
+                { "Facebook", "fa-brands fa-facebook-f" },
+                { "Microsoft", "fa-brands fa-microsoft" }
+            };
 
         public AccountController(
             SignInManager<AppUser> signInManager,
@@ -74,12 +80,7 @@ namespace MVC.Controllers
             {
                 ExternalLogins = signInManager.GetExternalAuthenticationSchemesAsync().Result
             };
-            ViewBag.IconClasses = new Dictionary<string, string>
-            {
-                { "Google", "fa-brands fa-google-plus-g" },
-                { "Facebook", "fa-brands fa-facebook-f" },
-                { "Microsoft", "fa-brands fa-microsoft" }
-            };
+            ViewBag.IconClasses = Icons;
             return View(loginUser);
         }
         [HttpPost]
@@ -87,12 +88,7 @@ namespace MVC.Controllers
         public async Task<IActionResult> Login(LoginViewModel loginUser)
         {
             loginUser.ExternalLogins = signInManager.GetExternalAuthenticationSchemesAsync().Result;
-            ViewBag.IconClasses = new Dictionary<string, string>
-            {
-                { "Google", "fa-brands fa-google-plus-g" },
-                { "Facebook", "fa-brands fa-facebook-f" },
-                { "Microsoft", "fa-brands fa-microsoft" }
-            };
+            ViewBag.IconClasses = Icons;
             if (ModelState.IsValid)
             {
                 var appUser = await userManager.FindByEmailAsync(loginUser.Email);
@@ -127,12 +123,7 @@ namespace MVC.Controllers
             {
                 ExternalLogins = await signInManager.GetExternalAuthenticationSchemesAsync()
             };
-            ViewBag.IconClasses = new Dictionary<string, string>
-            {
-                { "Google", "fa-brands fa-google-plus-g" },
-                { "Facebook", "fa-brands fa-facebook-f" },
-                { "Microsoft", "fa-brands fa-microsoft" }
-            };
+            ViewBag.IconClasses = Icons;
             if (!string.IsNullOrEmpty(remoteError))
             {
                 ModelState.AddModelError(string.Empty, $"Error from external login provider: {remoteError}");

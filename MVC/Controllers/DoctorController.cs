@@ -2,6 +2,7 @@
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
 using BLLServices.Managers.SpecialtyManager;
+using DAL.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using MVC.Mappers;
 using MVC.ViewModels;
 using System.Linq.Expressions;
 using System.Text.Json;
+using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Controllers
@@ -21,7 +23,6 @@ namespace MVC.Controllers
         private readonly ISpecialtyManager _specialityManager;
         private readonly IUploadService uploadService;
         private readonly IDoctorReservationManager doctorReservationManager;
-
         public DoctorController(IDoctorManager doctorManager,
                                 IDoctorMapper doctorMapper,
                                 ISpecialtyManager _specialityManager,
@@ -206,6 +207,29 @@ namespace MVC.Controllers
         }
 
         [Authorize(Roles = "doctor")]
+        [HttpPost("Delete-Reservation")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReservation(int ResID)
+        {
+            var ID = int.Parse(User.FindFirst("currentId").Value);
+            var res = await doctorReservationManager.GetDoctorReservationByID(ResID);
+            if(res == null)
+            {
+                TempData["Error"] = "This reservation doesn't exist";
+            }
+            else if(res.DoctorID != ID)
+            {
+                TempData["Error"] = "You aren't authorized to delete this reservation";
+            }
+            else
+            {
+                doctorReservationManager.DeleteDoctorReservation(res);
+                TempData["Deleted"] = $"Reservation on {res.StartTime.Date.ToString("dddd, dd MMMM yyyy")} from {res.StartTime.ToString("hh:mm tt")} to {res.EndTime.ToString("hh:mm tt")} has been deleted";
+            }
+            return RedirectToAction("profile", "Doctor", new { id = ID, tab = "calender" });
+        }
+
+        [Authorize(Roles = "doctor")]
         public async Task<IActionResult> Edit()
         {
             var doctor = await _doctorManager.GetDoctorByID(int.Parse(User.FindFirst("currentId").Value));
@@ -227,6 +251,30 @@ namespace MVC.Controllers
                 return View(viewModel);
             }
             return View(viewModel);
+        }
+        [Authorize(Roles = "doctor")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSchedule(ScheduleViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var doctor = await _doctorManager.GetDoctorByID(int.Parse(User.FindFirst("currentId").Value));
+                doctor.DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), viewModel.StartTime);
+                doctor.DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), viewModel.EndTime);
+                //doctor.WorkingDays = (WorkingDays)Convert.ToInt32(string.Join("", viewModel.Days), 2);
+                doctor.WorkingDays = (WorkingDays)viewModel.Days.Select(x=>Math.Pow(2,int.Parse(x))).Sum();
+                doctor.DefaultMaxReservations = viewModel.ReservationQuota;
+                await _doctorManager.UpdateDoctor(doctor);
+                TempData["Updated"] = "Schedule Updated!";
+                return RedirectToAction("profile", "Doctor", new { tab = "calender" });
+            }
+            TempData["Error"] = string.Join("\n",
+                                ModelState
+                                    .Where(m => m.Value.Errors.Any())
+                                    .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}\n"))
+                                );
+            return RedirectToAction("profile", "Doctor", new { tab = "calender" });
         }
     }
 }

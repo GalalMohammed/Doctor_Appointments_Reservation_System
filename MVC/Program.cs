@@ -18,8 +18,6 @@ using DAL.Repositories.Orders;
 using DAL.Repositories.Patients;
 using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC.Claims;

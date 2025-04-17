@@ -39,6 +39,8 @@ namespace vezeetaApplicationAPI.Models
         [DataType(DataType.Time)]
         public DateTime DefaultEndTime { get; set; }
 
+        public int DefaultMaxReservations { get; set; }
+
         public virtual ICollection<DoctorReservation>? DoctorReservations { get; set; }
         public virtual ICollection<Review>? Reviews { get; set; }
     }

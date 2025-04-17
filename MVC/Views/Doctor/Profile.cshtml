@@ -284,7 +284,7 @@
                                 <div class="w-50">
                                     <div class="d-flex align-items-center w-100">
                                         <label for="ReservationQuota" class="form-label text-center p-2">Reservation Quota</label>
-                                        <input name="ReservationQuota" id="ReservationQuota" class="form-control" min="0" type="number" value="@Model.Schedule.ReservationQuota" />
+                                        <input name="ReservationQuota" id="ReservationQuota" class="form-control" min="1" max="50" type="number" value="@Model.Schedule.ReservationQuota" />
                                     </div>
                                 </div>
                                 <input type="submit" class="btn login-submit w-25" value="Edit" />

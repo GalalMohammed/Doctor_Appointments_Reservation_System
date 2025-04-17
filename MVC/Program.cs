@@ -18,8 +18,6 @@ using DAL.Repositories.Orders;
 using DAL.Repositories.Patients;
 using DAL.Repositories.Reviews;
 using DAL.Repositories.Specialties;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC.Claims;
@@ -39,7 +37,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("LocalTest")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

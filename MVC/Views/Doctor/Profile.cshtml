@@ -288,6 +288,12 @@
                                         <button type="button" class="btn SP-bookBTN col-12" data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </form>
+                                <div class="modal-footer d-none SP-deleteBTN">
+                                    <form class="col-12" asp-action="DeleteReservation" asp-controller="Doctor">
+                                        <input type="hidden" name="ResID" class="SP-deleteResID" />
+                                        <button type="submit" class="btn btn-danger col-12">Delete Reservation</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

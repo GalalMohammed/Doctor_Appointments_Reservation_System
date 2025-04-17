@@ -94,6 +94,8 @@ const startTime = document.querySelector(".SP-startTime");
 const endTime = document.querySelector(".SP-endTime");
 const maxRes = document.querySelector(".SP-maxRes");
 const calFormBTN = document.querySelector(".SP-CalSubmit");
+const deleteBTNDiv = document.querySelector(".SP-deleteBTN");
+const deleteResID = document.querySelector(".SP-deleteResID");
 
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
@@ -152,14 +154,17 @@ const calendar = new calendarJs("SP-Calendar",{ // Target element
             date.value = event.from.toISOString().split('T')[0]
             resID.value = event.ResID;
             maxRes.value = event.MaxRes;
+            deleteResID.value = event.ResID;
 
             if (event.isAllDay) {
                 calFormBTN.innerText = "Add"
                 startTime.value = "09:00";
                 endTime.value = "17:00";
+                deleteBTNDiv.classList.add("d-none")
             }
             else {
                 calFormBTN.innerText = "Update"
+                deleteBTNDiv.classList.remove("d-none")
                 startTime.value = event.from.toTimeString().slice(0, 5);
                 endTime.value = event.to.toTimeString().slice(0, 5);
             }

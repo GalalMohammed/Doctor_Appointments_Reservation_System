@@ -10,6 +10,7 @@ using MVC.Mappers;
 using MVC.ViewModels;
 using System.Linq.Expressions;
 using System.Text.Json;
+using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Controllers
@@ -21,7 +22,6 @@ namespace MVC.Controllers
         private readonly ISpecialtyManager _specialityManager;
         private readonly IUploadService uploadService;
         private readonly IDoctorReservationManager doctorReservationManager;
-
         public DoctorController(IDoctorManager doctorManager,
                                 IDoctorMapper doctorMapper,
                                 ISpecialtyManager _specialityManager,
@@ -203,6 +203,29 @@ namespace MVC.Controllers
                 );
             }
             return RedirectToAction("profile", "Doctor", new { id = res.ID, tab = "calender" });
+        }
+
+        [Authorize(Roles = "doctor")]
+        [HttpPost("Delete-Reservation")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReservation(int ResID)
+        {
+            var ID = int.Parse(User.FindFirst("currentId").Value);
+            var res = await doctorReservationManager.GetDoctorReservationByID(ResID);
+            if(res == null)
+            {
+                TempData["Error"] = "This reservation doesn't exist";
+            }
+            else if(res.DoctorID != ID)
+            {
+                TempData["Error"] = "You aren't authorized to delete this reservation";
+            }
+            else
+            {
+                doctorReservationManager.DeleteDoctorReservation(res);
+                TempData["Deleted"] = $"Reservation on {res.StartTime.Date.ToString("dddd, dd MMMM yyyy")} from {res.StartTime.ToString("hh:mm tt")} to {res.EndTime.ToString("hh:mm tt")} has been deleted";
+            }
+            return RedirectToAction("profile", "Doctor", new { id = ID, tab = "calender" });
         }
 
         [Authorize(Roles = "doctor")]

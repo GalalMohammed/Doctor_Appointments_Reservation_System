@@ -69,6 +69,8 @@ html {
         color: var(--accent-color);
     }
 
+
+
 .SP-active {
     background-color: var(--primary-color);
     color: var(--accent-color)
@@ -85,6 +87,19 @@ html {
         color: var(--primary-color);
         background-color: var(--accent-color);
         border-color: var(--primary-color);
+    }
+
+.SP-deleteBTN button {
+    background-color: #dc3545;
+    color: var(--accent-color);
+    border-color: #dc3545;
+    font-weight: bold;
+}
+
+    .SP-deleteBTN button:hover {
+        color: #dc3545;
+        background-color: var(--accent-color);
+        border-color: #dc3545;
     }
 
 .SP-bookHeader {

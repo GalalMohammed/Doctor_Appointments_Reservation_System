@@ -13,7 +13,7 @@ namespace MVC.ViewModels
         [ValidEndTime]
         public TimeOnly EndTime { get; set; }
         [Display(Name = "Reservation Quota")]
-        [Range(0, int.MaxValue, ErrorMessage = "Reservation quota must be a positive number")]
+        [Range(1, int.MaxValue, ErrorMessage = "Reservation quota must be a positive number")]
         public int ReservationQuota { get; set; }
     }
 }

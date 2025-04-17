@@ -120,19 +120,19 @@ namespace MVC.Controllers
             // Request a redirect to the external login provider
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
             var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
+            return new ChallengeResult(provider, properties);
         }
         public async Task<IActionResult> ExternalLoginCallback(string _ = "", string remoteError = "")
         {
             LoginViewModel loginUser = new()
             {
-                ExternalLogins = signInManager.GetExternalAuthenticationSchemesAsync().Result
+                ExternalLogins = await signInManager.GetExternalAuthenticationSchemesAsync()
             };
             ViewBag.IconClasses = new Dictionary<string, string>
             {
                 { "Google", "fa-brands fa-google-plus-g" },
                 { "Facebook", "fa-brands fa-facebook-f" },
-                { "Microsoft", "fa-brands fa-windows" }
+                { "Microsoft", "fa-brands fa-microsoft" }
             };
             if (!string.IsNullOrEmpty(remoteError))
             {
@@ -156,7 +156,28 @@ namespace MVC.Controllers
                 ModelState.AddModelError(string.Empty, "Email not found. Please register first.");
                 return RedirectToAction(nameof(Register));
             }
-            Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: false);
+            // Check if the user already has a login for this provider
+            var userLogins = await userManager.GetLoginsAsync(user);
+            if (!userLogins.Any(x => x.LoginProvider == loginInfo.LoginProvider && x.ProviderKey == loginInfo.ProviderKey))
+            {
+                // Add the login information to the user
+                var result = await userManager.AddLoginAsync(user, loginInfo);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Error adding external login.");
+                    return View("Login", loginUser);
+                }
+            }
+            // Sign in the user with the external login provider
+            // Check if the user is already signed in
+            if (signInManager.IsSignedIn(User))
+            {
+                // If the user is already signed in, we can just add the login information
+                await signInManager.UpdateExternalAuthenticationTokensAsync(loginInfo);
+                return RedirectToAction("Index", "Home");
+            }
+            // If the user is not signed in, we need to sign them in
+            Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (!signInResult.Succeeded)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -288,7 +309,6 @@ namespace MVC.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult ForgetPassword()
         {
             ViewBag.emailIsExist = "";
@@ -296,7 +316,6 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {

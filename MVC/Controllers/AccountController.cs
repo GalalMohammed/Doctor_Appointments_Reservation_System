@@ -180,6 +180,7 @@ namespace MVC.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
@@ -371,6 +372,7 @@ namespace MVC.Controllers
 
 
         }
+        [Authorize]
         [Route("account/change-password")]
         public IActionResult ChangePassword()
         {
@@ -397,7 +399,7 @@ namespace MVC.Controllers
             }
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeImage(ChangeImageVM image)

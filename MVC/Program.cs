@@ -144,7 +144,7 @@ namespace MVC
             app.UseHttpsRedirection();
             app.UseHsts(); // HTTP Strict Transport Security Protocol
 
-            app.MapStaticAssets();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

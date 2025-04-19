@@ -1,12 +1,27 @@
 ﻿@{
     ViewData["Title"] = "About";
+    var test = new AboutViewModel[]
+    {
+        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "right" },
+        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "down" },
+        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "left" },
+        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "right" },
+        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "down" },
+        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "left" },
+    };
 }
 
 <div class="d-flex flex-wrap justify-content-evenly gap-4 w-75 mx-auto user-select-none" style="padding-top: 100px;">
-    <partial name="_ProfileCardPartial" />
-    <partial name="_ProfileCardPartial" />
-    <partial name="_ProfileCardPartial" />
-    <partial name="_ProfileCardPartial" />
-    <partial name="_ProfileCardPartial" />
-    <partial name="_ProfileCardPartial" />
+    @for (var i = 0; i < test.Length; i++)
+    {
+        <partial name="_ProfileCardPartial" model="@test[i]" />
+    }
 </div>
+
+@section Styles {
+    @* <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> *@
+}
+
+@section Scripts {
+    @* <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> *@
+}

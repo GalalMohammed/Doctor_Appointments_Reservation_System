@@ -280,7 +280,19 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddReview(AddReviewVM rev)
         {
+            if(ModelState.IsValid)
+            {
+
+            }
+            else
+            {
+                TempData["Error"] = string.Join("\n",
+                    ModelState
+                        .Where(m => m.Value.Errors.Any())
+                        .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}\n"))
+                );
+            }
             return Json(rev);
-        }
+        }                
     }
 }

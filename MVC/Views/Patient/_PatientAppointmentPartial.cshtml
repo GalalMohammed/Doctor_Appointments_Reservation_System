@@ -1,7 +1,7 @@
 ﻿@model AppointmentViewModel
 
 <img src="~/uploads/images/@Model.DoctorImagePath" alt="Doctor" class="appointment-doctor-image rounded-circle object-fit-cover m-2">
-<div class="w-75 patient-appointment-card-content d-flex justify-content-between">
+<div class="w-75 patient-appointment-card-content d-flex flex-wrap justify-content-between">
     <div class="d-flex flex-column">
         <h5 class="mb-1">Dr. @Model.Doctor</h5>
         <p class="mb-1 text-muted">@Model.Specialty</p>
@@ -10,14 +10,24 @@
         <span class="patient-appointment-details">
             <i class="fas fa-map-marker-alt me-1"></i> @Model.Governorate: @Model.Location
         </span>
-        <span class="patient-appointment-details mt-sm-2">
-            <i class="far fa-calendar-alt me-1 @(Model.DateTime < DateTime.Now ? "text-danger" : "")"></i> @Model.DateTime.ToString("MMMM d, yyyy 'at' h:mm tt")
+        <span class="patient-appointment-details mt-sm-2 mb-3">
+            <i class="far fa-calendar-alt me-1 @(Model.StartTime < DateTime.Now ? "text-danger" : "")"></i> @Model.StartTime.ToString("MMMM d, yyyy 'at' h:mm tt") to @Model.EndTime.ToString("h:mm tt")
         </span>
     </div>
+    @if(DateTime.Now > Model.EndTime || true)
+    {
+        <div class="col-12">
+            <button onclick="transferData(@Model.Id,'@Model.Doctor')" data-bs-toggle="modal" data-bs-target="#SP-RevForm" class="btn SP-bookBTN position-absolute bottom-0 end-0 m-3">Add Review</button>
+        </div>
+    }
 </div>
-@if (Model.DateTime >= DateTime.Now)
+
+
+
+@if (Model.StartTime >= DateTime.Now)
 {
     <i class="fas fa-times appointment-cancel-icon position-absolute" title="Cancel Appointment"></i>
 }
 
 <a asp-controller="Patient" asp-action="CancelAppointment" asp-route-appointmentId="@Model.Id" class="profile-appointment-id d-none"></a>
+

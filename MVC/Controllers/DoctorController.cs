@@ -276,5 +276,11 @@ namespace MVC.Controllers
                                 );
             return RedirectToAction("profile", "Doctor", new { tab = "calender" });
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddReview(AddReviewVM rev)
+        {
+            return Json(rev);
+        }
     }
 }

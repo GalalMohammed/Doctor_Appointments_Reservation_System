@@ -4,6 +4,7 @@
     ViewData["title"] = "Profile";
 }
 <div class="" style="padding-top:80px">
+    <partial name="_AlertValidationPartial"></partial>
     <div class="col-12 pt-3 ">
         <ul class="d-flex justify-content-center gap-3 list-unstyled p-0 ">
             <li class="btn patient-tab patient-tab-active" data-tab="patient-tab-1"><span>Details</span></li>
@@ -65,7 +66,7 @@
     </div>
     <div id="patient-tab-2" class="d-none row w-75 patient-appointments-container mx-auto shadow-sm rounded-4">
         <swiper-container class="w-100 h-100 p-3 mx-auto position-relative" pagination="true" pagination-clickable="true" slides-per-view="1" grid-rows="2" space-between="40">
-            @if (Model.Appointments != null)
+            @if (Model.Appointments != null && Model.Appointments.Count != 0)
             {
                 foreach (var appointment in Model.Appointments)
                 {
@@ -74,7 +75,36 @@
                     </swiper-slide>
                 }
             }
+            else
+            {
+                <h2 class="text-center mt-5">No Appointment has been booked so far</h2>
+            }
         </swiper-container>
+    </div>
+</div>
+
+<div class="modal fade" id="SP-RevForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Working Day Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="AddReview" asp-controller="Doctor">
+                <div class="modal-body">
+
+                    <input type="hidden" class="SP-appID" name="AppID" />
+                    <div class="mb-3 SP-review">
+                        <label for="review" class="form-label">Your thoughts on the appointment with ?</label>
+                        <textarea class="form-control SP-reviewText" id="review" name="Review" required rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn SP-bookBTN col-12 SP-CalSubmit">Add</button>
+                    <button type="button" class="btn SP-bookBTN col-12" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -92,7 +122,13 @@
                         denyButtonText: "No",
                         color: "#004085",
                         confirmButtonColor: "#004085",
-                    }).then((result) => clickedAppointment.click());
+                    }).then((result) => {
+                        console.log(result)
+                        if(result.isConfirmed)
+                        {
+                            clickedAppointment.click()
+                        }
+                    });
             }));
     </script>
     <script src="~/js/patient-profile.js"></script>
@@ -133,5 +169,12 @@
             });
         </script>
     }
+    <script>
+        function transferData(appID,docName)
+        {
+            document.querySelector(".SP-appID").value = appID
+            document.querySelector(".SP-review label").innerText = `Thoughts on the appointment with Dr ${docName} ?`
+        }
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }

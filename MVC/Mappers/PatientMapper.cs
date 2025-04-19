@@ -18,7 +18,8 @@ namespace MVC.Mappers
             return new AppointmentViewModel
             {
                 Id = appointment.ID,
-                DateTime = appointment.DoctorReservation.StartTime,
+                StartTime = appointment.DoctorReservation.StartTime,
+                EndTime = appointment.DoctorReservation.EndTime,
                 Doctor = appointment.DoctorReservation?.Doctor?.FirstName + " " + appointment.DoctorReservation?.Doctor?.LastName,
                 Specialty = appointment.DoctorReservation?.Doctor?.Specialty?.Name ?? "Not Available",
                 Governorate = appointment.DoctorReservation?.Doctor?.Governorate ?? Governorate.All,
@@ -64,7 +65,7 @@ namespace MVC.Mappers
             {
                 PatientId = patientId,
                 DoctorReservationID = doctorReservationId,
-                AppointmentDate = appointmentViewModel.DateTime
+                AppointmentDate = appointmentViewModel.StartTime
             };
             if (appointmentViewModel.Id != 0)
             {

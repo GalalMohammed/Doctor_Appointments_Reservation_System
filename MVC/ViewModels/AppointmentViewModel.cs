@@ -6,7 +6,8 @@ namespace MVC.ViewModels
     {
         public int Id { get; set; }
         public string Specialty { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public Governorate Governorate { get; set; }
         public string Location { get; set; }
         public string Doctor { get; set; }

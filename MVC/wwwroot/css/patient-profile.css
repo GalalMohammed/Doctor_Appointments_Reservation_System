@@ -1,4 +1,8 @@
-﻿.patient-profile-container, .patient-appointments-container {
+﻿.SP-reviewText {
+    border-color: var(--primary-color);
+}
+
+.patient-profile-container, .patient-appointments-container {
     color: var(--primary-color);
     border: 1px solid var(--secondary-color);
 }

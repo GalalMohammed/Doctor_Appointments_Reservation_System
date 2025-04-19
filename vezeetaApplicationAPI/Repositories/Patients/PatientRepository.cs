@@ -24,6 +24,7 @@ namespace DAL.Repositories.Patients
         {
             var res = await context.Patients.Include(p => p.AppUser)
                 .Include(p => p.Appointments).ThenInclude(a => a.DoctorReservation).ThenInclude(d => d.Doctor).ThenInclude(d => d.Specialty).Where(p => p.ID == id).FirstOrDefaultAsync();
+            if (res!=null) res.Appointments = res.Appointments.OrderByDescending(app => app.DoctorReservation.StartTime).ToList();
             if (WithAsNoTracking && res != null)
             {
                 context.Entry(res).State = EntityState.Detached;

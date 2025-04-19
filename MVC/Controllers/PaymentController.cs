@@ -14,22 +14,6 @@ namespace MVC.Controllers
     [Authorize(Roles = "patient")]
     public class PaymentController(PayPalClient client, IPaymentService paymentService, IDoctorReservationManager reservationManager, IOrderManager orderManager, ReCaptchaService reCaptcha) : Controller
     {
-        [AcceptVerbs("GET", "POST")]
-        public async Task<IActionResult> Index()
-        {
-            if (Request.Method == "POST")
-            {
-                // Handle the form submission here
-                string googleReCaptchaResponse = Request.Form["g-recaptcha-response"].ToString();
-                // Verify the token
-                bool isValidCaptcha = await reCaptcha.ValidateReCaptcha(googleReCaptchaResponse);
-            }
-
-            ViewBag.ClientId = client.ClientId;
-            ViewBag.amount = 100;
-            return View();
-
-        }
 
         [HttpPost]
         public async Task<JsonResult> CreateOrder([FromBody] JsonObject data)
@@ -79,6 +63,8 @@ namespace MVC.Controllers
                     ?? throw new Exception("Order not found");
                 if (!int.TryParse(User.FindFirst("currentId")?.Value, out int patientId))
                     return Json(new { error = "Invalid patient ID" });
+                // Set the capture ID in the order
+                orderManager.SetOrderCaptureId(orderIdValue, captureResponse.CaptureId);
                 orderManager.MarkAsPaid(patientId, trackedOrder.DoctorReservationId);
                 return Json(new { success = true, captureId = captureResponse.Id, status = captureResponse.Status, patientId });
             }
@@ -100,13 +86,13 @@ namespace MVC.Controllers
             }
             return Json(new { success = false });
         }
-        [HttpPost("checkout")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Checkout(int doctorId)
-        {
-            var session = await paymentService.Pay(doctorId, Request.Host.ToString());
-            Response.Headers.Add("Location", session.Url);
-            return new StatusCodeResult(303);
-        }
+        //[HttpPost("checkout")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Checkout(int doctorId)
+        //{
+        //    var session = await paymentService.Pay(doctorId, Request.Host.ToString());
+        //    Response.Headers.Add("Location", session.Url);
+        //    return new StatusCodeResult(303);
+        //}
     }
 }

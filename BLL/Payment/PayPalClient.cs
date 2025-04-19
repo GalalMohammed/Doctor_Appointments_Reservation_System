@@ -87,9 +87,27 @@ namespace BLLServices.Payment
             CaptureOrderResponse captureOrderResponse = new()
             {
                 Id = jsonNodeResponse["id"]?.ToString() ?? throw new Exception("Capture ID is missing in the response"),
-                Status = jsonNodeResponse["status"]?.ToString() ?? throw new Exception("Status is missing in the response")
+                Status = jsonNodeResponse["status"]?.ToString() ?? throw new Exception("Status is missing in the response"),
+                CaptureId = jsonNodeResponse["purchase_units"]?[0]?["payments"]?["captures"]?[0]?["id"]?.ToString() ?? throw new Exception("Capture ID is missing in the response")
             };
             return captureOrderResponse;
+        }
+        public async Task<RefundOrderResponse> RefundOrder(string orderCaptureId)
+        {
+            AuthResponse authResponse = await Authenticate();
+            using HttpClient httpClient = new();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResponse.AccessToken);
+            StringContent content = new("", Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await httpClient.PostAsync($"{BaseUrl}/v2/payments/captures/{orderCaptureId}/refund", content);
+            response.EnsureSuccessStatusCode();
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            JsonNode? jsonNodeResponse = JsonNode.Parse(jsonResponse) ?? throw new Exception("Failed to parse RefundOrderResponse");
+            RefundOrderResponse refundOrderResponse = new()
+            {
+                Id = jsonNodeResponse["id"]?.ToString() ?? throw new Exception("Refund ID is missing in the response"),
+                Status = jsonNodeResponse["status"]?.ToString() ?? throw new Exception("Status is missing in the response")
+            };
+            return refundOrderResponse;
         }
     }
 }

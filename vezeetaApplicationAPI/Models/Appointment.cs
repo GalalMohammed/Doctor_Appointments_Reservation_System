@@ -16,7 +16,6 @@ namespace vezeetaApplicationAPI.Models
         public int PatientId { get; set; }
 
         public DateTime AppointmentDate { get; set; }
-
         public virtual DoctorReservation? DoctorReservation { get; set; }
         public virtual Patient? Patient { get; set; }
     }

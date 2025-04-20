@@ -66,7 +66,7 @@ namespace MVC.Controllers
         }
         public async Task<IActionResult> CancelAppointment(int appointmentId)
         {
-            orderManager.DeleteOrder(int.Parse(User.FindFirst("currentId").Value), await appointmentManager.GetReservationId(appointmentId));
+            orderManager.DeleteOrder(int.Parse(User.FindFirst("currentId").Value),(int) await appointmentManager.GetReservationId(appointmentId));
             await appointmentManager.DeleteAppointmentAsync(appointmentId);
             return RedirectToAction("Profile");
         }

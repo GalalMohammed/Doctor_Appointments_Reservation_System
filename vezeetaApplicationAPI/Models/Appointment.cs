@@ -11,7 +11,7 @@ namespace vezeetaApplicationAPI.Models
     {
         public int ID { get; set; }
         
-        public int DoctorReservationID { get; set; }
+        public int? DoctorReservationID { get; set; }
         
         public int PatientId { get; set; }
 

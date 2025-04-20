@@ -34,6 +34,10 @@ namespace BLLServices.Managers.AppointmentManager
             else
                 return AppointmentCreationStatus.MaxReservationsExceeded;
         }
+        public void UpdateAppointment(Appointment appointment)
+        {
+            appointmentRepository.Update(appointment);
+        }
 
         public async Task DeleteAppointmentAsync(int appointmentId)
         {
@@ -41,12 +45,16 @@ namespace BLLServices.Managers.AppointmentManager
             if (appointment != null)
                 appointmentRepository.Delete(appointment);
         }
+        public async Task<Appointment> GetAppointmentById(int appointmentId)
+        {
+            return await appointmentRepository.GetByID(appointmentId);
+        }
 
         public async Task<List<Appointment>> GetDoctorAppointments(int doctorId, int reservationId)
         {
             IEnumerable<DoctorReservation> reservations = await reservationRepository.GetAllByConditon(reservation => reservation.ID == reservationId && reservation.DoctorID == doctorId);
             List<int> reservationsIds = [.. reservations.Select(r => r.ID)];
-            List<Appointment> appointments = await appointmentRepository.GetAllByConditon(app => reservationsIds.Contains(app.DoctorReservationID));
+            List<Appointment> appointments = await appointmentRepository.GetAllByConditon(app => reservationsIds.Contains((int)app.DoctorReservationID));
             return [.. appointments];
         }
 
@@ -66,10 +74,15 @@ namespace BLLServices.Managers.AppointmentManager
         {
             return await appointmentRepository.GetCountByDate(doctorID, date);
         }
-        public async Task<int> GetReservationId(int appointmentId)
+        public async Task<int?> GetReservationId(int appointmentId)
         {
             var appointment = await appointmentRepository.GetByID(appointmentId);
             return appointment.DoctorReservationID;
         }
+        public async Task<List<Appointment>> GetAppointmentsByReservationId(int reservationId)
+        {
+            return await appointmentRepository.GetAllByConditon(app => app.DoctorReservationID == reservationId);
+        }
+
     }
 }

@@ -38,7 +38,7 @@ namespace vezeetaApplicationAPI.DataAccess
                 .HasOne(a => a.DoctorReservation)
                 .WithMany(dr => dr.Appointments)
                 .HasForeignKey(a => a.DoctorReservationID)
-                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
+                .OnDelete(deleteBehavior: DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Patient)
@@ -69,7 +69,7 @@ namespace vezeetaApplicationAPI.DataAccess
             modelBuilder.Entity<Order>()
                         .HasOne(o => o.DoctorReservation)
                         .WithMany(p => p.Orders)
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
         }
     }
 

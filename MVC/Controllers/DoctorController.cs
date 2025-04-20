@@ -1,6 +1,9 @@
-﻿using BLLServices.Common.UploadService;
+﻿using BLLServices.Common.CancelationService;
+using BLLServices.Common.UploadService;
+using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
+using BLLServices.Managers.ReviewManager;
 using BLLServices.Managers.SpecialtyManager;
 using DAL.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -23,17 +26,26 @@ namespace MVC.Controllers
         private readonly ISpecialtyManager _specialityManager;
         private readonly IUploadService uploadService;
         private readonly IDoctorReservationManager doctorReservationManager;
+        private readonly ICancelationService cancelationService;
+        private readonly IAppointmentManager appointmentManager;
+        private readonly IReviewManager reviewManager;
         public DoctorController(IDoctorManager doctorManager,
                                 IDoctorMapper doctorMapper,
                                 ISpecialtyManager _specialityManager,
                                 IUploadService uploadService,
-                                IDoctorReservationManager doctorReservationManager)
+                                IDoctorReservationManager doctorReservationManager,
+                                ICancelationService cancelationService,
+                                IAppointmentManager appointmentManager,
+                                IReviewManager reviewManager)
         {
             _doctorManager = doctorManager;
             _doctorMapper = doctorMapper;
             this._specialityManager = _specialityManager;
             this.uploadService = uploadService;
             this.doctorReservationManager = doctorReservationManager;
+            this.cancelationService = cancelationService;
+            this.appointmentManager = appointmentManager;
+            this.reviewManager = reviewManager;
         }
 
         [HttpGet]
@@ -223,7 +235,8 @@ namespace MVC.Controllers
             }
             else
             {
-                doctorReservationManager.DeleteDoctorReservation(res);
+                cancelationService.CancelDoctorReservation(ResID);
+                //doctorReservationManager.DeleteDoctorReservation(res);
                 TempData["Deleted"] = $"Reservation on {res.StartTime.Date.ToString("dddd, dd MMMM yyyy")} from {res.StartTime.ToString("hh:mm tt")} to {res.EndTime.ToString("hh:mm tt")} has been deleted";
             }
             return RedirectToAction("profile", "Doctor", new { id = ID, tab = "calender" });
@@ -282,6 +295,34 @@ namespace MVC.Controllers
         {
             if(ModelState.IsValid)
             {
+                if (User.IsInRole("patient"))
+                {
+                    var appointment = appointmentManager.GetAppointmentById(rev.AppID).Result;
+                    if (appointment != null && appointment.DoctorReservationID.HasValue)
+                    {
+                        if (appointment.DoctorReservation.StartTime.Date < DateTime.Now.Date)
+                        {
+                            var review = _doctorMapper.MapFromAddReviewVM(rev).Result;
+                            reviewManager.AddReview(review);
+                        }
+                        else
+                        {
+                            TempData["Error"] = "You can't add a review for an appointment that hasn't happened yet";
+                            return Json(rev);
+
+                        }
+                    }
+                    else
+                    {
+                        TempData["Error"] = "This appointment doesn't exist";
+                        return Json(rev);
+                    }
+
+                }
+                else
+                {
+                    TempData["Error"] = "You are not authorized to add a review";
+                }
 
             }
             else

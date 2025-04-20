@@ -258,6 +258,21 @@ namespace MVC.Mappers
                 Specialty = doctor.Specialty.Name,
                 WaitingTime = doctor.WaitingTime,
             };
+        public Task<Review> MapFromAddReviewVM(AddReviewVM reviewVM)
+        {
+            var appointment = _appointmentManager.GetAppointmentById(reviewVM.AppID).Result;
+            if (appointment == null)
+                return null;
+            var review = new Review()
+            {
+                PatientID = appointment.PatientId,
+                DoctorID = appointment.DoctorReservation.DoctorID,
+                Description = reviewVM.Review,
+                Rate = reviewVM.Rate,
+            };
+            return Task.FromResult(review);
+        }
+       
 
     }
 

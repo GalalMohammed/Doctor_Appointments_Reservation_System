@@ -3,6 +3,7 @@
     public enum MailTemplates
     {
         ConfirmEmailTemplate,
-        ForgotPasswordTemplate
+        ForgotPasswordTemplate,
+        CancelAppointmentTemplate
     }
 }

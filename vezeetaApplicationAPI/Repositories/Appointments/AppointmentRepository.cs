@@ -40,5 +40,16 @@ namespace DAL.Repositories.Appointments
             return context.Appointments
                 .Where(x => x.DoctorReservation.DoctorID == doctorID && x.AppointmentDate.Date == date).Count();
         }
+        public override async Task<List<Appointment>> GetAllByConditon(Func<Appointment, bool> condition, bool WithAsNoTracking = true)
+        {
+            if (WithAsNoTracking)
+            {
+                var res = context.Appointments.Include(a => a.DoctorReservation).ThenInclude(a => a!.Doctor).ThenInclude(a => a!.Specialty)
+                    .Include(a => a.Patient).ThenInclude(p=>p.AppUser).AsNoTracking().Where(condition);
+                return res.ToList();
+            }
+            return context.Appointments.Include(a => a.DoctorReservation).ThenInclude(a => a!.Doctor).ThenInclude(a => a!.Specialty)
+                    .Include(a => a.Patient).ThenInclude(p => p.AppUser).Where(condition).ToList();
+        }
     }
 }

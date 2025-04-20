@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+    <TypeScriptCompile Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\ts\confirm-email.ts" />
     <Content Remove="wwwroot\ts\login.ts" />
     <Content Remove="wwwroot\ts\patient-profile.ts" />
@@ -15,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="wwwroot\images\home\" />
   </ItemGroup>
 

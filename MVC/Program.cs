@@ -2,6 +2,7 @@ using BLLServices.Common.EmailService;
 using BLLServices.Common.PaymentService;
 using BLLServices.Common.ReCaptchaService;
 using BLLServices.Common.UploadService;
+using BLLServices.Common.CancelationService;
 using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
@@ -37,7 +38,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("LocalTest")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -69,6 +70,7 @@ namespace MVC
             #region Common Services
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<ICancelationService, CancelationService>();
 
             builder.Services.AddScoped<IUploadService, UploadService>(provider =>
             {

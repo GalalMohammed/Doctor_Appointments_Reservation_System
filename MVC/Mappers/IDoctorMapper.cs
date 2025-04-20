@@ -32,6 +32,10 @@ namespace MVC.Mappers
 
         public Task<DoctorReservation> MapFromNewResVM(NewResVM newRes);
 
+        public Task<Review> MapFromAddReviewVM(AddReviewVM reviewVM);
+
+
+
 
     }
 }

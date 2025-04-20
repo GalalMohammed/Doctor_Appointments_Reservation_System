@@ -79,7 +79,7 @@ namespace MVC.Controllers
                     ?? throw new Exception("Order not found");
                 if (!int.TryParse(User.FindFirst("currentId")?.Value, out int patientId))
                     return Json(new { error = "Invalid patient ID" });
-                orderManager.MarkAsPaid(patientId, trackedOrder.DoctorReservationId);
+                orderManager.MarkAsPaid(patientId, (int)trackedOrder.DoctorReservationId);
                 return Json(new { success = true, captureId = captureResponse.Id, status = captureResponse.Status, patientId });
             }
             else

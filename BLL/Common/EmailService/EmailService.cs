@@ -22,5 +22,19 @@ namespace BLLServices.Common.EmailService
             smtpClient.Credentials = new NetworkCredential("doctordotnet62@gmail.com", "dznbacdlebzliuuk");
             smtpClient.Send(message);
         }
+        public void SendEmail(Email email, string username, string body)
+        {
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress("doctordotnet62@gmail.com");
+            message.To.Add(email.To);
+            message.IsBodyHtml = true;
+            message.Subject = email.Subject;
+            message.Body = body;
+            using SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.EnableSsl = true;
+            smtpClient.Credentials = new NetworkCredential("doctordotnet62@gmail.com", "dznbacdlebzliuuk");
+            smtpClient.Send(message);
+        }
+
     }
 }

@@ -809,9 +809,9 @@
                                         @*you need add the real path of the uploaded image  *@
                                         <img src="~/uploads/images/@Doctor.Image" class="card-img-top rounded-circle mx-auto mt-3" alt="Doctor" style="width: 100px; height: 100px;">
                                         <div class="card-body text-center  ">
-                                            <h5 class="card-title text-primary-color">@Doctor.Name</h5>
+                                            <h5 class="card-title text-primary-color text-nowrap" title="@Doctor.Name">@Doctor.Name</h5>
                                             <p class="card-text text-muted">@Doctor.Specialty</p>
-                                            <span class="list-group-item"><i class="fas fa-map-marker-alt text-primary-color"></i> @Doctor.Location</span>
+                                            <span class="list-group-item  text-nowrap" title="@Doctor.Location"><i class="fas fa-map-marker-alt text-primary-color"></i> @Doctor.Location</span>
 
                                             @* <div class="doctor-stars"
                                                  style="background-image:

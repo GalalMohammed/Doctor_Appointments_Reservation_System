@@ -2,26 +2,83 @@
     ViewData["Title"] = "About";
     var test = new AboutViewModel[]
     {
-        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "right" },
-        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "down" },
-        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "left" },
-        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "right" },
-        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "down" },
-        new AboutViewModel() { Name = "John Doe", Description = "Developer", LinkedIn = "#", GitHub = "#", Direction = "left" },
+        new AboutViewModel() { ImageUrl="/images/about/shamy.jpg",Name = "Ahmed Mostafa",  Description = "Developer", LinkedIn = "https://www.linkedin.com/in/ahmed-elshamy10/", GitHub = "https://github.com/Omar-El-Shirbiny", Direction = "right" },
+        new AboutViewModel() { ImageUrl="/images/about/Galal.jpg",Name = "Galal", Description = "Developer", LinkedIn = "https://www.linkedin.com/in/galal-abo-el-magd/", GitHub = "https://github.com/GalalMohammed", Direction = "left" },
+        new AboutViewModel() { ImageUrl="/images/about/Hammad.jpg",Name = "Mohamed Khaled", Description = "Developer", LinkedIn = "https://www.linkedin.com/in/mohamed-khaled-mk/", GitHub = "https://github.com/MohamedKhaled999", Direction = "right" },
+        new AboutViewModel() { ImageUrl="/images/about/Mahmoud.jpg",Name = "Mahmoud Ahmed", Description = "Developer", LinkedIn = "https://www.linkedin.com/in/mahmoud-abd-almaksoud/", GitHub = "https://github.com/mahmoud-abdalmaksoud", Direction = "left" },
+        new AboutViewModel() { ImageUrl="/images/about/Omar-Sherbny.jpg",Name = "Omar El-Shirbiny", Description = "Developer", LinkedIn = "https://www.linkedin.com/in/omar-el-shirbiny/", GitHub = "https://github.com/JustOmar21", Direction = "right" },
+        new AboutViewModel() { ImageUrl="/images/about/JustOmar.jpg",Name = "Omar Tarek", Description = "Developer", LinkedIn = "https://LinkedIn.com/in/JustOmar21", GitHub = "https://github.com/Omar-El-Shirbiny", Direction = "left" },
     };
 }
 
-<div class="d-flex flex-wrap justify-content-evenly gap-4 w-75 mx-auto user-select-none" style="padding-top: 100px;">
-    @for (var i = 0; i < test.Length; i++)
-    {
-        <partial name="_ProfileCardPartial" model="@test[i]" />
-    }
+<div class="" style="padding-top:150px"></div>
+<div class="position-relative " style="outline:5px white solid;">
+    <div class="head text-center " data-aos="fade-up" data-aos-delay="1000">
+        <h2 class="section-header fs-1  pb-3">
+            <span>
+                <i class="fa-solid fa-plus fa-2xs"
+                   style="color: var(--secondary-color) !important"></i><i class="fa-solid fa-plus fa-xs"
+                                                                           style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-sm" style="color: var(--secondary-color)"></i>
+            </span>
+
+            <span class="text-primary-color fw-bold">DocNet Team</span>
+
+            <span>
+                <i class="fa-solid fa-plus fa-sm"
+                   style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-xs"
+                                                                style="color: var(--secondary-color)"></i><i class="fa-solid fa-plus fa-2xs"
+                                                                                                             style="color: var(--secondary-color)"></i>
+            </span>
+        </h2>
+        <p class="fs-5 pb-4 position-relative w-50 m-auto fw-semibold text-secondary">
+            Our team is a group of passionate and dedicated software engineering students who collaborated to bring DocNet to life — a medical appointment booking system inspired by real-world platforms like Vezeeta.
+            @* <br> For more, use the <b>search</b> feature. *@
+        </p>
+    </div>
+
+</div>
+<div class="container py-5">
+    <div class="row gap-0 " style="padding-top: 100px;">
+        @for (var i = 0; i < test.Length; i++)
+        {
+            if (i % 2 == 1)
+            {
+                <div class="col-md-6">
+                    <div class=" ">
+                        
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-6 ">
+
+                <div class="" style="width:fit-content;margin:auto" >
+                    <partial class="bg-danger align-self-center" name="_ProfileCardPartial" model="@test[i]" />
+              </div>
+            </div>
+            if(i%2==0){
+                <div class="col-md-6">
+                    <div class=" ">
+                       
+                    </div>
+
+                </div>
+            }
+
+            
+
+        }
+    </div>
 </div>
 
 @section Styles {
-    @* <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> *@
+     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> 
+
 }
 
 @section Scripts {
-    @* <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> *@
+     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+     <script> 
+         AOS.init(); 
+     </script> 
 }

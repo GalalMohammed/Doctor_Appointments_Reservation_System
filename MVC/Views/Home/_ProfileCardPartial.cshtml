@@ -1,19 +1,22 @@
 ﻿@model AboutViewModel
 
-<div class="about-card position-relative p-3 col-12 col-md-3 rounded-4 overflow-hidden d-flex flex-column justify-content-end text-white" style="height: 300px;" data-aos-duration="1500" data-aos="fade-@Model.Direction">
-	<div class="about-image position-absolute top-0 start-0 w-100 h-100 z-n1">
-		<img src="https://www.perkosis.com/uploads/staffs/big/9.jpg" alt="profile image" class="w-100 h-100 object-fit-cover" />
-	</div>
-	<div class="about-content d-flex flex-column align-items-center">
-		<h3 class="m-0 fs-4">@Model.Name</h3>
-		<span style="font-size: 0.75rem;">@Model.Description</span>
-		<div class="d-flex justify-content-evenly w-75">
-			<a class="about-icon mt-1 p-1 rounded-circle d-flex justify-content-center align-items-center" href="@Model.LinkedIn">
-				<i class="fa-brands fa-linkedin-in text-white"></i>
-			</a>
-			<a class="about-icon mt-1 p-1 rounded-circle d-flex justify-content-center align-items-center" href="@Model.GitHub">
-				<i class="fa-brands fa-github text-white"></i>
-			</a>
+<div >
+	<div style="width:400px;height:500px;outline: 4px solid #004085 " class="about-card position-relative   p-3 rounded-4 overflow-hidden d-flex flex-column justify-content-end text-white shadow-lg" data-aos-delay="500" data-aos-duration="1500" data-aos="fade-@Model.Direction">
+		<div class="about-image position-absolute top-0 start-0 w-100 h-100 z-n1">
+			<img src="@Model.ImageUrl" alt="profile image" class="w-100 h-100 object-fit-cover" />
+			@* <img src="https://www.perkosis.com/uploads/staffs/big/9.jpg" alt="profile image" class="w-100 h-100 object-fit-cover" /> *@
+		</div>
+		<div class="about-content d-flex flex-column align-items-center">
+			<h3 class="m-0 fs-4">@Model.Name</h3>
+			<span style="font-size: 0.75rem;">@Model.Description</span>
+			<div class="d-flex justify-content-evenly w-75">
+				<a class="about-icon mt-1 p-1 rounded-circle d-flex justify-content-center align-items-center" href="@Model.LinkedIn">
+					<i class="fa-brands fa-linkedin-in text-white"></i>
+				</a>
+				<a class="about-icon mt-1 p-1 rounded-circle d-flex justify-content-center align-items-center" href="@Model.GitHub">
+					<i class="fa-brands fa-github text-white"></i>
+				</a>
+			</div>
 		</div>
 	</div>
 </div>

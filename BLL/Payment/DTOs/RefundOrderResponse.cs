@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace BLLServices.Payment.DTOs
 {
-    public sealed class CaptureOrderResponse
+    public class RefundOrderResponse
     {
         public required string Id { get; set; }
         public required string Status { get; set; }
-        public required string CaptureId { get; set; }
     }
 }

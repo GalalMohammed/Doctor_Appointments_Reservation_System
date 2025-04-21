@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace BLLServices.Common.EmailService
 {
@@ -8,7 +9,7 @@ namespace BLLServices.Common.EmailService
         public void SendEmail(Email email, string username)
         {
             MailMessage message = new MailMessage();
-            message.From = new MailAddress("doctordotnet62@gmail.com");
+            message.From = new MailAddress("doctordotnet62@gmail.com", "Doc Net");
             message.To.Add(email.To);
             message.IsBodyHtml = true;
             message.Subject = email.Subject;

@@ -19,7 +19,7 @@ namespace BLLServices.Managers.OrderManager
 
         public Order? GetOrderById(string orderId) => orderRepository.GetByID(orderId).Result;
 
-            //=> orderRepository.GetOrder(patientId, doctorReservationId)?.Status == true;
+        //=> orderRepository.GetOrder(patientId, doctorReservationId)?.Status == true;
         public bool IsOrderPaid(int patientId, int doctorReservationId)
         {
             var order = orderRepository.GetOrder(patientId, doctorReservationId);
@@ -31,6 +31,15 @@ namespace BLLServices.Managers.OrderManager
             var order = orderRepository.GetOrder(patientId, doctorReservationId);
             order.Status = true;
             orderRepository.Update(order);
+        }
+        public void SetOrderCaptureId(string orderId, string captureId)
+        {
+            var order = orderRepository.GetByID(orderId).Result;
+            if (order != null)
+            {
+                order.CaptureId = captureId;
+                orderRepository.Update(order);
+            }
         }
     }
 }

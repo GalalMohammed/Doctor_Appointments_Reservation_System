@@ -278,6 +278,7 @@ namespace MVC.Controllers
                 doctor.WorkingDays = (WorkingDays)viewModel.Days.Select(x => Math.Pow(2, int.Parse(x))).Sum();
                 doctor.DefaultMaxReservations = viewModel.ReservationQuota;
                 await _doctorManager.UpdateDoctor(doctor);
+                doctorReservationManager.GenerateCalanderReservation(doctor, doctor.DefaultMaxReservations);
                 TempData["Updated"] = "Schedule Updated!";
                 return RedirectToAction("profile", "Doctor", new { tab = "calender" });
             }

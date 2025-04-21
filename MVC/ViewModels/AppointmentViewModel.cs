@@ -12,5 +12,6 @@ namespace MVC.ViewModels
         public string Location { get; set; }
         public string Doctor { get; set; }
         public string DoctorImagePath { get; set; }
+        public bool IsExists { get; set; }
     }
 }

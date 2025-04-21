@@ -312,7 +312,7 @@ namespace MVC.Controllers
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
             #region need some sort of checking (If Email Already Exist in DB)
-            var user = await userManager.FindByEmailAsync(forgetPasswordVM.Email);
+            var user = await userManager.FindByEmailAsync(forgetPasswordVM.Email.Trim());
             //object user = null;
 
 

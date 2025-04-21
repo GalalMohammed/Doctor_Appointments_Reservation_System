@@ -14,7 +14,7 @@
             <i class="far fa-calendar-alt me-1 @(Model.StartTime < DateTime.Now ? "text-danger" : "")"></i> @Model.StartTime.ToString("MMMM d, yyyy 'at' h:mm tt") to @Model.EndTime.ToString("h:mm tt")
         </span>
     </div>
-    @if(DateTime.Now > Model.EndTime || true)
+    @if(DateTime.Now > Model.EndTime && !Model.IsExists)
     {
         <div class="col-12">
             <button onclick="transferData(@Model.Id,'@Model.Doctor')" data-bs-toggle="modal" data-bs-target="#SP-RevForm" class="btn SP-bookBTN position-absolute bottom-0 end-0 m-3">Add Review</button>

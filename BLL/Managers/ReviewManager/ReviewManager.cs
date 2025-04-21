@@ -1,14 +1,10 @@
 ﻿using DAL.Repositories.Reviews;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using vezeetaApplicationAPI.Models;
 
 namespace BLLServices.Managers.ReviewManager
 {
-    public class ReviewManager: IReviewManager
+    public class ReviewManager : IReviewManager
     {
         private readonly IReviewRepository reviewRepository;
         public ReviewManager(IReviewRepository reviewRepository)
@@ -54,5 +50,7 @@ namespace BLLServices.Managers.ReviewManager
             return sum / reviews.Count;
 
         }
+        public async Task<List<Review>?> GetByCondition(Expression<Func<Review, bool>> conditionExpression)
+            => await reviewRepository.GetAllByConditonFiltterInDatabase(conditionExpression);
     }
 }

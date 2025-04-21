@@ -1,4 +1,5 @@
 ﻿using BLLServices.Managers.PatientManger;
+using BLLServices.Managers.ReviewManager;
 using MVC.Enums;
 using MVC.ViewModels;
 using vezeetaApplicationAPI.Models;
@@ -8,10 +9,12 @@ namespace MVC.Mappers
     public class PatientMapper
     {
         private readonly IPatientManger patientManager;
+        private readonly IReviewManager reviewManager;
 
-        public PatientMapper(IPatientManger patientManager)
+        public PatientMapper(IPatientManger patientManager, IReviewManager reviewManager)
         {
             this.patientManager = patientManager;
+            this.reviewManager = reviewManager;
         }
         public AppointmentViewModel MapToAppointmentViewModel(Appointment appointment)
         {
@@ -24,7 +27,8 @@ namespace MVC.Mappers
                 Specialty = appointment.DoctorReservation?.Doctor?.Specialty?.Name ?? "Not Available",
                 Governorate = appointment.DoctorReservation?.Doctor?.Governorate ?? Governorate.All,
                 Location = appointment.DoctorReservation?.Doctor?.Location ?? "Not Available",
-                DoctorImagePath = appointment.DoctorReservation?.Doctor?.ImageURL ?? "default_doctor.png"
+                DoctorImagePath = appointment.DoctorReservation?.Doctor?.ImageURL ?? "default_doctor.png",
+                IsExists = reviewManager.GetByCondition(r => r.DoctorID == appointment.DoctorReservation.DoctorID && r.PatientID == appointment.PatientId).Result.Any()
             };
         }
         public PatientViewModel MapToPatientViewModel(Patient patient)

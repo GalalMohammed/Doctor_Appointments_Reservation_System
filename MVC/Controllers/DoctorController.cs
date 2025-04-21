@@ -14,7 +14,6 @@ using MVC.Mappers;
 using MVC.ViewModels;
 using System.Linq.Expressions;
 using System.Text.Json;
-using System.Threading.Tasks;
 using vezeetaApplicationAPI.Models;
 
 namespace MVC.Controllers
@@ -158,7 +157,7 @@ namespace MVC.Controllers
 
             var specialites = (await _specialityManager.GetAllSpecialties()).Select(_doctorMapper.MapToSpecialityVM).ToList();
             specialites.Insert(0, new SpecialityVM() { ID = 0, Name = "All" });
-            
+
 
             ViewBag.PageNums = Math.Ceiling(docNums / search.PageSize);
             ViewBag.currentPage = search.PageNum + 1;
@@ -225,11 +224,11 @@ namespace MVC.Controllers
         {
             var ID = int.Parse(User.FindFirst("currentId").Value);
             var res = await doctorReservationManager.GetDoctorReservationByID(ResID);
-            if(res == null)
+            if (res == null)
             {
                 TempData["Error"] = "This reservation doesn't exist";
             }
-            else if(res.DoctorID != ID)
+            else if (res.DoctorID != ID)
             {
                 TempData["Error"] = "You aren't authorized to delete this reservation";
             }
@@ -276,7 +275,7 @@ namespace MVC.Controllers
                 doctor.DefaultStartTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), viewModel.StartTime);
                 doctor.DefaultEndTime = new DateTime(DateOnly.FromDateTime(DateTime.Now), viewModel.EndTime);
                 //doctor.WorkingDays = (WorkingDays)Convert.ToInt32(string.Join("", viewModel.Days), 2);
-                doctor.WorkingDays = (WorkingDays)viewModel.Days.Select(x=>Math.Pow(2,int.Parse(x))).Sum();
+                doctor.WorkingDays = (WorkingDays)viewModel.Days.Select(x => Math.Pow(2, int.Parse(x))).Sum();
                 doctor.DefaultMaxReservations = viewModel.ReservationQuota;
                 await _doctorManager.UpdateDoctor(doctor);
                 TempData["Updated"] = "Schedule Updated!";
@@ -293,7 +292,7 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddReview(AddReviewVM rev)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (User.IsInRole("patient"))
                 {
@@ -308,14 +307,14 @@ namespace MVC.Controllers
                         else
                         {
                             TempData["Error"] = "You can't add a review for an appointment that hasn't happened yet";
-                            return Json(rev);
+                            return RedirectToAction("Profile", "Patient");
 
                         }
                     }
                     else
                     {
                         TempData["Error"] = "This appointment doesn't exist";
-                        return Json(rev);
+                        return RedirectToAction("Profile", "Patient");
                     }
 
                 }
@@ -333,7 +332,7 @@ namespace MVC.Controllers
                         .SelectMany(m => m.Value.Errors.Select(e => $"{m.Key}: {e.ErrorMessage}\n"))
                 );
             }
-            return Json(rev);
-        }                
+            return RedirectToAction("Profile", "Patient");
+        }
     }
 }

@@ -1,8 +1,8 @@
+using BLLServices.Common.CancelationService;
 using BLLServices.Common.EmailService;
 using BLLServices.Common.PaymentService;
 using BLLServices.Common.ReCaptchaService;
 using BLLServices.Common.UploadService;
-using BLLServices.Common.CancelationService;
 using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorManger;
 using BLLServices.Managers.DoctorReservationManager;
@@ -38,7 +38,7 @@ namespace MVC
 
             // DbContext Configuration
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("LocalTest")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Test")));
 
             // Services Configuration
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

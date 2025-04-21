@@ -1,6 +1,10 @@
 ﻿using BLLServices.Common.EmailService;
 using BLLServices.Managers.AppointmentManager;
 using BLLServices.Managers.DoctorReservationManager;
+using BLLServices.Managers.OrderManager;
+using BLLServices.Payment;
+using BLLServices.Payment.DTOs;
+using DAL.Models;
 
 namespace BLLServices.Common.CancelationService
 {
@@ -9,15 +13,19 @@ namespace BLLServices.Common.CancelationService
         private IDoctorReservationManager doctorReservationManager;
         private IAppointmentManager appointmentManager;
         private IEmailService emailService;
+        private readonly IOrderManager orderManager;
+        private readonly PayPalClient payPalClient;
 
         public CancelationService(IDoctorReservationManager doctorReservationManager,IAppointmentManager appointmentManager
-                                              ,IEmailService emailService) 
+                                              ,IEmailService emailService, IOrderManager orderManager, PayPalClient payPalClient) 
         {
             this.doctorReservationManager = doctorReservationManager;
             this.appointmentManager = appointmentManager;
             this.emailService = emailService;
+            this.orderManager = orderManager;
+            this.payPalClient = payPalClient;
         }
-        public void CancelDoctorReservation(int resId)
+        public async Task CancelDoctorReservation(int resId)
         {
             var Res = doctorReservationManager.GetDoctorReservationByID(resId).Result;
             if (Res != null)
@@ -25,6 +33,13 @@ namespace BLLServices.Common.CancelationService
                 var appointments = appointmentManager.GetAppointmentsByReservationId(resId).Result;
                 foreach (var appointment in appointments)
                 {
+                    Order? order = orderManager.GetOrder(appointment.PatientId, (int)appointment.DoctorReservationID!);
+                    if (order != null)
+                    {
+                        if (order.Status && order.CaptureId != null)
+                            await payPalClient.RefundOrder(order.CaptureId);
+                        orderManager.DeleteOrder(appointment.PatientId, (int)appointment.DoctorReservationID!);
+                    }
                     var name = $"{appointment.Patient.AppUser.FirstName} {appointment.Patient.AppUser.LastName}" ;
                     emailService.SendEmail(new Email()
                     {

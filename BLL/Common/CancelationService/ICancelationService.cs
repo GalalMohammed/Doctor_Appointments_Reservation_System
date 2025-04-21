@@ -2,6 +2,6 @@
 {
     public interface ICancelationService
     {
-        public void CancelDoctorReservation(int resId);
+        public Task CancelDoctorReservation(int resId);
     }
 }

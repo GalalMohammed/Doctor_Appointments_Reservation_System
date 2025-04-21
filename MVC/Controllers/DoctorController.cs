@@ -235,7 +235,7 @@ namespace MVC.Controllers
             }
             else
             {
-                cancelationService.CancelDoctorReservation(ResID);
+                await cancelationService.CancelDoctorReservation(ResID);
                 //doctorReservationManager.DeleteDoctorReservation(res);
                 TempData["Deleted"] = $"Reservation on {res.StartTime.Date.ToString("dddd, dd MMMM yyyy")} from {res.StartTime.ToString("hh:mm tt")} to {res.EndTime.ToString("hh:mm tt")} has been deleted";
             }

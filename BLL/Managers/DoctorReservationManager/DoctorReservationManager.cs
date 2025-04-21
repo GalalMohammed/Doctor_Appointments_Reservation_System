@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DAL.Enums;
 using DAL.Repositories.DoctorReservations;
 using vezeetaApplicationAPI.Models;
-using DAL.Enums;
 
 
 namespace BLLServices.Managers.DoctorReservationManager
@@ -23,7 +18,9 @@ namespace BLLServices.Managers.DoctorReservationManager
         }
         public void DeleteDoctorReservation(DoctorReservation res)
         {
-            DR_manager.Delete(res);
+            var reservation = DR_manager.GetByID(res.ID).Result;
+            if (reservation != null)
+                DR_manager.Delete(reservation);
         }
         public void AddDoctorReservation(DoctorReservation res)
         {

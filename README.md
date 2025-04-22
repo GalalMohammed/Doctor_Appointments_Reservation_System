@@ -60,6 +60,7 @@ This “Doctor Appointments Reservation System” is a full‑stack ASP.NET MVC 
 - PayPal sandbox credentials
 - ReCaptcha site key and secret key
 - External login credentials for external services (Google, Facebook, Microsoft Account)
+- Email service credentials
 
 ### Local Setup
 
@@ -91,6 +92,9 @@ This “Doctor Appointments Reservation System” is a full‑stack ASP.NET MVC 
    },
    "Microsoft": {
     "ClientId": "your-client-id", "ClientSecret": "your-client-secret"
+   },
+   "EmailSettings": {
+    "EmailAddress": "your-email@example.com", "Password": "your-email-password"
    }
    ```
 
@@ -109,7 +113,7 @@ This project is currently hosted at:
 To deploy your own instance:
 
 1. Publish the project.
-2. Ensure your production `appsettings.json` has correct connection strings, payment, ReCaptcha, Google, Facebook, and Microsoft API keys settings.
+2. Ensure your production `appsettings.json` has correct connection strings, payment, ReCaptcha, Google, Facebook, Microsoft, and email settings configured properly.
 
 ---
 

@@ -68,7 +68,14 @@ namespace MVC
             });
 
             #region Common Services
-            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IEmailService, EmailService>(
+                provider =>
+                {
+                    string emailAddress = builder.Configuration["EmailSettings:EmailAddress"] ?? throw new Exception("EmailAddress is not set");
+                    string password = builder.Configuration["EmailSettings:Password"] ?? throw new Exception("Password is not set");
+                    return new EmailService(emailAddress, password);
+                }
+            );
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<ICancelationService, CancelationService>();
 

@@ -3,12 +3,12 @@ using System.Net.Mail;
 
 namespace BLLServices.Common.EmailService
 {
-    public class EmailService : IEmailService
+    public class EmailService(string emailAddress, string password) : IEmailService
     {
         public void SendEmail(Email email, string username)
         {
             MailMessage message = new MailMessage();
-            message.From = new MailAddress("doctordotnet62@gmail.com", "Doc Net");
+            message.From = new MailAddress(emailAddress, "DocNet");
             message.To.Add(email.To);
             message.IsBodyHtml = true;
             message.Subject = email.Subject;
@@ -19,20 +19,20 @@ namespace BLLServices.Common.EmailService
 
             using SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.EnableSsl = true;
-            smtpClient.Credentials = new NetworkCredential("doctordotnet62@gmail.com", "dznbacdlebzliuuk");
+            smtpClient.Credentials = new NetworkCredential(emailAddress, password);
             smtpClient.Send(message);
         }
         public void SendEmail(Email email, string username, string body)
         {
             MailMessage message = new MailMessage();
-            message.From = new MailAddress("doctordotnet62@gmail.com");
+            message.From = new MailAddress(emailAddress, "DocNet");
             message.To.Add(email.To);
             message.IsBodyHtml = true;
             message.Subject = email.Subject;
             message.Body = body;
             using SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.EnableSsl = true;
-            smtpClient.Credentials = new NetworkCredential("doctordotnet62@gmail.com", "dznbacdlebzliuuk");
+            smtpClient.Credentials = new NetworkCredential(emailAddress, password);
             smtpClient.Send(message);
         }
 

@@ -67,7 +67,7 @@ This “Doctor Appointments Reservation System” is a full‑stack ASP.NET MVC 
 1. **Clone Repository**
 
    ```bash
-   git clone https://github.com/YourOrg/DoctorAppointmentSystem.git
+   git clone https://github.com/GalalMohammed/Doctor_Appointments_Reservation_System.git
    cd DoctorAppointmentSystem
    ```
 

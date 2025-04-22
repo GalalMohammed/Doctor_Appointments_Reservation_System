@@ -68,7 +68,7 @@ This “Doctor Appointments Reservation System” is a full‑stack ASP.NET MVC 
 
    ```bash
    git clone https://github.com/GalalMohammed/Doctor_Appointments_Reservation_System.git
-   cd DoctorAppointmentSystem
+   cd Doctor_Appointments_Reservation_System
    ```
 
 2. **Configure Connection String**
